@@ -1,11 +1,20 @@
+// CSS variables
+:root {
+  // Dark mode
+  --main-bg: #000;
+  --text-color: #fff;
+}
+
 // Units
 $px: 0.0625rem;
 
 // Fonts
 $font_main: "Poppins";
+$font_bold: "Gilroy";
 
 // Colors
-$black: #000;
+$main-bg: var(--main-bg);
+$text-color: var(--text-color);
 $white: #fff;
 $borders: #5c6268;
 $blue: #2188ff;

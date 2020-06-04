@@ -1,4 +1,46 @@
 * {
   scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: $main-bg;
+  color: $text-color;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font_bold;
+  font-weight: bold;
+  line-height: 1;
+}
+
+p,
+a,
+li,
+b,
+span {
   font-family: $font_main;
+}
+
+#app {
+  padding: 125 * $px 5% 35 * $px;
+
+  main {
+    position: relative;
+    min-height: calc(100vh - #{150 * $px});
+
+    .app-loader {
+      width: 35px;
+      height: 35px;
+      position: absolute;
+      top: calc(50% - #{17.5 * $px});
+      left: calc(50% - #{17.5 * $px});
+    }
+  }
 }
