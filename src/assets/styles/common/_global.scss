@@ -1,12 +1,31 @@
 * {
   scroll-behavior: smooth;
-  font-family: $font_main;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
-  background: $dark;
+  background: $main-bg;
+  color: $text-color;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font_bold;
+  font-weight: bold;
+  line-height: 1;
+}
+
+p,
+a,
+li,
+b,
+span {
+  font-family: $font_main;
 }
 
 #app {
