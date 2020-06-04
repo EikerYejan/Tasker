@@ -1,5 +1,10 @@
 {
   "name": "tasker",
+  "author": {
+    "name": "Eiker Yejan",
+    "email": "eikeryejan@gmail.com",
+    "url": "https://eikeryejan.now.sh"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -24,9 +29,6 @@
     "format": "prettier --write \"**/*.{ts,tsx,scss}\"",
     "lint": "eslint src/**/*{.tsx,.ts}"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -45,6 +47,8 @@
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.9",
     "node-sass": "^4.14.1",
     "prettier": "^2.0.5"
   }
