@@ -1,3 +1,9 @@
+// CSS variables
+:root {
+  // Dark mode
+  --dark: #000;
+}
+
 // Units
 $px: 0.0625rem;
 
@@ -5,7 +11,7 @@ $px: 0.0625rem;
 $font_main: "Poppins";
 
 // Colors
-$black: #000;
+$dark: var(--dark);
 $white: #fff;
 $borders: #5c6268;
 $blue: #2188ff;

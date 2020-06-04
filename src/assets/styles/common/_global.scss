@@ -2,3 +2,26 @@
   scroll-behavior: smooth;
   font-family: $font_main;
 }
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: $dark;
+}
+
+#app {
+  padding: 125 * $px 5% 35 * $px;
+
+  main {
+    position: relative;
+    min-height: calc(100vh - #{150 * $px});
+
+    .app-loader {
+      width: 35px;
+      height: 35px;
+      position: absolute;
+      top: calc(50% - #{17.5 * $px});
+      left: calc(50% - #{17.5 * $px});
+    }
+  }
+}
