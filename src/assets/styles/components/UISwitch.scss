@@ -1,0 +1,42 @@
+@import "../common/common";
+
+#ui-switch {
+  width: 65 * $px;
+  height: 35 * $px;
+  border: 1 * $px solid $borders;
+  position: relative;
+
+  span {
+    @include cubicBezier;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: $button-bg;
+    display: block;
+    z-index: 1;
+  }
+
+  img {
+    position: absolute;
+    height: 22 * $px;
+    width: 22 * $px;
+    top: calc(50% - #{11 * $px});
+
+    &.dark-icon {
+      right: 4 * $px;
+      filter: invert(1);
+    }
+
+    &.light-icon {
+      left: 4 * $px;
+    }
+  }
+
+  &.theme-light {
+    span {
+      left: 50%;
+    }
+  }
+}

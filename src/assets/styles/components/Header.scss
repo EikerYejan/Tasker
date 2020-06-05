@@ -2,6 +2,7 @@
 
 .header {
   @include flexCenter(space-between);
+  @include cubicBezier;
   border-width: 1 * $px;
   border-color: $borders;
   border-bottom-style: solid;

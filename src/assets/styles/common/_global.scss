@@ -3,10 +3,21 @@
 }
 
 body {
+  @include cubicBezier;
   min-height: 100vh;
   margin: 0;
   background: $main-bg;
   color: $text-color;
+
+  &.theme-light {
+    img {
+      filter: none;
+    }
+
+    svg {
+      fill: #fff;
+    }
+  }
 }
 
 h1,

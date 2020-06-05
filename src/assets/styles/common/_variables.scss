@@ -5,6 +5,13 @@
   --text-color: #fff;
   --button-bg: #fff;
   --button-text: #000;
+  // Light theme
+  .theme-light {
+    --main-bg: #fff;
+    --text-color: #000;
+    --button-bg: #000;
+    --button-text: #fff;
+  }
 }
 
 // Units
