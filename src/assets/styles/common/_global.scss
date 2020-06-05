@@ -33,7 +33,11 @@ span {
 
   main {
     position: relative;
-    min-height: calc(100vh - #{150 * $px});
+    margin: 0 !important;
+
+    .app__content {
+      margin: 0 !important;
+    }
 
     .app-loader {
       width: 35px;
@@ -41,6 +45,15 @@ span {
       position: absolute;
       top: calc(50% - #{17.5 * $px});
       left: calc(50% - #{17.5 * $px});
+    }
+  }
+}
+
+@media screen and (max-width: 768*$px) {
+  #app {
+    .app__content {
+      display: flex;
+      flex-direction: column-reverse;
     }
   }
 }
