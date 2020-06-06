@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Helmet } from "react-helmet"
 import Header from "./Header"
 import Welcome from "./Welcome"
+import Tasks from "./Tasks"
 import { saveItem, getItem } from "../utils/Storage"
 import "../assets/styles/App.scss"
 
@@ -10,7 +11,7 @@ const Form = React.lazy(() => import("./Form"))
 /* Localstorage theme ref */
 const THEME_REF = "tasker_theme"
 
-function App(): JSX.Element {
+const App: React.FC = () => {
   /* Get localstorage item */
   const initialTheme = getItem(THEME_REF) ?? "dark"
 
@@ -49,7 +50,9 @@ function App(): JSX.Element {
           <Welcome />
           <div className="columns is-multiline app__content">
             <Form />
-            <div className="column is-7">List</div>
+            <div className="column is-7">
+              <Tasks />
+            </div>
           </div>
         </React.Suspense>
       </main>

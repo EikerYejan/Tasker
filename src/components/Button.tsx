@@ -6,9 +6,12 @@ type Props = {
   type?: "button" | "submit"
 }
 
-const Button: React.FC<Props> = ({ children, className = "", type }) => (
-  // eslint-disable-next-line
-  <button type={type ?? "button"} className={`btn ${className}`}>
+const Button: React.FC<Props> = ({
+  children,
+  className = "",
+  type = "button",
+}) => (
+  <button type={type} className={`btn ${className}`}>
     {children}
     <svg
       xmlns="http://www.w3.org/2000/svg"
