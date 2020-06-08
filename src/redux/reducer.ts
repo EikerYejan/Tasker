@@ -1,5 +1,5 @@
-import { Action, AppState, Obj } from "@types"
-import { ADD_TASK } from "./actions"
+import { Action, AppState, Obj, ValueOf } from "@types"
+import { ADD_TASK, REMOVE_TASK } from "./actions"
 
 /**
  * Update object
@@ -8,6 +8,22 @@ const updateObj = <T extends Obj>(oldObj: T, newObj: Partial<T>): T => ({
   ...oldObj,
   ...newObj,
 })
+
+/**
+ * Remove from array
+ */
+const removeFromArray = <T extends Obj, U extends keyof T>(
+  el: T[],
+  search: U,
+  value: ValueOf<T>
+): T[] => {
+  for (let i = 0; i < el.length; i += 1) {
+    const item = el[i]
+
+    if (item[search] === value) el.splice(i, 1)
+  }
+  return el
+}
 
 /**
  * Initial state
@@ -28,8 +44,18 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
      */
     case ADD_TASK: {
       const tasks = [...state.todo, payload]
-      const newState = updateObj(state, { todo: tasks })
-      return newState
+      return updateObj(state, { todo: tasks })
+    }
+
+    /**
+     * Remove task
+     */
+    case REMOVE_TASK: {
+      const todos = [...state.todo]
+      const tasks = removeFromArray(todos, "id", payload)
+      console.log(tasks)
+
+      return updateObj(state, { todo: tasks })
     }
 
     default:

@@ -5,6 +5,7 @@ import Task from "src/components/Task"
 export type Task = {
   title: string
   description?: string
+  id: number
 }
 
 export type Action = {
@@ -24,3 +25,5 @@ export type Obj = Record<string, unknown>
 export type Connected<T = Obj> = ComponentType<T>
 
 export type StateToProps<T> = MapStateToProps<T, Obj, AppState>
+
+export type ValueOf<T> = T extends Obj[] ? T[number] : T[keyof T]
