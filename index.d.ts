@@ -15,6 +15,10 @@ export type Action = {
 
 export type Dispatch = ({ type: string, payload: any }) => void
 
+export type Dispatcher<T = unknown, U = void> = (
+  param: T
+) => (dispatch: Dispatch) => U
+
 export type AppState = {
   todo: Task[]
   done: Task[]
