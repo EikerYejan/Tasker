@@ -1,10 +1,11 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Task as TaskObject, Connected } from "@types"
-import { deleteTask } from "../redux/actions"
+import { deleteTask, finishTask } from "../redux/actions"
 
 type DispatchProps = {
   deleteOne: (id: number) => void
+  finish: (task: TaskObject) => void
 }
 
 type OwnProps = {
@@ -14,7 +15,7 @@ type OwnProps = {
 
 type Props = DispatchProps & OwnProps
 
-const Task: React.FC<Props> = ({ data, done, deleteOne }) => {
+const Task: React.FC<Props> = ({ data, done, deleteOne, finish }) => {
   /**
    * Delete task
    */
@@ -23,6 +24,11 @@ const Task: React.FC<Props> = ({ data, done, deleteOne }) => {
 
     if (shouldDelete) deleteOne(data.id)
   }
+
+  /**
+   * Finish task
+   */
+  const handleFinish = (): void => finish(data)
 
   return (
     <li className={done ? "is-done" : ""}>
@@ -62,7 +68,7 @@ const Task: React.FC<Props> = ({ data, done, deleteOne }) => {
         </svg>
       </button>
       {done ?? (
-        <button type="button" className="done-button">
+        <button onClick={handleFinish} type="button" className="done-button">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="512"
@@ -84,8 +90,9 @@ const Task: React.FC<Props> = ({ data, done, deleteOne }) => {
   )
 }
 
-const connected: Connected<OwnProps> = connect(null, { deleteOne: deleteTask })(
-  Task
-)
+const connected: Connected<OwnProps> = connect(null, {
+  deleteOne: deleteTask,
+  finish: finishTask,
+})(Task)
 
 export default connected

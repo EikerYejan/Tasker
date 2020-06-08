@@ -1,5 +1,5 @@
 import { Action, AppState, Obj, ValueOf } from "@types"
-import { ADD_TASK, REMOVE_TASK } from "./actions"
+import { ADD_TASK, REMOVE_TASK, FINISH_TASK } from "./actions"
 
 /**
  * Update object
@@ -53,9 +53,26 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
     case REMOVE_TASK: {
       const todos = [...state.todo]
       const tasks = removeFromArray(todos, "id", payload)
-      console.log(tasks)
 
       return updateObj(state, { todo: tasks })
+    }
+
+    /**
+     * Finish task
+     */
+    case FINISH_TASK: {
+      const { id } = payload
+      let todo = [...state.todo]
+      const done = [...state.done]
+
+      // Update todo tasks
+      todo = removeFromArray(todo, "id", id)
+
+      // Update done tasks
+      done.unshift(payload)
+
+      // Update state
+      return updateObj(state, { todo, done })
     }
 
     default:
