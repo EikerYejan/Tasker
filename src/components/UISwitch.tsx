@@ -1,16 +1,24 @@
 import React from "react"
+import { connect } from "react-redux"
+import { Connected, StateToProps } from "@types"
+import { changeTheme } from "../redux/actions"
 import dark from "../assets/images/dark.webp"
 import light from "../assets/images/light.webp"
 import "../assets/styles/components/UISwitch.scss"
 
-type Props = {
-  changeUI: () => void
+type ConnectProps = {
   theme: string
 }
 
+type DispatchProps = {
+  changeUI: (current: string) => void
+}
+
+type Props = ConnectProps & DispatchProps
+
 const UISwitch: React.FC<Props> = ({ changeUI, theme }) => (
   <button
-    onClick={changeUI}
+    onClick={() => changeUI(theme)}
     className={`theme-${theme}`}
     type="button"
     id="ui-switch"
@@ -21,4 +29,12 @@ const UISwitch: React.FC<Props> = ({ changeUI, theme }) => (
   </button>
 )
 
-export default UISwitch
+const mapStateToProps: StateToProps<ConnectProps> = (state) => ({
+  theme: state.theme,
+})
+
+const connected: Connected = connect(mapStateToProps, {
+  changeUI: changeTheme,
+})(UISwitch)
+
+export default connected

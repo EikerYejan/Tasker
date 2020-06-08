@@ -1,5 +1,11 @@
 import { Action, AppState, Obj, ValueOf } from "@types"
-import { ADD_TASK, REMOVE_TASK, FINISH_TASK } from "./actions"
+import {
+  ADD_TASK,
+  REMOVE_TASK,
+  FINISH_TASK,
+  LAUNCH_APP,
+  CHANGE_THEME,
+} from "./actions"
 
 /**
  * Update object
@@ -29,6 +35,7 @@ const removeFromArray = <T extends Obj, U extends keyof T>(
  * Initial state
  */
 const InitialState: AppState = {
+  theme: "dark",
   todo: [],
   done: [],
 }
@@ -39,6 +46,24 @@ const InitialState: AppState = {
 const AppReducer = (state = InitialState, action: Action): AppState => {
   const { type, payload } = action
   switch (type) {
+    /**
+     * Launch app
+     */
+    case LAUNCH_APP: {
+      const { theme } = payload
+
+      return updateObj(state, { theme })
+    }
+
+    /**
+     * Change UI theme
+     */
+    case CHANGE_THEME: {
+      const { theme } = payload
+
+      return updateObj(state, { theme })
+    }
+
     /**
      * Add task
      */

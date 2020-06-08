@@ -4,12 +4,7 @@ import logo from "../assets/images/logo.svg"
 import git from "../assets/images/github.webp"
 import "../assets/styles/components/Header.scss"
 
-type Props = {
-  changeUI: () => void
-  theme: string
-}
-
-const Header: React.FC<Props> = ({ changeUI, theme }) => (
+const Header: React.FC = () => (
   <header className="header" role="banner">
     <div className="header__logo">
       <img src={logo} alt="tasker_logo" />
@@ -26,7 +21,7 @@ const Header: React.FC<Props> = ({ changeUI, theme }) => (
       </div>
     </div>
     <div className="header__end">
-      <UISwitch theme={theme} changeUI={changeUI} />
+      <UISwitch />
     </div>
   </header>
 )

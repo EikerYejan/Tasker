@@ -41,6 +41,28 @@ span {
 
 #app {
   padding: 125 * $px 5% 35 * $px;
+  position: relative;
+  min-height: 100vh;
+
+  .transition-wrapper {
+    @include cubicBezier(350ms);
+    opacity: 1;
+
+    &.is-changing {
+      opacity: 0;
+    }
+  }
+
+  .app-loader {
+    border-top-color: $text-color;
+    border-left-color: $text-color;
+    border-bottom-color: $text-color;
+    width: 35 * $px;
+    height: 35 * $px;
+    position: absolute;
+    top: calc(50% - #{17.5 * $px});
+    left: calc(50% - #{17.5 * $px});
+  }
 
   main {
     position: relative;
@@ -48,14 +70,6 @@ span {
 
     .app__content {
       margin: 0 !important;
-    }
-
-    .app-loader {
-      width: 35px;
-      height: 35px;
-      position: absolute;
-      top: calc(50% - #{17.5 * $px});
-      left: calc(50% - #{17.5 * $px});
     }
   }
 }
