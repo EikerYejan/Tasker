@@ -15,10 +15,11 @@ type Props = {
 
 const Form: React.FC<Props> = ({ addNewTask }) => {
   /* State */
-  const [data, setData] = useState<Task>({
+  const initialState = {
     title: "",
     id: genID(),
-  })
+  }
+  const [data, setData] = useState<Task>(initialState)
 
   /**
    * Handle form change
@@ -47,8 +48,8 @@ const Form: React.FC<Props> = ({ addNewTask }) => {
     // Reset form
     form.reset()
 
-    // Reset id
-    setData((prevState) => ({ ...prevState, id: genID() }))
+    // Reset state
+    setData(initialState)
   }
 
   /**
