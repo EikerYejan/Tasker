@@ -51,7 +51,8 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
      * Remove task
      */
     case REMOVE_TASK: {
-      const tasks = removeFromArray(state.todo, "id", payload)
+      const todos = [...state.todo]
+      const tasks = removeFromArray(todos, "id", payload)
       console.log(tasks)
 
       return updateObj(state, { todo: tasks })
