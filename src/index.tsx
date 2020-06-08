@@ -1,9 +1,14 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import WebFont from "webfontloader"
+import { Provider } from "react-redux"
+import store from "./redux/store"
 import App from "./components/App"
 import * as serviceWorker from "./serviceWorker"
 
+/**
+ * Load fonts
+ */
 WebFont.load({
   google: {
     families: ["Poppins:400,500"],
@@ -13,9 +18,21 @@ WebFont.load({
   },
 })
 
+/**
+ * Setup redux wrapper
+ */
+const Wrapper: React.FC = () => (
+  <Provider store={store}>
+    <App />
+  </Provider>
+)
+
+/**
+ * Render
+ */
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Wrapper />
   </React.StrictMode>,
   document.getElementById("root")
 )
