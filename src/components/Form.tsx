@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { connect } from "react-redux"
 import { Connected, Task } from "@types"
 import { addTask } from "../redux/actions"
+import genID from "../utils/Utils"
 import Button from "./Button"
 import "../assets/styles/components/Form.scss"
 
@@ -16,6 +17,7 @@ const Form: React.FC<Props> = ({ addNewTask }) => {
   /* State */
   const [data, setData] = useState<Task>({
     title: "",
+    id: genID(),
   })
 
   /**
@@ -44,6 +46,9 @@ const Form: React.FC<Props> = ({ addNewTask }) => {
 
     // Reset form
     form.reset()
+
+    // Reset id
+    setData((prevState) => ({ ...prevState, id: genID() }))
   }
 
   /**
