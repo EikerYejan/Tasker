@@ -4,7 +4,7 @@ import { Task as TaskObject, Connected } from "@types"
 import { deleteTask, finishTask } from "../redux/actions"
 
 type DispatchProps = {
-  deleteOne: (id: number) => void
+  deleteOne: ({ id, done }: { id: number; done: boolean }) => void
   finish: (task: TaskObject) => void
 }
 
@@ -20,9 +20,11 @@ const Task: React.FC<Props> = ({ data, done, deleteOne, finish }) => {
    * Delete task
    */
   const handleDelete = (): void => {
-    const shouldDelete = confirm("Are you sure you want to delete this task?") // eslint-disable-line
+    const shouldDelete = !done
+      ? confirm("Are you sure you want to delete this task?") // eslint-disable-line
+      : true
 
-    if (shouldDelete) deleteOne(data.id)
+    if (shouldDelete) deleteOne({ id: data.id, done: done ?? false })
   }
 
   /**

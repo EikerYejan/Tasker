@@ -18,8 +18,10 @@ const addTask: Dispatcher<Task> = (task) => (dispatch): void =>
  * Remove task
  * @param id
  */
-const deleteTask: Dispatcher<number> = (id) => (dispatch): void =>
-  dispatch({ type: REMOVE_TASK, payload: id })
+const deleteTask: Dispatcher<{ id: number; done: boolean }> = ({
+  id,
+  done,
+}) => (dispatch): void => dispatch({ type: REMOVE_TASK, payload: { id, done } })
 
 /**
  * Finish task
