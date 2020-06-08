@@ -1,13 +1,22 @@
 import React, { useState } from "react"
+import { connect } from "react-redux"
+import { Connected, Task } from "@types"
+import { addTask } from "../redux/actions"
 import Button from "./Button"
 import "../assets/styles/components/Form.scss"
 
 type HandleChange = (e: React.ChangeEvent<HTMLInputElement>) => void
 type HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => void
 
-const Form: React.FC = () => {
+type Props = {
+  addNewTask: (task: Task) => void
+}
+
+const Form: React.FC<Props> = ({ addNewTask }) => {
   /* State */
-  const [data, setData] = useState({})
+  const [data, setData] = useState<Task>({
+    title: "",
+  })
 
   /**
    * Handle form change
@@ -28,8 +37,13 @@ const Form: React.FC = () => {
    */
   const handleSubmit: HandleSubmit = (e) => {
     e.preventDefault()
+    const form = e.currentTarget
 
-    console.log(data)
+    // Dispatch action
+    addNewTask(data)
+
+    // Reset form
+    form.reset()
   }
 
   /**
@@ -68,4 +82,6 @@ const Form: React.FC = () => {
   )
 }
 
-export default Form
+const connected: Connected = connect(null, { addNewTask: addTask })(Form)
+
+export default connected

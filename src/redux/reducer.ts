@@ -1,9 +1,10 @@
 import { Action, AppState, Obj } from "@types"
+import { ADD_TASK } from "./actions"
 
 /**
  * Update object
  */
-const updateObj = <T extends Obj>(oldObj: T, newObj: Obj): T => ({
+const updateObj = <T extends Obj>(oldObj: T, newObj: Partial<T>): T => ({
   ...oldObj,
   ...newObj,
 })
@@ -12,7 +13,8 @@ const updateObj = <T extends Obj>(oldObj: T, newObj: Obj): T => ({
  * Initial state
  */
 const InitialState: AppState = {
-  theme: "dark",
+  todo: [],
+  done: [],
 }
 
 /**
@@ -21,6 +23,15 @@ const InitialState: AppState = {
 const AppReducer = (state = InitialState, action: Action): AppState => {
   const { type, payload } = action
   switch (type) {
+    /**
+     * Add task
+     */
+    case ADD_TASK: {
+      const tasks = [...state.todo, payload]
+      const newState = updateObj(state, { todo: tasks })
+      return newState
+    }
+
     default:
       return state
   }

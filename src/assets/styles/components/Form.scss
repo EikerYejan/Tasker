@@ -14,6 +14,8 @@
       display: block;
       margin: 15 * $px 0;
       padding: 12 * $px;
+      color: $text_color;
+      font-family: $font_main;
 
       &::placeholder {
         font-family: $font_main;

@@ -1,58 +1,40 @@
 import React from "react"
-import { Task as TaskObject } from "@types"
-import Task from "./Task"
+import { connect } from "react-redux"
+import { Task as TaskObject, Connected, StateToProps } from "@types"
+import TaskItem from "./Task"
 import "../assets/styles/components/Tasks.scss"
 
-const tasks: TaskObject[] = [
-  {
-    title: "Task 1",
-    description: "Description 1",
-  },
-  {
-    title: "Task 2",
-    description: "Description 1",
-  },
-  {
-    title: "Task 3",
-    description: "Description 1",
-  },
-  {
-    title: "Task 4",
-    description: "Description 1",
-  },
-  {
-    title: "Task 5",
-    description: "Description 1",
-  },
-]
+type Props = {
+  todo: TaskObject[]
+  done: TaskObject[]
+}
 
-const done: TaskObject[] = [
-  {
-    title: "Done",
-  },
-  {
-    title: "Done 2",
-  },
-  {
-    title: "Done 3",
-  },
-]
-
-const Tasks: React.FC = () => (
+const Tasks: React.FC<Props> = ({ todo, done }) => (
   <div className="tasks__list">
     <h2>To do:</h2>
     <ul className="todo">
-      {tasks.map((task) => (
-        <Task key={task.title} data={task} />
+      {todo.map((task) => (
+        <TaskItem key={task.title} data={task} />
       ))}
     </ul>
-    <h2>Done:</h2>
-    <ul className="done">
-      {done.map((el) => (
-        <Task key={el.title} data={el} done />
-      ))}
-    </ul>
+    {done.length !== 0 && (
+      <>
+        <h2>Done:</h2>
+        <ul className="done">
+          {done.map((el) => (
+            <TaskItem key={el.title} data={el} done />
+          ))}
+        </ul>
+      </>
+    )}
   </div>
 )
 
-export default Tasks
+const mapStateToProps: StateToProps<Props> = (state) => ({
+  todo: state.todo,
+  done: state.done,
+})
+
+const connected: Connected = connect(mapStateToProps)(Tasks)
+
+export default connected
