@@ -1,17 +1,15 @@
 import { Task, Dispatcher, Dispatch } from "@types"
 import { getItem, saveItem } from "../utils/Storage"
-
-/**
- * Action types
- */
-const LAUNCH_APP = "LAUNCH_APP"
-const CHANGE_THEME = "CHANGE_THEME"
-const ADD_TASK = "ADD_TASK"
-const REMOVE_TASK = "REMOVE_TASK"
-const FINISH_TASK = "FINISH_TASK"
-
-/* Localstorage theme ref */
-const THEME_REF = "tasker_theme"
+import {
+  ADD_TASK,
+  REMOVE_TASK,
+  FINISH_TASK,
+  LAUNCH_APP,
+  CHANGE_THEME,
+  THEME_REF,
+  TODOS_REF,
+  DONE_REF,
+} from "./constants"
 
 /**
  * Launch app
@@ -20,8 +18,12 @@ const launchApp = () => (dispatch: Dispatch): void => {
   // Get theme
   const theme = getItem(THEME_REF) ?? "dark"
 
+  // Get tasks
+  const todo = JSON.parse(getItem(TODOS_REF) ?? "[]")
+  const done = JSON.parse(getItem(DONE_REF) ?? "[]")
+
   // Dispatch
-  dispatch({ type: LAUNCH_APP, payload: { theme } })
+  dispatch({ type: LAUNCH_APP, payload: { theme, todo, done } })
 }
 
 /**

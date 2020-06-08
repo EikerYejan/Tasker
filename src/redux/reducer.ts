@@ -1,11 +1,14 @@
 import { Action, AppState, Obj, ValueOf } from "@types"
+import { saveItem } from "../utils/Storage"
 import {
   ADD_TASK,
   REMOVE_TASK,
   FINISH_TASK,
   LAUNCH_APP,
   CHANGE_THEME,
-} from "./actions"
+  TODOS_REF,
+  DONE_REF,
+} from "./constants"
 
 /**
  * Update object
@@ -50,9 +53,7 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
      * Launch app
      */
     case LAUNCH_APP: {
-      const { theme } = payload
-
-      return updateObj(state, { theme })
+      return updateObj(state, payload)
     }
 
     /**
@@ -69,6 +70,10 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
      */
     case ADD_TASK: {
       const tasks = [...state.todo, payload]
+
+      // Save in storage
+      saveItem(TODOS_REF, JSON.stringify(tasks))
+
       return updateObj(state, { todo: tasks })
     }
 
@@ -97,6 +102,10 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
 
       // Update done tasks
       done.unshift(payload)
+
+      // Save items in storage
+      saveItem(TODOS_REF, JSON.stringify(todo))
+      saveItem(DONE_REF, JSON.stringify(done))
 
       // Update state
       return updateObj(state, { todo, done })
