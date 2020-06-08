@@ -1,38 +1,11 @@
 import { createStore, applyMiddleware } from "redux"
+import thunk from "redux-thunk"
 import { createLogger } from "redux-logger"
-import { Action } from "@types"
-
-/**
- * Action types
- */
-const CHANGE_THEME = "CHANGE_THEME"
-
-/**
- * Initial state
- */
-const InitialState = {
-  theme: "dark",
-}
-
-/**
- * App reducer
- */
-const AppReducer = (state = InitialState, action: Action) => {
-  const { type, payload } = action
-  switch (type) {
-    case CHANGE_THEME: {
-      const newState = { ...state, theme: payload }
-      return newState
-    }
-
-    default:
-      return state
-  }
-}
+import AppReducer from "./reducer"
 
 /**
  * Store
  */
-const store = createStore(AppReducer, applyMiddleware(createLogger()))
+const store = createStore(AppReducer, applyMiddleware(thunk, createLogger()))
 
 export default store
