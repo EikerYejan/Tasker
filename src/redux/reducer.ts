@@ -38,6 +38,8 @@ const removeFromArray = <T extends Obj, U extends keyof T>(
  * Initial state
  */
 const InitialState: AppState = {
+  isRegistered: false,
+  username: "Stranger",
   theme: "dark",
   todo: [],
   done: [],
@@ -53,7 +55,13 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
      * Launch app
      */
     case LAUNCH_APP: {
-      return updateObj(state, payload)
+      const { isRegistered } = payload
+
+      if (isRegistered) {
+        return updateObj(state, payload)
+      }
+
+      return state
     }
 
     /**

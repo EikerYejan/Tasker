@@ -20,6 +20,8 @@ export type Dispatcher<T = unknown, U = void> = (
 ) => (dispatch: Dispatch) => U
 
 export type AppState = {
+  isRegistered: boolean
+  username: string
   theme: string
   todo: Task[]
   done: Task[]

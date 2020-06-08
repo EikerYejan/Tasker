@@ -9,12 +9,20 @@ import {
   THEME_REF,
   TODOS_REF,
   DONE_REF,
+  NAME_REF,
 } from "./constants"
 
 /**
  * Launch app
  */
 const launchApp = () => (dispatch: Dispatch): void => {
+  // Get username
+  const username = getItem(NAME_REF)
+
+  if (!username) {
+    return dispatch({ type: LAUNCH_APP, payload: { isRegistered: false } })
+  }
+
   // Get theme
   const theme = getItem(THEME_REF) ?? "dark"
 
@@ -23,7 +31,32 @@ const launchApp = () => (dispatch: Dispatch): void => {
   const done = JSON.parse(getItem(DONE_REF) ?? "[]")
 
   // Dispatch
-  dispatch({ type: LAUNCH_APP, payload: { theme, todo, done } })
+  return dispatch({
+    type: LAUNCH_APP,
+    payload: { theme, todo, done, username, isRegistered: true },
+  })
+}
+
+/**
+ * Register user
+ * @param name
+ */
+const saveUser: Dispatcher<string> = (username) => (dispatch): void => {
+  // Save username
+  saveItem(NAME_REF, username)
+
+  // Get theme
+  const theme = getItem(THEME_REF) ?? "dark"
+
+  // Get tasks
+  const todo = JSON.parse(getItem(TODOS_REF) ?? "[]")
+  const done = JSON.parse(getItem(DONE_REF) ?? "[]")
+
+  // Dispatch
+  dispatch({
+    type: LAUNCH_APP,
+    payload: { theme, todo, done, username, isRegistered: true },
+  })
 }
 
 /**
@@ -61,15 +94,4 @@ const deleteTask: Dispatcher<{ id: number; done: boolean }> = ({
 const finishTask: Dispatcher<Task> = (task) => (dispatch): void =>
   dispatch({ type: FINISH_TASK, payload: task })
 
-export {
-  launchApp,
-  changeTheme,
-  addTask,
-  deleteTask,
-  finishTask,
-  LAUNCH_APP,
-  CHANGE_THEME,
-  ADD_TASK,
-  REMOVE_TASK,
-  FINISH_TASK,
-}
+export { launchApp, changeTheme, addTask, deleteTask, finishTask, saveUser }

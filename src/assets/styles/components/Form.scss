@@ -4,28 +4,4 @@
   h2 {
     font-size: 24 * $px;
   }
-
-  form {
-    input,
-    textarea {
-      width: 100%;
-      border: 1 * $px solid $borders;
-      background: none;
-      display: block;
-      margin: 15 * $px 0;
-      padding: 12 * $px;
-      color: $text_color;
-      font-family: $font_main;
-
-      &::placeholder {
-        font-family: $font_main;
-        color: $text_color;
-        text-align: start;
-      }
-    }
-
-    textarea {
-      height: 85 * $px;
-    }
-  }
 }

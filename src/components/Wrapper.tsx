@@ -4,11 +4,13 @@ import { connect } from "react-redux"
 import { Connected, StateToProps } from "@types"
 import { launchApp } from "../redux/actions"
 import Header from "./Header"
+import Registration from "./Registration"
 import App from "./App"
 import "../assets/styles/App.scss"
 
 type ConnectProps = {
   theme: string
+  isRegistered: boolean
 }
 
 type DispatchProps = {
@@ -17,7 +19,7 @@ type DispatchProps = {
 
 type Props = ConnectProps & DispatchProps
 
-const Wrapper: React.FC<Props> = ({ launch, theme }) => {
+const Wrapper: React.FC<Props> = ({ launch, theme, isRegistered }) => {
   /* State */
   const [isLoading, setLoading] = useState(true)
 
@@ -60,7 +62,11 @@ const Wrapper: React.FC<Props> = ({ launch, theme }) => {
       </Helmet>
       <Header />
       <div ref={container} className="transition-wrapper">
-        {isLoading ? <span className="app-loader loader" /> : <App />}
+        {isLoading ? (
+          <span className="app-loader loader" />
+        ) : (
+          <>{!isRegistered ? <Registration /> : <App />}</>
+        )}
       </div>
     </div>
   )
@@ -68,6 +74,7 @@ const Wrapper: React.FC<Props> = ({ launch, theme }) => {
 
 const mapStateToProps: StateToProps<ConnectProps> = (state) => ({
   theme: state.theme,
+  isRegistered: state.isRegistered,
 })
 
 const connected: Connected = connect(mapStateToProps, { launch: launchApp })(
