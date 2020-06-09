@@ -72,6 +72,13 @@ span {
       margin: 0 !important;
     }
   }
+
+  @include mobile {
+    .app__content {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
 }
 
 input,
@@ -94,13 +101,4 @@ textarea {
 
 textarea {
   height: 85 * $px;
-}
-
-@media screen and (max-width: 768*$px) {
-  #app {
-    .app__content {
-      display: flex;
-      flex-direction: column-reverse;
-    }
-  }
 }

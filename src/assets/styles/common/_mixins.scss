@@ -8,3 +8,9 @@
 @mixin cubicBezier($duration: 500ms, $delay: 0ms) {
   transition: $duration cubic-bezier(1, 0, 0, 1) $delay;
 }
+
+@mixin mobile {
+  @media screen and (max-width: 768 * $px) {
+    @content;
+  }
+}
