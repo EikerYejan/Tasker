@@ -1,0 +1,10 @@
+@mixin flexCenter($justify: center, $align: center, $wrap: wrap) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-wrap: $wrap;
+}
+
+@mixin cubicBezier($duration: 500ms, $delay: 0ms) {
+  transition: $duration cubic-bezier(1, 0, 0, 1) $delay;
+}

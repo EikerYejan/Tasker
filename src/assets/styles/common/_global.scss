@@ -1,0 +1,108 @@
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  @include cubicBezier;
+  min-height: 100vh;
+  margin: 0;
+  background: $main-bg;
+  color: $text-color;
+
+  &.theme-light {
+    img {
+      filter: none;
+    }
+
+    svg {
+      fill: #fff;
+    }
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font_bold;
+  font-weight: bold;
+  line-height: 1;
+}
+
+p,
+a,
+li,
+b,
+span {
+  font-family: $font_main;
+}
+
+#app {
+  padding: 125 * $px 5% 35 * $px;
+  position: relative;
+  min-height: 100vh;
+
+  .transition-wrapper {
+    @include cubicBezier(350ms);
+    opacity: 1;
+
+    &.is-changing {
+      opacity: 0;
+    }
+  }
+
+  .app-loader {
+    border-top-color: $text-color;
+    border-left-color: $text-color;
+    border-bottom-color: $text-color;
+    width: 35 * $px;
+    height: 35 * $px;
+    position: absolute;
+    top: calc(50% - #{17.5 * $px});
+    left: calc(50% - #{17.5 * $px});
+  }
+
+  main {
+    position: relative;
+    margin: 0 !important;
+
+    .app__content {
+      margin: 0 !important;
+    }
+  }
+}
+
+form {
+  input,
+  textarea {
+    width: 100%;
+    border: 1 * $px solid $borders;
+    background: none;
+    display: block;
+    margin: 15 * $px 0;
+    padding: 12 * $px;
+    color: $text_color;
+    font-family: $font_main;
+
+    &::placeholder {
+      font-family: $font_main;
+      color: $text_color;
+      text-align: start;
+    }
+  }
+
+  textarea {
+    height: 85 * $px;
+  }
+}
+
+@media screen and (max-width: 768*$px) {
+  #app {
+    .app__content {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+}

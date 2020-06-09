@@ -1,0 +1,30 @@
+@import "../common/common";
+
+.registration-form {
+  @include flexCenter;
+  height: calc(100vh - #{160 * $px});
+
+  form {
+    h2 {
+      font-size: 40 * $px;
+      text-align: center;
+      margin-bottom: 50 * $px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      border: 1 * $px solid $borders;
+    }
+
+    button {
+      margin: auto;
+    }
+  }
+}
+
+@media screen and (max-width: 768 * $px) {
+  .registration-form {
+    height: 65vh;
+  }
+}

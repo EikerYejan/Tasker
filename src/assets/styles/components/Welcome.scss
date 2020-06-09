@@ -1,0 +1,14 @@
+@import "../common/common";
+
+.welcome {
+  margin-bottom: 25 * $px;
+
+  h1 {
+    font-size: 50 * $px;
+    margin-bottom: 15 * $px;
+  }
+
+  &__content {
+    width: fit-content;
+  }
+}

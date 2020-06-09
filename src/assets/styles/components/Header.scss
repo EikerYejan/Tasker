@@ -1,0 +1,73 @@
+@import "../common/common";
+
+.header {
+  @include flexCenter(space-between);
+  @include cubicBezier;
+  border-width: 1 * $px;
+  border-color: $borders;
+  border-bottom-style: solid;
+  border-top-style: solid;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  padding: 0 5%;
+  background: $main-bg;
+  z-index: 1;
+  overflow: hidden;
+
+  &,
+  &__logo,
+  &__end {
+    height: 100 * $px;
+  }
+
+  &__logo,
+  &__end {
+    @include flexCenter;
+    width: calc(10% + #{90 * $px});
+  }
+
+  &__logo {
+    padding-right: 5%;
+    border-right: 1 * $px solid $borders;
+
+    img {
+      width: 100 * $px;
+      height: 60%;
+      filter: invert(1);
+    }
+  }
+
+  &__center {
+    img {
+      width: 35 * $px;
+      filter: invert(1);
+    }
+  }
+
+  &__end {
+    padding-left: 5%;
+    border-left: 1 * $px solid $borders;
+
+    div {
+      @include flexCenter;
+
+      a {
+        margin-right: 20 * $px;
+        width: 28 * $px;
+        height: 28px;
+
+        img {
+          filter: invert(1);
+          width: 100%;
+          height: 100%;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+// CSS variables
+:root {
+  // Dark mode
+  --main-bg: #000;
+  --text-color: #fff;
+  --button-bg: #fff;
+  --button-text: #000;
+  // Light theme
+  .theme-light {
+    --main-bg: #fff;
+    --text-color: #000;
+    --button-bg: #000;
+    --button-text: #fff;
+  }
+}
+
+// Units
+$px: 0.0625rem;
+
+// Fonts
+$font_main: "Poppins";
+$font_bold: "Gilroy";
+
+// Colors
+$main-bg: var(--main-bg);
+$text-color: var(--text-color);
+$button-bg: var(--button-bg);
+$button-text: var(--button-text);
+$white: #fff;
+$borders: #5c6268;
+$blue: #2188ff;
+$red: #ea4a5a;
