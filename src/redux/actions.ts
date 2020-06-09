@@ -11,6 +11,7 @@ import {
   DONE_REF,
   NAME_REF,
   EDIT_TASK,
+  RESTORE_TASK,
 } from "./constants"
 
 /**
@@ -101,6 +102,13 @@ const finishTask: Dispatcher<Task> = (task) => (dispatch): void =>
 const editTask: Dispatcher<Task> = (task) => (dispatch): void =>
   dispatch({ type: EDIT_TASK, payload: task })
 
+/**
+ * Restore task
+ * @param task
+ */
+const restoreTask: Dispatcher<Task> = (task) => (dispatch): void =>
+  dispatch({ type: RESTORE_TASK, payload: task })
+
 export {
   launchApp,
   changeTheme,
@@ -109,4 +117,5 @@ export {
   finishTask,
   saveUser,
   editTask,
+  restoreTask,
 }

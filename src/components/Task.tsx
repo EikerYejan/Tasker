@@ -1,22 +1,32 @@
 import React, { useState } from "react"
 import { connect } from "react-redux"
 import { Task as TaskObject, Connected } from "@types"
-import { deleteTask, finishTask, editTask } from "../redux/actions"
+import { deleteTask, finishTask, editTask, restoreTask } from "../redux/actions"
+
+type Func = (task: TaskObject) => void
 
 type DispatchProps = {
   deleteOne: ({ id, done }: { id: number; done: boolean }) => void
-  finish: (task: TaskObject) => void
-  edit: (task: TaskObject) => void
+  finish: Func
+  edit: Func
+  restore: Func
 }
 
 type OwnProps = {
   data: TaskObject
-  done?: boolean
+  done: boolean
 }
 
 type Props = DispatchProps & OwnProps
 
-const Task: React.FC<Props> = ({ data, done, deleteOne, finish, edit }) => {
+const Task: React.FC<Props> = ({
+  data,
+  done,
+  deleteOne,
+  finish,
+  edit,
+  restore,
+}) => {
   /* State */
   const [isEditing, setEditing] = useState<boolean>(false)
   const [editData, setEditedData] = useState<TaskObject>(data)
@@ -119,7 +129,7 @@ const Task: React.FC<Props> = ({ data, done, deleteOne, finish, edit }) => {
           />
         </svg>
       </button>
-      {done ?? (
+      {!done ? (
         <>
           <button onClick={handleEdit} type="button" className="edit-button">
             {isEditing ? (
@@ -178,6 +188,45 @@ const Task: React.FC<Props> = ({ data, done, deleteOne, finish, edit }) => {
             </svg>
           </button>
         </>
+      ) : (
+        <button
+          onClick={() => restore(data)}
+          type="button"
+          className="restore-button"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="512"
+            height="512"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M434.67,285.59v-29.8C434.67,157.06,354.43,77,255.47,77a179,179,0,0,0-140.14,67.36m-38.53,82v29.8C76.8,355,157,435,256,435a180.45,180.45,0,0,0,140-66.92"
+              style={{
+                fill: "none",
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                strokeWidth: "32px",
+              }}
+            />
+            <polyline
+              points="32 256 76 212 122 256"
+              style={{
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                strokeWidth: "32px",
+              }}
+            />
+            <polyline
+              points="480 256 436 300 390 256"
+              style={{
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                strokeWidth: "32px",
+              }}
+            />
+          </svg>
+        </button>
       )}
     </li>
   )
@@ -187,6 +236,7 @@ const connected: Connected<OwnProps> = connect(null, {
   deleteOne: deleteTask,
   finish: finishTask,
   edit: editTask,
+  restore: restoreTask,
 })(Task)
 
 export default connected

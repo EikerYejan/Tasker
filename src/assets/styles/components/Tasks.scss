@@ -48,11 +48,13 @@
         right: 10 * $px;
 
         &.delete_button,
-        &.done-button {
+        &.done-button,
+        &.restore-button {
           top: 10 * $px;
         }
 
-        &.done-button {
+        &.done-button,
+        &.restore-button {
           right: 35 * $px;
         }
 

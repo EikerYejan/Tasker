@@ -10,6 +10,7 @@ import {
   TODOS_REF,
   DONE_REF,
   EDIT_TASK,
+  RESTORE_TASK,
 } from "./constants"
 
 /**
@@ -117,6 +118,21 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
       saveItem(TODOS_REF, JSON.stringify(updatedTasks))
 
       return updateObj(state, { todo: updatedTasks })
+    }
+
+    /**
+     * Restore task
+     */
+    case RESTORE_TASK: {
+      const todo = [...state.todo]
+      const done = [...state.done]
+
+      // Update arrays
+      todo.push(payload)
+      const updatedDone = removeFromArray(done, "id", payload.id)
+
+      // Update state
+      return updateObj(state, { todo, done: updatedDone })
     }
 
     default:

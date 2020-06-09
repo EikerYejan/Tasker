@@ -8,6 +8,7 @@ const REMOVE_TASK = "REMOVE_TASK"
 const FINISH_TASK = "FINISH_TASK"
 const SAVE_USER = "SAVE_USER"
 const EDIT_TASK = "EDIT_TASK"
+const RESTORE_TASK = "RESTORE_TASK"
 
 /* Localstorage refs */
 const THEME_REF = "tasker_theme"
@@ -23,6 +24,7 @@ export {
   FINISH_TASK,
   SAVE_USER,
   EDIT_TASK,
+  RESTORE_TASK,
   THEME_REF,
   TODOS_REF,
   DONE_REF,
