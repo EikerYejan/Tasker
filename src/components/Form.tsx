@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { connect } from "react-redux"
 import { Connected, Task } from "@types"
 import { addTask } from "../redux/actions"
-import genID from "../utils/Utils"
+import { genID } from "../utils/Utils"
 import Button from "./Button"
 import "../assets/styles/components/Form.scss"
 

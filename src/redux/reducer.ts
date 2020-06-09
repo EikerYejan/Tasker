@@ -1,5 +1,6 @@
-import { Action, AppState, Obj, ValueOf } from "@types"
+import { Action, AppState } from "@types"
 import { saveItem } from "../utils/Storage"
+import { updateObj, removeFromArray, editTasksArray } from "../utils/Utils"
 import {
   ADD_TASK,
   REMOVE_TASK,
@@ -8,31 +9,8 @@ import {
   CHANGE_THEME,
   TODOS_REF,
   DONE_REF,
+  EDIT_TASK,
 } from "./constants"
-
-/**
- * Update object
- */
-const updateObj = <T extends Obj>(oldObj: T, newObj: Partial<T>): T => ({
-  ...oldObj,
-  ...newObj,
-})
-
-/**
- * Remove from array
- */
-const removeFromArray = <T extends Obj, U extends keyof T>(
-  el: T[],
-  search: U,
-  value: ValueOf<T>
-): T[] => {
-  for (let i = 0; i < el.length; i += 1) {
-    const item = el[i]
-
-    if (item[search] === value) el.splice(i, 1)
-  }
-  return el
-}
 
 /**
  * Initial state
@@ -121,6 +99,24 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
 
       // Update state
       return updateObj(state, { todo, done })
+    }
+
+    /**
+     * Edit task
+     */
+    case EDIT_TASK: {
+      const currentTasks = [...state.todo]
+      const updatedTasks = editTasksArray(
+        currentTasks,
+        "id",
+        payload.id,
+        payload
+      )
+
+      // Save in storage
+      saveItem(TODOS_REF, JSON.stringify(updatedTasks))
+
+      return updateObj(state, { todo: updatedTasks })
     }
 
     default:

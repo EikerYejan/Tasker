@@ -10,6 +10,7 @@ import {
   TODOS_REF,
   DONE_REF,
   NAME_REF,
+  EDIT_TASK,
 } from "./constants"
 
 /**
@@ -94,4 +95,18 @@ const deleteTask: Dispatcher<{ id: number; done: boolean }> = ({
 const finishTask: Dispatcher<Task> = (task) => (dispatch): void =>
   dispatch({ type: FINISH_TASK, payload: task })
 
-export { launchApp, changeTheme, addTask, deleteTask, finishTask, saveUser }
+/**
+ * Edit task
+ */
+const editTask: Dispatcher<Task> = (task) => (dispatch): void =>
+  dispatch({ type: EDIT_TASK, payload: task })
+
+export {
+  launchApp,
+  changeTheme,
+  addTask,
+  deleteTask,
+  finishTask,
+  saveUser,
+  editTask,
+}
