@@ -3,7 +3,7 @@
 }
 
 body {
-  @include cubicBezier;
+  @include cubicBezier(200ms);
   min-height: 100vh;
   margin: 0;
   background: $main-bg;
