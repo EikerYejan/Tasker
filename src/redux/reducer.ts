@@ -94,6 +94,10 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
       const items = [...state[index]]
       const tasks = removeFromArray(items, "id", id)
 
+      // Save in storage
+      const REF = done ? DONE_REF : TODOS_REF
+      saveItem(REF, JSON.stringify(tasks))
+
       return updateObj(state, { [index]: tasks })
     }
 
