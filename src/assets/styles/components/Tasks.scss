@@ -41,6 +41,7 @@
 
       button {
         @include flexCenter;
+        @include cubicBezier;
         padding: 0;
         width: 20 * $px;
         height: 20 * $px;
@@ -79,10 +80,8 @@
       }
     }
   }
-}
 
-@media screen and (max-width: 768*$px) {
-  .tasks__list {
+  @include mobile {
     padding-left: 0;
   }
 }

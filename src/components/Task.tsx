@@ -96,7 +96,12 @@ const Task: React.FC<Props> = ({
         </>
       )}
 
-      <button onClick={handleDelete} type="button" className="delete_button">
+      <button
+        onClick={handleDelete}
+        type="button"
+        className="delete_button"
+        title="Delete task"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="512"
@@ -131,7 +136,12 @@ const Task: React.FC<Props> = ({
       </button>
       {!done ? (
         <>
-          <button onClick={handleEdit} type="button" className="edit-button">
+          <button
+            onClick={handleEdit}
+            type="button"
+            className="edit-button"
+            title="Edit task"
+          >
             {isEditing ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +180,15 @@ const Task: React.FC<Props> = ({
               </svg>
             )}
           </button>
-          <button onClick={handleFinish} type="button" className="done-button">
+          <button
+            onClick={handleFinish}
+            type="button"
+            className="done-button"
+            title="Finish task"
+            style={{
+              opacity: isEditing ? 0 : 1,
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="512"
@@ -193,6 +211,7 @@ const Task: React.FC<Props> = ({
           onClick={() => restore(data)}
           type="button"
           className="restore-button"
+          title="Not done yet?"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
