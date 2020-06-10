@@ -1,14 +1,11 @@
 import { Task, Dispatcher, Dispatch } from "@types"
-import { getItem, saveItem } from "../utils/Storage"
+import { getItem, saveItem, getAppData } from "../utils/Storage"
 import {
   ADD_TASK,
   REMOVE_TASK,
   FINISH_TASK,
   LAUNCH_APP,
   CHANGE_THEME,
-  THEME_REF,
-  TODOS_REF,
-  DONE_REF,
   NAME_REF,
   EDIT_TASK,
   RESTORE_TASK,
@@ -25,12 +22,8 @@ const launchApp = () => (dispatch: Dispatch): void => {
     return dispatch({ type: LAUNCH_APP, payload: { isRegistered: false } })
   }
 
-  // Get theme
-  const theme = getItem(THEME_REF) ?? "dark"
-
-  // Get tasks
-  const todo = JSON.parse(getItem(TODOS_REF) ?? "[]")
-  const done = JSON.parse(getItem(DONE_REF) ?? "[]")
+  // Get app data
+  const { theme, todo = [], done = [] } = getAppData()
 
   // Dispatch
   return dispatch({
@@ -47,17 +40,10 @@ const saveUser: Dispatcher<string> = (username) => (dispatch): void => {
   // Save username
   saveItem(NAME_REF, username)
 
-  // Get theme
-  const theme = getItem(THEME_REF) ?? "dark"
-
-  // Get tasks
-  const todo = JSON.parse(getItem(TODOS_REF) ?? "[]")
-  const done = JSON.parse(getItem(DONE_REF) ?? "[]")
-
   // Dispatch
   dispatch({
     type: LAUNCH_APP,
-    payload: { theme, todo, done, username, isRegistered: true },
+    payload: { username, isRegistered: true },
   })
 }
 
@@ -68,7 +54,6 @@ const saveUser: Dispatcher<string> = (username) => (dispatch): void => {
 const changeTheme: Dispatcher<string> = (currentTheme) => (dispatch): void => {
   // Save theme
   const newTheme = currentTheme === "dark" ? "light" : "dark"
-  saveItem(THEME_REF, newTheme)
 
   // Dispatch
   dispatch({ type: CHANGE_THEME, payload: { theme: newTheme } })

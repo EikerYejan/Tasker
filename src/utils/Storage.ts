@@ -1,3 +1,6 @@
+import { AppState } from "@types"
+import { APP_REF } from "../redux/constants"
+
 /**
  * Save localstorage item
  * @param key
@@ -13,4 +16,16 @@ const saveItem = (key: string, value: string): void =>
  */
 const getItem = (key: string): string | null => window.localStorage.getItem(key)
 
-export { saveItem, getItem }
+/**
+ * Save app data
+ * @param data
+ */
+const saveAppData = (data: AppState): void =>
+  saveItem(APP_REF, JSON.stringify(data))
+
+/**
+ * Get app data
+ */
+const getAppData = (): AppState => JSON.parse(getItem(APP_REF) ?? "{}")
+
+export { saveItem, getItem, saveAppData, getAppData }
