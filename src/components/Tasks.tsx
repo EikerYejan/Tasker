@@ -14,7 +14,7 @@ const Tasks: React.FC<Props> = ({ todo, done }) => (
     <h2>To do:</h2>
     <ul className="todo">
       {todo.map((task) => (
-        <TaskItem key={task.id} data={task} />
+        <TaskItem key={task.id} data={task} done={false} />
       ))}
     </ul>
     {done.length !== 0 && (

@@ -7,12 +7,12 @@ const ADD_TASK = "ADD_TASK"
 const REMOVE_TASK = "REMOVE_TASK"
 const FINISH_TASK = "FINISH_TASK"
 const SAVE_USER = "SAVE_USER"
+const EDIT_TASK = "EDIT_TASK"
+const RESTORE_TASK = "RESTORE_TASK"
 
 /* Localstorage refs */
-const THEME_REF = "tasker_theme"
-const TODOS_REF = "tasker_todos"
-const DONE_REF = "tasker_done"
 const NAME_REF = "tasker_name"
+const APP_REF = "tasker_app_data"
 
 export {
   LAUNCH_APP,
@@ -21,8 +21,8 @@ export {
   REMOVE_TASK,
   FINISH_TASK,
   SAVE_USER,
-  THEME_REF,
-  TODOS_REF,
-  DONE_REF,
+  EDIT_TASK,
+  RESTORE_TASK,
   NAME_REF,
+  APP_REF,
 }

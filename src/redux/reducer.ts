@@ -1,38 +1,14 @@
-import { Action, AppState, Obj, ValueOf } from "@types"
-import { saveItem } from "../utils/Storage"
+import { Action, AppState } from "@types"
+import { updateObj, removeFromArray, editTasksArray } from "../utils/Utils"
 import {
   ADD_TASK,
   REMOVE_TASK,
   FINISH_TASK,
   LAUNCH_APP,
   CHANGE_THEME,
-  TODOS_REF,
-  DONE_REF,
+  EDIT_TASK,
+  RESTORE_TASK,
 } from "./constants"
-
-/**
- * Update object
- */
-const updateObj = <T extends Obj>(oldObj: T, newObj: Partial<T>): T => ({
-  ...oldObj,
-  ...newObj,
-})
-
-/**
- * Remove from array
- */
-const removeFromArray = <T extends Obj, U extends keyof T>(
-  el: T[],
-  search: U,
-  value: ValueOf<T>
-): T[] => {
-  for (let i = 0; i < el.length; i += 1) {
-    const item = el[i]
-
-    if (item[search] === value) el.splice(i, 1)
-  }
-  return el
-}
 
 /**
  * Initial state
@@ -79,9 +55,6 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
     case ADD_TASK: {
       const tasks = [...state.todo, payload]
 
-      // Save in storage
-      saveItem(TODOS_REF, JSON.stringify(tasks))
-
       return updateObj(state, { todo: tasks })
     }
 
@@ -93,10 +66,6 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
       const index = done ? "done" : "todo"
       const items = [...state[index]]
       const tasks = removeFromArray(items, "id", id)
-
-      // Save in storage
-      const REF = done ? DONE_REF : TODOS_REF
-      saveItem(REF, JSON.stringify(tasks))
 
       return updateObj(state, { [index]: tasks })
     }
@@ -115,12 +84,38 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
       // Update done tasks
       done.unshift(payload)
 
-      // Save items in storage
-      saveItem(TODOS_REF, JSON.stringify(todo))
-      saveItem(DONE_REF, JSON.stringify(done))
-
       // Update state
       return updateObj(state, { todo, done })
+    }
+
+    /**
+     * Edit task
+     */
+    case EDIT_TASK: {
+      const currentTasks = [...state.todo]
+      const updatedTasks = editTasksArray(
+        currentTasks,
+        "id",
+        payload.id,
+        payload
+      )
+
+      return updateObj(state, { todo: updatedTasks })
+    }
+
+    /**
+     * Restore task
+     */
+    case RESTORE_TASK: {
+      const todo = [...state.todo]
+      const done = [...state.done]
+
+      // Update arrays
+      todo.push(payload)
+      const updatedDone = removeFromArray(done, "id", payload.id)
+
+      // Update state
+      return updateObj(state, { todo, done: updatedDone })
     }
 
     default:

@@ -3,6 +3,14 @@
 .tasks__list {
   padding-left: 10%;
 
+  input {
+    margin: 0;
+    width: 80%;
+    padding: 8 * $px;
+    border-style: none;
+    border-bottom-style: solid;
+  }
+
   h2 {
     font-size: 24 * $px;
     margin-bottom: 15 * $px;
@@ -33,17 +41,25 @@
 
       button {
         @include flexCenter;
+        @include cubicBezier;
         padding: 0;
         width: 20 * $px;
         height: 20 * $px;
         position: absolute;
         right: 10 * $px;
 
-        &.delete_button {
+        &.delete_button,
+        &.done-button,
+        &.restore-button {
           top: 10 * $px;
         }
 
-        &.done-button {
+        &.done-button,
+        &.restore-button {
+          right: 35 * $px;
+        }
+
+        &.edit-button {
           top: 35 * $px;
         }
 
@@ -52,17 +68,20 @@
           height: 100%;
 
           line,
-          polyline {
+          polyline,
+          path {
             stroke: $button-bg;
+          }
+
+          path {
+            fill: $button-bg;
           }
         }
       }
     }
   }
-}
 
-@media screen and (max-width: 768*$px) {
-  .tasks__list {
+  @include mobile {
     padding-left: 0;
   }
 }
