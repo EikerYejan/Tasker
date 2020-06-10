@@ -1,6 +1,5 @@
 import { ComponentType } from "react"
 import { MapStateToProps } from "react-redux"
-import Task from "src/components/Task"
 
 export type Task = {
   title: string
@@ -34,3 +33,9 @@ export type Connected<T = Obj> = ComponentType<T>
 export type StateToProps<T> = MapStateToProps<T, Obj, AppState>
 
 export type ValueOf<T> = T extends Obj[] ? T[number] : T[keyof T]
+
+export interface DragItem {
+  index: number
+  id: string
+  type: string
+}
