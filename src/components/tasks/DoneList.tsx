@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import { Task as TaskObject, StateToProps, Connected } from "@types"
-import Task from "./TodoTask"
+import Task from "./DoneTask"
 
 type Props = {
   tasks: TaskObject[]
