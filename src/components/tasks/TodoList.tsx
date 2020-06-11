@@ -1,16 +1,23 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useState, useEffect } from "react"
 import { connect } from "react-redux"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { Task, StateToProps, Connected } from "@types"
 import update from "immutability-helper"
+import { updateDrag } from "../../redux/actions"
 import TaskItem from "./TodoTask"
 
-type Props = {
+type DispatchProps = {
+  updateTasks: (tasks: Task[]) => void
+}
+
+type ConnectedProps = {
   todo: Task[]
 }
 
-const TodoList: React.FC<Props> = ({ todo }) => {
+type Props = DispatchProps & ConnectedProps
+
+const TodoList: React.FC<Props> = ({ todo, updateTasks }) => {
   /* State */
   const [tasks, setTasks] = useState(todo)
 
@@ -33,26 +40,44 @@ const TodoList: React.FC<Props> = ({ todo }) => {
   )
 
   /**
-   * Render tasks
+   * Listen for dragging changes
    */
-  const renderTask = (data: Task, index: number) => (
-    <TaskItem data={data} key={data.id} index={index} moveItem={moveItem} />
-  )
+  useEffect(() => {
+    updateTasks(tasks)
+  }, [tasks, updateTasks])
+
+  /**
+   * Listen for state change
+   */
+  useEffect(() => {
+    setTasks(todo)
+  }, [todo])
 
   return (
     <div className="todo-wrapper">
       <h2>To do:</h2>
       <DndProvider backend={HTML5Backend}>
-        <ul className="todo">{tasks.map((task, i) => renderTask(task, i))}</ul>
+        <ul className="todo">
+          {tasks.map((task, i) => (
+            <TaskItem
+              key={task?.id}
+              data={task}
+              index={i}
+              moveItem={moveItem}
+            />
+          ))}
+        </ul>
       </DndProvider>
     </div>
   )
 }
 
-const mapStateToProps: StateToProps<Props> = (state) => ({
+const mapStateToProps: StateToProps<ConnectedProps> = (state) => ({
   todo: state.todo,
 })
 
-const connected: Connected = connect(mapStateToProps)(TodoList)
+const connected: Connected = connect(mapStateToProps, {
+  updateTasks: updateDrag,
+})(TodoList)
 
 export default connected
