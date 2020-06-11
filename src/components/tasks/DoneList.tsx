@@ -9,12 +9,16 @@ type Props = {
 
 const DoneList: React.FC<Props> = ({ tasks }) => (
   <div className="done_wrapper">
-    <h2>Done:</h2>
-    <ul className="done">
-      {tasks.map((task) => (
-        <Task key={task.id} data={task} />
-      ))}
-    </ul>
+    {tasks.length !== 0 ? (
+      <>
+        <h2>Done:</h2>
+        <ul className="done">
+          {tasks.map((task) => (
+            <Task key={task.id} data={task} />
+          ))}
+        </ul>
+      </>
+    ) : null}
   </div>
 )
 
