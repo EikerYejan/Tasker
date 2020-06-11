@@ -1,6 +1,6 @@
 import React from "react"
 import Welcome from "./Welcome"
-import Tasks from "./Tasks"
+import TasksWrapper from "./tasks/TasksWrapper"
 import Form from "./Form"
 
 const App: React.FC = () => (
@@ -9,7 +9,7 @@ const App: React.FC = () => (
     <div className="columns is-multiline app__content">
       <Form />
       <div className="column is-7">
-        <Tasks />
+        <TasksWrapper />
       </div>
     </div>
   </main>
