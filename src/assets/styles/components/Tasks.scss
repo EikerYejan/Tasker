@@ -55,7 +55,7 @@
         opacity: 0.55;
       }
 
-      &:last-child {
+      &:last-child:not(.is-dragging) {
         border-bottom: none;
       }
 
