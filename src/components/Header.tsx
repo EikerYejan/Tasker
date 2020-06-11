@@ -12,7 +12,7 @@ const Header: React.FC = () => (
     <div className="header__center">
       <div>
         <a
-          href="https://github.com/EikerYejan/Markdown"
+          href="https://github.com/EikerYejan/Tasker"
           target="_blank"
           rel="noopener noreferrer"
         >
