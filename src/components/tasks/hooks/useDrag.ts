@@ -12,10 +12,10 @@ type Params = {
   ref: RefObject<HTMLLIElement>
   index: number
   id: number
-  moveItem?: (dragIndex: number, hoverIndex: number) => void
+  moveItem: (dragIndex: number, hoverIndex: number) => void
 }
 
-type Return = [any, boolean] // eslint-disable-line
+type Return = [any, any, boolean] // eslint-disable-line
 
 type UseDrangNDrop = ({ ...args }: Params) => Return
 
@@ -29,8 +29,9 @@ const useDragNDrop: UseDrangNDrop = ({ ref, index, id, moveItem }) => {
       if (!ref.current) {
         return
       }
+
       const dragIndex = item.index
-      const hoverIndex = index ?? 0
+      const hoverIndex = index
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -66,7 +67,7 @@ const useDragNDrop: UseDrangNDrop = ({ ref, index, id, moveItem }) => {
       }
 
       // Time to actually perform the action
-      if (moveItem) moveItem(dragIndex, hoverIndex)
+      moveItem(dragIndex, hoverIndex)
 
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
@@ -90,12 +91,12 @@ const useDragNDrop: UseDrangNDrop = ({ ref, index, id, moveItem }) => {
   /**
    *
    */
-  const dragFunc = drag(drop(ref))
+  // const dragFunc = drag(drop(ref))
 
   /**
    * Return
    */
-  return [dragFunc, isDragging]
+  return [drag, drop, isDragging]
 }
 
 export default useDragNDrop
