@@ -9,6 +9,7 @@ import {
   NAME_REF,
   EDIT_TASK,
   RESTORE_TASK,
+  DRAG_TASK,
 } from "./constants"
 
 /**
@@ -94,6 +95,12 @@ const editTask: Dispatcher<Task> = (task) => (dispatch): void =>
 const restoreTask: Dispatcher<Task> = (task) => (dispatch): void =>
   dispatch({ type: RESTORE_TASK, payload: task })
 
+/**
+ * Update tasks when dragging
+ */
+const updateDrag: Dispatcher<Task[]> = (tasks) => (dispatch): void =>
+  dispatch({ type: DRAG_TASK, payload: tasks })
+
 export {
   launchApp,
   changeTheme,
@@ -103,4 +110,5 @@ export {
   saveUser,
   editTask,
   restoreTask,
+  updateDrag,
 }

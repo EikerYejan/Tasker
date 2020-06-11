@@ -8,6 +8,7 @@ import {
   CHANGE_THEME,
   EDIT_TASK,
   RESTORE_TASK,
+  DRAG_TASK,
 } from "./constants"
 
 /**
@@ -116,6 +117,13 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
 
       // Update state
       return updateObj(state, { todo, done: updatedDone })
+    }
+
+    /**
+     * Drag tasks
+     */
+    case DRAG_TASK: {
+      return updateObj(state, { todo: payload })
     }
 
     default:
