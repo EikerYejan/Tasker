@@ -55,6 +55,7 @@ const TodoList: React.FC<Props> = ({ todo, updateTasks }) => {
 
   return (
     <div className="todo-wrapper">
+      <p className="drag-tip">*You can drag the items to reorder them</p>
       <h2>To do:</h2>
       <DndProvider options={HTML5ToTouch}>
         <ul className="todo">
