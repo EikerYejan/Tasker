@@ -25,6 +25,16 @@
       padding: 10 * $px;
       position: relative;
       min-height: 70 * $px;
+      background: $main-bg;
+      cursor: grab;
+
+      &.is-dragging {
+        transform: scale(1.05);
+        border-top: inherit;
+        border: inherit;
+        z-index: 2;
+        transition: 0.15s;
+      }
 
       &.is-done {
         opacity: 0.55;
