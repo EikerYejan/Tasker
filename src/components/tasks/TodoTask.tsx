@@ -14,8 +14,8 @@ type DispatchProps = {
 
 type OwnProps = {
   data: TaskObject
-  index?: number
-  moveItem?: (dragIndex: number, hoverIndex: number) => void
+  index: number
+  moveItem: (dragIndex: number, hoverIndex: number) => void
 }
 
 type Props = DispatchProps & OwnProps
@@ -41,15 +41,20 @@ const Task: React.FC<Props> = ({
   /**
    * Drag and drop hook
    */
-  const [drag] = useDrag({ ref, index: index ?? 0, moveItem, id: data.id })
+  const [drag, drop, isDragging] = useDrag({
+    ref,
+    index,
+    moveItem,
+    id: data.id,
+  })
 
   /**
    * Allow dragging
    */
-  drag()
+  drag(drop(ref))
 
   return (
-    <li ref={ref}>
+    <li className={isDragging ? "is-dragging" : "is-static"} ref={ref}>
       {isEditing ? (
         <>
           <input
@@ -86,7 +91,7 @@ const Task: React.FC<Props> = ({
         className="edit-button"
         title="Edit task"
       >
-        {isEditing ? { SaveIcon } : { EditIcon }}
+        {isEditing ? SaveIcon : EditIcon}
       </button>
       <button
         onClick={() => finish(data)}
