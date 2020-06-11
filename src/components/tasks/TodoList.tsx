@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from "react"
 import { connect } from "react-redux"
-import { DndProvider } from "react-dnd"
-import { HTML5Backend } from "react-dnd-html5-backend"
+import { DndProvider } from "react-dnd-multi-backend"
+import HTML5ToTouch from "react-dnd-multi-backend/dist/esm/HTML5toTouch"
 import { Task, StateToProps, Connected } from "@types"
 import update from "immutability-helper"
 import { updateDrag } from "../../redux/actions"
@@ -56,7 +56,7 @@ const TodoList: React.FC<Props> = ({ todo, updateTasks }) => {
   return (
     <div className="todo-wrapper">
       <h2>To do:</h2>
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider options={HTML5ToTouch}>
         <ul className="todo">
           {tasks.map((task, i) => (
             <TaskItem
