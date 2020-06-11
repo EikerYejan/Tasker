@@ -19,7 +19,7 @@ type Props = DispatchProps & OwnProps
 
 const Task: React.FC<Props> = ({ data, deleteOne, edit, restore }) => {
   /* Task hook  */
-  const { handleDelete, handleChange, isEditing } = useTask({
+  const { handleChange, isEditing } = useTask({
     data,
     deleteOne,
     edit,
@@ -50,7 +50,7 @@ const Task: React.FC<Props> = ({ data, deleteOne, edit, restore }) => {
       )}
 
       <button
-        onClick={handleDelete}
+        onClick={() => deleteOne({ id: data.id, done: true })}
         type="button"
         className="delete_button"
         title="Delete task"
