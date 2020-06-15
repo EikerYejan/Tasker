@@ -3,6 +3,10 @@
 .tasks__list {
   padding-left: 10%;
 
+  .todo-wrapper {
+    position: relative;
+  }
+  
   .drag-tip {
     font-size: 12 * $px;
     position: absolute;
@@ -52,7 +56,7 @@
         opacity: 0.55;
       }
 
-      &:last-child {
+      &:last-child:not(.is-dragging) {
         border-bottom: none;
       }
 
