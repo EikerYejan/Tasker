@@ -10,7 +10,6 @@ button {
 
 .btn {
   @include flexCenter(space-between);
-  border: 1 * $px solid $borders;
   color: $button-text;
   padding: 10 * $px 40 * $px;
   text-transform: uppercase;
