@@ -1,3 +1,18 @@
+[![PWA Shields](https://www.pwa-shields.com/1.0.0/series/dark/gray.svg)](https://tasker-app.now.sh)
+
+## [Live version](https://tasker-app.now.sh)
+
+### Used in this project
+
+- Typescript
+- React
+- Create React App
+- Redux
+- Bulma
+- React DnD
+
+----
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
