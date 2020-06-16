@@ -5,12 +5,15 @@
   --text-color: #fff;
   --button-bg: #fff;
   --button-text: #000;
+  --borders: #fff;
+
   // Light theme
   .theme-light {
     --main-bg: #fff;
     --text-color: #000;
     --button-bg: #000;
     --button-text: #fff;
+    --borders: #000;
   }
 }
 
@@ -26,7 +29,7 @@ $main-bg: var(--main-bg);
 $text-color: var(--text-color);
 $button-bg: var(--button-bg);
 $button-text: var(--button-text);
+$borders: var(--borders);
 $white: #fff;
-$borders: #5c6268;
 $blue: #2188ff;
 $red: #ea4a5a;
