@@ -1,6 +1,6 @@
-[![PWA Shields](https://www.pwa-shields.com/1.0.0/series/dark/gray.svg)](https://tasker-app.now.sh)
+[![PWA Shields](https://www.pwa-shields.com/1.0.0/series/dark/gray.svg)](https://tasker.eikeryejan.com/)
 
-## [Live version](https://tasker-app.now.sh)
+## [Live version](https://tasker.eikeryejan.com/)
 
 ### Used in this project
 
