@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useRef } from "react"
-import { Helmet } from "react-helmet"
-import { connect } from "react-redux"
-import { Connected, StateToProps } from "@types"
-import { launchApp } from "../redux/actions"
-import Header from "./Header"
-import Registration from "./Registration"
-import App from "./App"
-import "../assets/styles/App.scss"
+import React, { useEffect, useState, useRef } from 'react'
+import { Helmet } from 'react-helmet'
+import { connect } from 'react-redux'
+import { Connected, StateToProps } from '@types'
+import { launchApp } from '../redux/actions'
+import Header from './Header'
+import Registration from './Registration'
+import App from './App'
+import '../assets/styles/App.scss'
 
 type ConnectProps = {
   theme: string
@@ -34,11 +34,11 @@ const Wrapper: React.FC<Props> = ({ launch, theme, isRegistered }) => {
     launch()
 
     // Animate container
-    container.current?.classList.add("is-changing")
+    container.current?.classList.add('is-changing')
 
     // Show content
     setTimeout(() => {
-      container.current?.classList.remove("is-changing")
+      container.current?.classList.remove('is-changing')
       setLoading(false)
     }, 800)
   }, [launch])
@@ -47,7 +47,7 @@ const Wrapper: React.FC<Props> = ({ launch, theme, isRegistered }) => {
    * Update UI
    */
   useEffect(() => {
-    const classes = ["theme-dark", "theme-light"]
+    const classes = ['theme-dark', 'theme-light']
     document.body.classList.remove(...classes)
     document.body.classList.add(`theme-${theme}`)
   }, [theme])
@@ -57,7 +57,7 @@ const Wrapper: React.FC<Props> = ({ launch, theme, isRegistered }) => {
       <Helmet>
         <meta
           name="theme-color"
-          content={theme === "dark" ? "#000000" : "#ffffff"}
+          content={theme === 'dark' ? '#000000' : '#ffffff'}
         />
       </Helmet>
       <Header />

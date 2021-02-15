@@ -1,15 +1,15 @@
-import React from "react"
+import React from 'react'
 
 type Props = {
   children: string | React.ReactElement | JSX.Element
   className?: string
-  type?: "button" | "submit"
+  type?: 'button' | 'submit'
 }
 
 const Button: React.FC<Props> = ({
   children,
-  className = "",
-  type = "button",
+  className = '',
+  type = 'button',
 }) => (
   <button type={type} className={`btn ${className}`}>
     {children}

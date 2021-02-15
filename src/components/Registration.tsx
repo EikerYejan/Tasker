@@ -1,9 +1,9 @@
-import React, { useState } from "react"
-import { connect } from "react-redux"
-import { Connected } from "@types"
-import { saveUser } from "../redux/actions"
-import Button from "./Button"
-import "../assets/styles/components/Registration.scss"
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { Connected } from '@types'
+import { saveUser } from '../redux/actions'
+import Button from './Button'
+import '../assets/styles/components/Registration.scss'
 
 type Props = {
   save: (name: string) => void
@@ -14,7 +14,7 @@ type HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => void
 
 const Registration: React.FC<Props> = ({ save }) => {
   /* Name ref */
-  const [name, setName] = useState("")
+  const [name, setName] = useState('')
 
   /* Handle change */
   const onChange: OnChange = (e) => setName(e.currentTarget.value)

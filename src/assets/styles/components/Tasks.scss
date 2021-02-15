@@ -1,4 +1,4 @@
-@import "../common/common";
+@import '../common/common';
 
 .tasks__list {
   padding-left: 10%;
@@ -6,7 +6,7 @@
   .todo-wrapper {
     position: relative;
   }
-  
+
   .drag-tip {
     font-size: 12 * $px;
     position: absolute;
@@ -53,7 +53,8 @@
       }
 
       &.is-done {
-        opacity: 0.55;
+        background: $green;
+        color: $white;
       }
 
       &:last-child:not(.is-dragging) {

@@ -1,7 +1,7 @@
-import React from "react"
-import Welcome from "./Welcome"
-import TasksWrapper from "./tasks/TasksWrapper"
-import Form from "./Form"
+import React from 'react'
+import Welcome from './Welcome'
+import TasksWrapper from './tasks/TasksWrapper'
+import Form from './Form'
 
 const App: React.FC = () => (
   <main>

@@ -1,20 +1,20 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import WebFont from "webfontloader"
-import { Provider } from "react-redux"
-import store from "./redux/store"
-import Wrapper from "./components/Wrapper"
-import * as serviceWorker from "./serviceWorker"
+import React from 'react'
+import ReactDOM from 'react-dom'
+import WebFont from 'webfontloader'
+import { Provider } from 'react-redux'
+import store from './redux/store'
+import Wrapper from './components/Wrapper'
+import * as serviceWorker from './serviceWorker'
 
 /**
  * Load fonts
  */
 WebFont.load({
   google: {
-    families: ["Poppins:400,500"],
+    families: ['Poppins:400,500'],
   },
   custom: {
-    families: ["Gilroy"],
+    families: ['Gilroy'],
   },
 })
 
@@ -27,7 +27,7 @@ ReactDOM.render(
       <Wrapper />
     </Provider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root')
 )
 
 // If you want your app to work offline and load faster, you can change

@@ -1,10 +1,10 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Connected, StateToProps } from "@types"
-import { changeTheme } from "../redux/actions"
-import dark from "../assets/images/dark.webp"
-import light from "../assets/images/light.webp"
-import "../assets/styles/components/UISwitch.scss"
+import React from 'react'
+import { connect } from 'react-redux'
+import { Connected, StateToProps } from '@types'
+import { changeTheme } from '../redux/actions'
+import dark from '../assets/images/dark.webp'
+import light from '../assets/images/light.webp'
+import '../assets/styles/components/UISwitch.scss'
 
 type ConnectProps = {
   theme: string

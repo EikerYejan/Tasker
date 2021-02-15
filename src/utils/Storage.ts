@@ -1,5 +1,5 @@
-import { AppState } from "@types"
-import { APP_REF } from "../redux/constants"
+import { AppState } from '@types'
+import { APP_REF } from '../redux/constants'
 
 /**
  * Save localstorage item
@@ -26,6 +26,6 @@ const saveAppData = (data: AppState): void =>
 /**
  * Get app data
  */
-const getAppData = (): AppState => JSON.parse(getItem(APP_REF) ?? "{}")
+const getAppData = (): AppState => JSON.parse(getItem(APP_REF) ?? '{}')
 
 export { saveItem, getItem, saveAppData, getAppData }

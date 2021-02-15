@@ -1,10 +1,10 @@
-import React, { useState } from "react"
-import { connect } from "react-redux"
-import { Connected, Task } from "@types"
-import { addTask } from "../redux/actions"
-import { genID } from "../utils/Utils"
-import Button from "./Button"
-import "../assets/styles/components/Form.scss"
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { Connected, Task } from '@types'
+import { addTask } from '../redux/actions'
+import { genID } from '../utils/Utils'
+import Button from './Button'
+import '../assets/styles/components/Form.scss'
 
 type HandleChange = (e: React.ChangeEvent<HTMLInputElement>) => void
 type HandleSubmit = (e: React.FormEvent<HTMLFormElement>) => void
@@ -16,7 +16,7 @@ type Props = {
 const Form: React.FC<Props> = ({ addNewTask }) => {
   /* State */
   const initialState = {
-    title: "",
+    title: '',
     id: genID(),
   }
   const [data, setData] = useState<Task>(initialState)
@@ -64,8 +64,8 @@ const Form: React.FC<Props> = ({ addNewTask }) => {
     name,
     placeholder,
     required,
-    type: "text",
-    className: `form-input ${required ? "is-required" : ""} ${className}`,
+    type: 'text',
+    className: `form-input ${required ? 'is-required' : ''} ${className}`,
     onChange: handleChange,
   })
 
@@ -73,13 +73,13 @@ const Form: React.FC<Props> = ({ addNewTask }) => {
     <div className="column is-5 add-form">
       <h2>Add a new item.</h2>
       <form onSubmit={handleSubmit}>
-        <input {...inputProps("title", "Item title", true)} />
+        <input {...inputProps('title', 'Item title', true)} />
         <textarea
           {...inputProps(
-            "description",
-            "Item description",
+            'description',
+            'Item description',
             false,
-            "description"
+            'description'
           )}
         />
         <Button type="submit">Save</Button>

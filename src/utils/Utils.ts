@@ -1,4 +1,4 @@
-import { Task, Obj, ValueOf } from "@types"
+import { Task, Obj, ValueOf } from '@types'
 
 /**
  * Generate ID

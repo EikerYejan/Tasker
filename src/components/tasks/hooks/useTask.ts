@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { Task as TaskObject } from "@types"
+import { useState } from 'react'
+import { Task as TaskObject } from '@types'
 
 export type Func = (task: TaskObject) => void
 export type DeleteFunc = ({ id, done }: { id: number; done: boolean }) => void
@@ -32,7 +32,7 @@ const useTask: UseTasks = ({ data, done, deleteOne, edit }) => {
    */
   const handleDelete = (): void => {
     const shouldDelete = !done
-      ? confirm("Are you sure you want to delete this task?") // eslint-disable-line
+      ? confirm('Are you sure you want to delete this task?') // eslint-disable-line
       : true
 
     if (shouldDelete) deleteOne({ id: data.id, done: done ?? false })

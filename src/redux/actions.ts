@@ -1,5 +1,5 @@
-import { Task, Dispatcher, Dispatch } from "@types"
-import { getItem, saveItem, getAppData } from "../utils/Storage"
+import { Task, Dispatcher, Dispatch } from '@types'
+import { getItem, saveItem, getAppData } from '../utils/Storage'
 import {
   ADD_TASK,
   REMOVE_TASK,
@@ -10,7 +10,7 @@ import {
   EDIT_TASK,
   RESTORE_TASK,
   DRAG_TASK,
-} from "./constants"
+} from './constants'
 
 /**
  * Launch app
@@ -54,7 +54,7 @@ const saveUser: Dispatcher<string> = (username) => (dispatch): void => {
  */
 const changeTheme: Dispatcher<string> = (currentTheme) => (dispatch): void => {
   // Save theme
-  const newTheme = currentTheme === "dark" ? "light" : "dark"
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
 
   // Dispatch
   dispatch({ type: CHANGE_THEME, payload: { theme: newTheme } })

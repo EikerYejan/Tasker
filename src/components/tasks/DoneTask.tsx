@@ -1,9 +1,9 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Task as TaskObject, Connected } from "@types"
-import useTask, { Func, DeleteFunc } from "./hooks/useTask"
-import { DeleteIcon, RestoreIcon } from "./Icons"
-import { deleteTask, editTask, restoreTask } from "../../redux/actions"
+import React from 'react'
+import { connect } from 'react-redux'
+import { Task as TaskObject, Connected } from '@types'
+import useTask, { Func, DeleteFunc } from './hooks/useTask'
+import { DeleteIcon, RestoreIcon } from './Icons'
+import { deleteTask, editTask, restoreTask } from '../../redux/actions'
 
 type DispatchProps = {
   deleteOne: DeleteFunc
@@ -39,7 +39,7 @@ const Task: React.FC<Props> = ({ data, deleteOne, edit, restore }) => {
             onChange={handleChange}
             type="text"
             name="description"
-            placeholder={data.description ?? "Description"}
+            placeholder={data.description ?? 'Description'}
           />
         </>
       ) : (

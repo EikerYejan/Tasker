@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 
 const FinishIcon = (
   <svg
@@ -10,9 +10,9 @@ const FinishIcon = (
     <polyline
       points="416 128 192 384 96 288"
       style={{
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: "32px",
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '32px',
       }}
     />
   </svg>
@@ -28,10 +28,10 @@ const SaveIcon = (
     <path
       d="M380.93,57.37A32,32,0,0,0,358.3,48H94.22A46.21,46.21,0,0,0,48,94.22V417.78A46.21,46.21,0,0,0,94.22,464H417.78A46.36,46.36,0,0,0,464,417.78V153.7a32,32,0,0,0-9.37-22.63ZM256,416a64,64,0,1,1,64-64A63.92,63.92,0,0,1,256,416Zm48-224H112a16,16,0,0,1-16-16V112a16,16,0,0,1,16-16H304a16,16,0,0,1,16,16v64A16,16,0,0,1,304,192Z"
       style={{
-        fill: "none",
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: "32px",
+        fill: 'none',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '32px',
       }}
     />
   </svg>
@@ -47,10 +47,10 @@ const EditIcon = (
     <path
       d="M384,224V408a40,40,0,0,1-40,40H104a40,40,0,0,1-40-40V168a40,40,0,0,1,40-40H271.48"
       style={{
-        fill: "none",
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: "32px",
+        fill: 'none',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '32px',
       }}
     />
     <path d="M459.94,53.25a16.06,16.06,0,0,0-23.22-.56L424.35,65a8,8,0,0,0,0,11.31l11.34,11.32a8,8,0,0,0,11.34,0l12.06-12C465.19,69.54,465.76,59.62,459.94,53.25Z" />
@@ -71,10 +71,10 @@ const DeleteIcon = (
       x2="144"
       y2="144"
       style={{
-        fill: "none",
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: "32px",
+        fill: 'none',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '32px',
       }}
     />
     <line
@@ -83,10 +83,10 @@ const DeleteIcon = (
       x2="144"
       y2="368"
       style={{
-        fill: "none",
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: "32px",
+        fill: 'none',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '32px',
       }}
     />
   </svg>
@@ -102,26 +102,26 @@ const RestoreIcon = (
     <path
       d="M434.67,285.59v-29.8C434.67,157.06,354.43,77,255.47,77a179,179,0,0,0-140.14,67.36m-38.53,82v29.8C76.8,355,157,435,256,435a180.45,180.45,0,0,0,140-66.92"
       style={{
-        fill: "none",
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: "32px",
+        fill: 'none',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '32px',
       }}
     />
     <polyline
       points="32 256 76 212 122 256"
       style={{
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: "32px",
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '32px',
       }}
     />
     <polyline
       points="480 256 436 300 390 256"
       style={{
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: "32px",
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '32px',
       }}
     />
   </svg>

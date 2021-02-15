@@ -1,12 +1,12 @@
-import { RefObject } from "react"
+import { RefObject } from 'react'
 import {
   useDrag,
   useDrop,
   DropTargetMonitor,
   DragSourceMonitor,
-} from "react-dnd"
-import { XYCoord } from "dnd-core"
-import { DragItem } from "@types"
+} from 'react-dnd'
+import { XYCoord } from 'dnd-core'
+import { DragItem } from '@types'
 
 type Params = {
   ref: RefObject<HTMLLIElement>
@@ -24,7 +24,7 @@ const useDragNDrop: UseDrangNDrop = ({ ref, index, id, moveItem }) => {
    * Set drop target
    */
   const [, drop] = useDrop({
-    accept: "task",
+    accept: 'task',
     hover(item: DragItem, monitor: DropTargetMonitor) {
       if (!ref.current) {
         return
@@ -82,7 +82,7 @@ const useDragNDrop: UseDrangNDrop = ({ ref, index, id, moveItem }) => {
    * Set drag source
    */
   const [{ isDragging }, drag] = useDrag({
-    item: { type: "task", id, index },
+    item: { type: 'task', id, index },
     collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),

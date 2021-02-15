@@ -1,5 +1,5 @@
-import { Action, AppState } from "@types"
-import { updateObj, removeFromArray, editTasksArray } from "../utils/Utils"
+import { Action, AppState } from '@types'
+import { updateObj, removeFromArray, editTasksArray } from '../utils/Utils'
 import {
   ADD_TASK,
   REMOVE_TASK,
@@ -9,15 +9,15 @@ import {
   EDIT_TASK,
   RESTORE_TASK,
   DRAG_TASK,
-} from "./constants"
+} from './constants'
 
 /**
  * Initial state
  */
 const InitialState: AppState = {
   isRegistered: false,
-  username: "Stranger",
-  theme: "dark",
+  username: 'Stranger',
+  theme: 'dark',
   todo: [],
   done: [],
 }
@@ -64,9 +64,9 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
      */
     case REMOVE_TASK: {
       const { id, done } = payload
-      const index = done ? "done" : "todo"
+      const index = done ? 'done' : 'todo'
       const items = [...state[index]]
-      const tasks = removeFromArray(items, "id", id)
+      const tasks = removeFromArray(items, 'id', id)
 
       return updateObj(state, { [index]: tasks })
     }
@@ -80,7 +80,7 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
       const done = [...state.done]
 
       // Update todo tasks
-      todo = removeFromArray(todo, "id", id)
+      todo = removeFromArray(todo, 'id', id)
 
       // Update done tasks
       done.unshift(payload)
@@ -96,7 +96,7 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
       const currentTasks = [...state.todo]
       const updatedTasks = editTasksArray(
         currentTasks,
-        "id",
+        'id',
         payload.id,
         payload
       )
@@ -113,7 +113,7 @@ const AppReducer = (state = InitialState, action: Action): AppState => {
 
       // Update arrays
       todo.push(payload)
-      const updatedDone = removeFromArray(done, "id", payload.id)
+      const updatedDone = removeFromArray(done, 'id', payload.id)
 
       // Update state
       return updateObj(state, { todo, done: updatedDone })

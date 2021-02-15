@@ -1,8 +1,8 @@
-import React from "react"
-import UISwitch from "./UISwitch"
-import logo from "../assets/images/logo.svg"
-import git from "../assets/images/github.webp"
-import "../assets/styles/components/Header.scss"
+import React from 'react'
+import UISwitch from './UISwitch'
+import logo from '../assets/images/logo.svg'
+import git from '../assets/images/github.webp'
+import '../assets/styles/components/Header.scss'
 
 const Header: React.FC = () => (
   <header className="header" role="banner">

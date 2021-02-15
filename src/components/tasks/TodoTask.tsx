@@ -1,10 +1,10 @@
-import React, { useRef } from "react"
-import { connect } from "react-redux"
-import { Task as TaskObject, Connected } from "@types"
-import useDrag from "./hooks/useDrag"
-import useTask, { Func, DeleteFunc } from "./hooks/useTask"
-import { FinishIcon, EditIcon, SaveIcon, DeleteIcon } from "./Icons"
-import { deleteTask, finishTask, editTask } from "../../redux/actions"
+import React, { useRef } from 'react'
+import { connect } from 'react-redux'
+import { Task as TaskObject, Connected } from '@types'
+import useDrag from './hooks/useDrag'
+import useTask, { Func, DeleteFunc } from './hooks/useTask'
+import { FinishIcon, EditIcon, SaveIcon, DeleteIcon } from './Icons'
+import { deleteTask, finishTask, editTask } from '../../redux/actions'
 
 type DispatchProps = {
   deleteOne: DeleteFunc
@@ -54,7 +54,7 @@ const Task: React.FC<Props> = ({
   drag(drop(ref))
 
   return (
-    <li className={isDragging ? "is-dragging" : "is-static"} ref={ref}>
+    <li className={isDragging ? 'is-dragging' : 'is-static'} ref={ref}>
       {isEditing ? (
         <>
           <input
@@ -67,7 +67,7 @@ const Task: React.FC<Props> = ({
             onChange={handleChange}
             type="text"
             name="description"
-            placeholder={data.description ?? "Description"}
+            placeholder={data.description ?? 'Description'}
           />
         </>
       ) : (

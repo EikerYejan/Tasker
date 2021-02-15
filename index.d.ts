@@ -1,5 +1,5 @@
-import { ComponentType } from "react"
-import { MapStateToProps } from "react-redux"
+import { ComponentType } from 'react'
+import { MapStateToProps } from 'react-redux'
 
 export type Task = {
   title: string

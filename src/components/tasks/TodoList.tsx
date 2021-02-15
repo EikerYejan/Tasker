@@ -1,11 +1,11 @@
-import React, { useCallback, useState, useEffect } from "react"
-import { connect } from "react-redux"
-import { DndProvider } from "react-dnd-multi-backend"
-import HTML5ToTouch from "react-dnd-multi-backend/dist/esm/HTML5toTouch"
-import { Task, StateToProps, Connected } from "@types"
-import update from "immutability-helper"
-import { updateDrag } from "../../redux/actions"
-import TaskItem from "./TodoTask"
+import React, { useCallback, useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { DndProvider } from 'react-dnd-multi-backend'
+import HTML5ToTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch'
+import { Task, StateToProps, Connected } from '@types'
+import update from 'immutability-helper'
+import { updateDrag } from '../../redux/actions'
+import TaskItem from './TodoTask'
 
 type DispatchProps = {
   updateTasks: (tasks: Task[]) => void

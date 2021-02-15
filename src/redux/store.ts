@@ -1,8 +1,8 @@
-import { createStore, applyMiddleware } from "redux"
-import thunk from "redux-thunk"
-import { createLogger } from "redux-logger"
-import { saveAppData } from "../utils/Storage"
-import AppReducer from "./reducer"
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk'
+import { createLogger } from 'redux-logger'
+import { saveAppData } from '../utils/Storage'
+import AppReducer from './reducer'
 
 /**
  * Store

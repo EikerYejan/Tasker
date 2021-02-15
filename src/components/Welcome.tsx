@@ -1,7 +1,7 @@
-import React from "react"
-import { connect } from "react-redux"
-import { Connected, StateToProps } from "@types"
-import "../assets/styles/components/Welcome.scss"
+import React from 'react'
+import { connect } from 'react-redux'
+import { Connected, StateToProps } from '@types'
+import '../assets/styles/components/Welcome.scss'
 
 type Props = {
   name: string
