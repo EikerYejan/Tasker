@@ -1,6 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { TextInput } from "../components/TextInput/TextInput";
 import { Button } from "../components/Button/Button";
+import { FONTS } from "../constants/fonts";
 
 const styles = StyleSheet.create({
   container: {
@@ -16,6 +17,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   heading: {
+    fontFamily: FONTS.POPPINS_BOLD,
+    fontWeight: "700",
     fontSize: 36,
     marginBottom: 30,
     textAlign: "center",

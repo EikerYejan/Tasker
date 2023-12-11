@@ -6,6 +6,7 @@ import {
   View,
 } from "react-native";
 import { COLORS } from "../../constants/colors";
+import { FONTS } from "../../constants/fonts";
 
 interface Props extends TouchableOpacityProps {
   label: string;
@@ -24,6 +25,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: COLORS.WHITE,
+    fontFamily: FONTS.POPPINS_REGULAR,
+    fontWeight: "400",
     textAlign: "center",
   },
   wrapper: {

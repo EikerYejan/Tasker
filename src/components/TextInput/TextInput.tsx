@@ -4,6 +4,7 @@ import {
   TextInputProps,
 } from "react-native";
 import { COLORS } from "../../constants/colors";
+import { FONTS } from "../../constants/fonts";
 
 interface Props extends TextInputProps {}
 
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
     minHeight: 40,
     padding: 10,
     width: "100%",
+    fontFamily: FONTS.POPPINS_REGULAR,
   },
 });
 
