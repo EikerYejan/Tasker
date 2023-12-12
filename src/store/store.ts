@@ -1,4 +1,6 @@
 import { atom, useRecoilState } from "recoil";
+import { recoilPersist } from "recoil-persist";
+import { MMKV } from "react-native-mmkv";
 
 export interface ITodoItem {
   description: string;
@@ -8,17 +10,35 @@ export interface ITodoItem {
 
 export interface IAppStore {
   done: ITodoItem[];
+  loggedIn: boolean;
   name: string;
   todos: ITodoItem[];
 }
+
+const storage = new MMKV();
+const storageAdapter = {
+  getItem: (key: string) => {
+    return storage.getString(key) ?? null;
+  },
+  setItem: (key: string, value: string) => {
+    return storage.set(key, value);
+  },
+};
+
+const { persistAtom } = recoilPersist({
+  key: "appStore",
+  storage: storageAdapter,
+});
 
 export const appStore = atom<IAppStore>({
   key: "appStore",
   default: {
     done: [],
+    loggedIn: false,
     name: "",
     todos: [],
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const useAppState = () => {
@@ -65,8 +85,18 @@ export const useAppState = () => {
   const setName = (name: string) => {
     setState((prevState) => ({
       ...prevState,
+      loggedIn: true,
       name,
     }));
+  };
+
+  const resetState = () => {
+    setState({
+      done: [],
+      loggedIn: false,
+      name: "",
+      todos: [],
+    });
   };
 
   return {
@@ -74,6 +104,7 @@ export const useAppState = () => {
     markAsDone,
     markAsTodo,
     removeTodo,
+    resetState,
     setName,
     state,
   };

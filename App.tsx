@@ -1,11 +1,13 @@
+import "react-native-gesture-handler";
 import { StyleSheet, View } from "react-native";
 import { useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { RecoilRoot } from "recoil";
+import { NavigationContainer } from "@react-navigation/native";
 
-import { OnboardingScreen } from "./src/screens/OnboardingScreen";
+import { MainNavigator } from "./src/MainNavigator";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,7 +32,11 @@ export default function App() {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      <RecoilRoot>{fontsLoaded ? <OnboardingScreen /> : null}</RecoilRoot>
+      <RecoilRoot>
+        <NavigationContainer>
+          {fontsLoaded ? <MainNavigator /> : null}
+        </NavigationContainer>
+      </RecoilRoot>
       <StatusBar style="dark" />
     </View>
   );

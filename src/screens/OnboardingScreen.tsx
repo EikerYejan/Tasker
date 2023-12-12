@@ -1,17 +1,21 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
+import type { NavigationProp } from "@react-navigation/native";
 
 import { TextInput } from "../components/TextInput/TextInput";
 import { Button } from "../components/Button/Button";
+import { ScreenWrapper } from "../components/ScreenWrapper";
+
 import { FONTS } from "../constants/fonts";
+import { COLORS } from "../constants/colors";
+
 import { useAppState } from "../store/store";
 
+interface Props {
+  navigation: NavigationProp<never, never>;
+}
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   inner: {
     marginBottom: "auto",
     marginTop: "auto",
@@ -34,7 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const OnboardingScreen = () => {
+export const OnboardingScreen = ({ navigation }: Props) => {
   const [userName, setUserName] = useState<string>();
 
   const { setName } = useAppState();
@@ -42,6 +46,7 @@ export const OnboardingScreen = () => {
   const onNextPress = () => {
     if (userName) {
       setName(userName);
+      navigation.navigate("Home" as never);
     }
   };
 
@@ -50,7 +55,7 @@ export const OnboardingScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScreenWrapper>
       <View style={styles.inner}>
         <Text style={styles.heading}>Let me know your name.</Text>
         <TextInput
@@ -67,6 +72,6 @@ export const OnboardingScreen = () => {
           onPress={onNextPress}
         />
       </View>
-    </SafeAreaView>
+    </ScreenWrapper>
   );
 };
