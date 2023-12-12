@@ -1,7 +1,10 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+
 import { TextInput } from "../components/TextInput/TextInput";
 import { Button } from "../components/Button/Button";
 import { FONTS } from "../constants/fonts";
+import { useAppState } from "../store/store";
 
 const styles = StyleSheet.create({
   container: {
@@ -32,12 +35,37 @@ const styles = StyleSheet.create({
 });
 
 export const OnboardingScreen = () => {
+  const [userName, setUserName] = useState<string>();
+
+  const { setName } = useAppState();
+
+  const onNextPress = () => {
+    if (userName) {
+      setName(userName);
+    }
+  };
+
+  const onNameChange = (name: string) => {
+    setUserName(name);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inner}>
         <Text style={styles.heading}>Let me know your name.</Text>
-        <TextInput placeholder="Your name" style={styles.input} />
-        <Button label="Next" style={styles.button} />
+        <TextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="Your name"
+          style={styles.input}
+          onChangeText={onNameChange}
+        />
+        <Button
+          disabled={(userName?.length ?? 0) < 5}
+          label="Next"
+          style={styles.button}
+          onPress={onNextPress}
+        />
       </View>
     </SafeAreaView>
   );

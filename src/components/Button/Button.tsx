@@ -13,6 +13,9 @@ interface Props extends TouchableOpacityProps {
 }
 
 const styles = StyleSheet.create({
+  disabledButton: {
+    opacity: 0.35,
+  },
   overlay: {
     backgroundColor: COLORS.TRANSPARENT,
     borderColor: COLORS.BLACK,
@@ -41,9 +44,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Button = ({ label, style, ...props }: Props) => {
+export const Button = ({ disabled, label, style, ...props }: Props) => {
   return (
-    <TouchableOpacity {...props} style={[styles.wrapper, style]}>
+    <TouchableOpacity
+      {...props}
+      disabled={disabled}
+      style={[styles.wrapper, style, disabled ? styles.disabledButton : {}]}
+    >
       <Text style={styles.text}>{label}</Text>
       <View style={styles.overlay} />
     </TouchableOpacity>

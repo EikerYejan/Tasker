@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { RecoilRoot } from "recoil";
 
 import { OnboardingScreen } from "./src/screens/OnboardingScreen";
 
@@ -29,7 +30,7 @@ export default function App() {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      {fontsLoaded ? <OnboardingScreen /> : null}
+      <RecoilRoot>{fontsLoaded ? <OnboardingScreen /> : null}</RecoilRoot>
       <StatusBar style="dark" />
     </View>
   );
