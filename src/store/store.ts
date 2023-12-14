@@ -4,6 +4,7 @@ import { MMKV } from "react-native-mmkv";
 
 export interface ITodoItem {
   description: string;
+  done?: boolean;
   id: string;
   title: string;
 }
@@ -47,14 +48,17 @@ export const useAppState = () => {
   const addTodo = (todo: ITodoItem) => {
     setState((prevState) => ({
       ...prevState,
-      todos: [...prevState.todos, todo],
+      todos: [todo, ...prevState.todos],
     }));
   };
 
-  const removeTodo = (id: string) => {
+  const removeTodo = (id: string, done = false) => {
     setState((prevState) => ({
       ...prevState,
-      todos: prevState.todos.filter((todo) => todo.id !== id),
+      [done ? "todo" : "done"]: (done
+        ? prevState.todos
+        : prevState.done
+      ).filter((todo) => todo.id !== id),
     }));
   };
 
@@ -62,9 +66,11 @@ export const useAppState = () => {
     const todo = state.todos.find((todo) => todo.id === id);
 
     if (todo) {
+      todo.done = true;
+
       setState((prevState) => ({
         ...prevState,
-        done: [...prevState.done, todo],
+        done: [todo, ...prevState.done],
         todos: prevState.todos.filter((todo) => todo.id !== id),
       }));
     }
@@ -77,7 +83,7 @@ export const useAppState = () => {
       setState((prevState) => ({
         ...prevState,
         done: prevState.done.filter((todo) => todo.id !== id),
-        todos: [...prevState.todos, todo],
+        todos: [todo, ...prevState.todos],
       }));
     }
   };
