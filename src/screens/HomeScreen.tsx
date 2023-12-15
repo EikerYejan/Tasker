@@ -1,4 +1,11 @@
-import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useState } from "react";
 
 import { ScreenWrapper } from "../components/ScreenWrapper";
@@ -22,7 +29,7 @@ const styles = StyleSheet.create({
   contentGrid: {
     flexDirection: "row",
     flexWrap: "nowrap",
-    gap: 30,
+    gap: 60,
     justifyContent: "space-between",
   },
   contentRow: {
@@ -68,12 +75,13 @@ const styles = StyleSheet.create({
 });
 
 export const HomeScreen = () => {
-  const [taskTitle, setTaskTitle] = useState<string>();
-  const [taskDescription, setTaskDescription] = useState<string>();
+  const [taskTitle, setTaskTitle] = useState<string>("");
+  const [taskDescription, setTaskDescription] = useState<string>("");
 
   const {
     addTodo,
     markAsDone,
+    markAsTodo,
     removeTodo,
     state: { done, name, todos },
   } = useAppState();
@@ -87,8 +95,30 @@ export const HomeScreen = () => {
       title: taskTitle,
     });
 
-    setTaskTitle(undefined);
-    setTaskDescription(undefined);
+    setTaskTitle("");
+    setTaskDescription("");
+  };
+
+  const onDelete = (id: string, done = false) => {
+    if (!done) {
+      if (Platform.OS === "web" && window.confirm("Delete task?")) {
+        removeTodo(id, done);
+
+        return;
+      }
+
+      Alert.alert("Delete task", "Are you sure you want to delete this task?", [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => removeTodo?.(id),
+          style: "destructive",
+        },
+      ]);
+    }
   };
 
   const saveDisabled = !taskTitle || !taskDescription;
@@ -131,7 +161,7 @@ export const HomeScreen = () => {
                     item={task}
                     key={task.id}
                     onComplete={markAsDone}
-                    onDelete={removeTodo}
+                    onDelete={onDelete}
                   />
                 ))}
               </View>
@@ -140,11 +170,14 @@ export const HomeScreen = () => {
               <View style={styles.sectionContainer}>
                 <Text style={styles.sectionHeading}>Done:</Text>
                 <View style={styles.tasksWrapper}>
-                  <View style={styles.tasksWrapper}>
-                    {done.map((task) => (
-                      <Task item={task} key={task.id} />
-                    ))}
-                  </View>
+                  {done.map((task) => (
+                    <Task
+                      item={task}
+                      key={task.id}
+                      onDelete={removeTodo}
+                      onRestore={markAsTodo}
+                    />
+                  ))}
                 </View>
               </View>
             ) : null}

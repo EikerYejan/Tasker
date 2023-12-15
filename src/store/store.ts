@@ -53,24 +53,26 @@ export const useAppState = () => {
   };
 
   const removeTodo = (id: string, done = false) => {
-    setState((prevState) => ({
-      ...prevState,
-      [done ? "todo" : "done"]: (done
-        ? prevState.todos
-        : prevState.done
-      ).filter((todo) => todo.id !== id),
-    }));
+    setState((prevState) => {
+      const items = done ? prevState.done : prevState.todos;
+      const key = done ? "done" : "todos";
+
+      return {
+        ...prevState,
+        [key]: items.filter((todo) => todo.id !== id),
+      };
+    });
   };
 
   const markAsDone = (id: string) => {
     const todo = state.todos.find((todo) => todo.id === id);
 
     if (todo) {
-      todo.done = true;
+      const newItem = { ...todo, done: true };
 
       setState((prevState) => ({
         ...prevState,
-        done: [todo, ...prevState.done],
+        done: [newItem, ...prevState.done],
         todos: prevState.todos.filter((todo) => todo.id !== id),
       }));
     }
@@ -80,10 +82,12 @@ export const useAppState = () => {
     const todo = state.done.find((todo) => todo.id === id);
 
     if (todo) {
+      const newItem = { ...todo, done: false };
+
       setState((prevState) => ({
         ...prevState,
         done: prevState.done.filter((todo) => todo.id !== id),
-        todos: [todo, ...prevState.todos],
+        todos: [newItem, ...prevState.todos],
       }));
     }
   };
