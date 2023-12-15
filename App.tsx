@@ -1,4 +1,6 @@
 import "react-native-gesture-handler";
+import "@expo/match-media";
+
 import { StyleSheet, View } from "react-native";
 import { useCallback } from "react";
 import { StatusBar } from "expo-status-bar";

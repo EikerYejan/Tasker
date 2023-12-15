@@ -18,6 +18,8 @@ import { useAppState } from "../store/store";
 import { FONTS } from "../constants/fonts";
 import { COLORS } from "../constants/colors";
 import { generateId } from "../utils";
+import { useMediaQuery } from "react-responsive";
+import { TABLET_WIDTH } from "../constants/mediaQueries";
 
 const styles = StyleSheet.create({
   pageTitle: {
@@ -28,13 +30,19 @@ const styles = StyleSheet.create({
   },
   contentGrid: {
     flexDirection: "row",
-    flexWrap: "nowrap",
+    flexWrap: "wrap",
     gap: 60,
     justifyContent: "space-between",
   },
+  contentGridTablet: {
+    flexWrap: "nowrap",
+  },
   contentRow: {
-    maxWidth: Platform.select({ web: "50%", default: "100%" }),
     width: "100%",
+  },
+  contentRowTablet: {
+    maxWidth: "50%",
+    width: "50%",
   },
   pageDescription: {
     fontFamily: FONTS.POPPINS_REGULAR,
@@ -75,6 +83,8 @@ const styles = StyleSheet.create({
 });
 
 export const HomeScreen = () => {
+  const isTablet = useMediaQuery({ minWidth: TABLET_WIDTH });
+
   const [taskTitle, setTaskTitle] = useState<string>("");
   const [taskDescription, setTaskDescription] = useState<string>("");
 
@@ -128,8 +138,12 @@ export const HomeScreen = () => {
       <View style={styles.page}>
         <Text style={styles.pageTitle}>Ahoy! {name}</Text>
         <Text style={styles.pageDescription}>Welcome to Tasker</Text>
-        <View style={styles.contentGrid}>
-          <View style={styles.contentRow}>
+        <View
+          style={[styles.contentGrid, isTablet ? styles.contentGridTablet : {}]}
+        >
+          <View
+            style={[styles.contentRow, isTablet ? styles.contentRowTablet : {}]}
+          >
             <Text style={styles.sectionHeading}>Add new task</Text>
             <TextInput
               placeholder="Task Title"
@@ -151,7 +165,7 @@ export const HomeScreen = () => {
             indicatorStyle="black"
             keyboardDismissMode="interactive"
             scrollIndicatorInsets={{ right: -3 }}
-            style={styles.contentRow}
+            style={[styles.contentRow, isTablet ? styles.contentRowTablet : {}]}
           >
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionHeading}>To do:</Text>
