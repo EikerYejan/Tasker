@@ -7,44 +7,47 @@ import {
 } from "react-native";
 import { COLORS } from "../../constants/colors";
 import { FONTS } from "../../constants/fonts";
+import { useTheme } from "@react-navigation/native";
 
 interface Props extends TouchableOpacityProps {
   label: string;
 }
 
-const styles = StyleSheet.create({
-  disabledButton: {
-    opacity: 0.35,
-  },
-  overlay: {
-    backgroundColor: COLORS.TRANSPARENT,
-    borderColor: COLORS.BLACK,
-    borderWidth: 1,
-    bottom: -8,
-    height: 41,
-    position: "absolute",
-    right: -8,
-    width: 220,
-  },
-  text: {
-    color: COLORS.WHITE,
-    fontFamily: FONTS.POPPINS_REGULAR,
-    fontWeight: "400",
-    textAlign: "center",
-  },
-  wrapper: {
-    backgroundColor: COLORS.BLACK,
-    borderColor: COLORS.TRANSPARENT,
-    borderWidth: 1,
-    height: 41,
-    paddingHorizontal: 40,
-    paddingVertical: 10,
-    width: 220,
-    marginBottom: 25,
-  },
-});
-
 export const Button = ({ disabled, label, style, ...props }: Props) => {
+  const { colors } = useTheme();
+
+  const styles = StyleSheet.create({
+    disabledButton: {
+      opacity: 0.35,
+    },
+    overlay: {
+      backgroundColor: COLORS.TRANSPARENT,
+      borderColor: colors.border,
+      borderWidth: 1,
+      bottom: -8,
+      height: 41,
+      position: "absolute",
+      right: -8,
+      width: 220,
+    },
+    text: {
+      color: colors.primary,
+      fontFamily: FONTS.POPPINS_REGULAR,
+      fontWeight: "400",
+      textAlign: "center",
+    },
+    wrapper: {
+      backgroundColor: colors.primaryInverse,
+      borderColor: COLORS.TRANSPARENT,
+      borderWidth: 1,
+      height: 41,
+      paddingHorizontal: 40,
+      paddingVertical: 10,
+      width: 220,
+      marginBottom: 25,
+    },
+  });
+
   return (
     <TouchableOpacity
       {...props}

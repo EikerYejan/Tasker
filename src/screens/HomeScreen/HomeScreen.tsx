@@ -1,86 +1,18 @@
-import {
-  Alert,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { useState } from "react";
+import { Alert, Platform, ScrollView, Text, View } from "react-native";
+import { useMemo, useState } from "react";
+import { useTheme } from "@react-navigation/native";
 
-import { ScreenWrapper } from "../components/ScreenWrapper";
-import { Button } from "../components/Button/Button";
-import { TextInput } from "../components/TextInput/TextInput";
-import { Task } from "../components/Task/Task";
+import { ScreenWrapper } from "../../components/ScreenWrapper";
+import { Button } from "../../components/Button/Button";
+import { TextInput } from "../../components/TextInput/TextInput";
+import { Task } from "../../components/Task/Task";
 
-import { useAppState } from "../store/store";
+import { useAppState } from "../../store/store";
 
-import { FONTS } from "../constants/fonts";
-import { COLORS } from "../constants/colors";
-import { generateId } from "../utils";
+import { generateId } from "../../utils";
 import { useMediaQuery } from "react-responsive";
-import { TABLET_WIDTH } from "../constants/mediaQueries";
-
-const styles = StyleSheet.create({
-  pageTitle: {
-    fontSize: 45,
-    fontWeight: "700",
-    fontFamily: FONTS.POPPINS_BOLD,
-    lineHeight: 50,
-  },
-  contentGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 60,
-    justifyContent: "space-between",
-  },
-  contentGridTablet: {
-    flexWrap: "nowrap",
-  },
-  contentRow: {
-    width: "100%",
-  },
-  contentRowTablet: {
-    maxWidth: "50%",
-    width: "50%",
-  },
-  pageDescription: {
-    fontFamily: FONTS.POPPINS_REGULAR,
-    fontSize: 16,
-    fontWeight: "400",
-    marginBottom: 30,
-  },
-  sectionHeading: {
-    fontFamily: FONTS.POPPINS_BOLD,
-    fontSize: 24,
-    fontWeight: "700",
-    marginBottom: 12,
-  },
-  input: {
-    marginBottom: 16,
-  },
-  textArea: {
-    height: 100,
-  },
-  tasksWrapper: {
-    borderBottomWidth: 0,
-    borderColor: COLORS.BLACK,
-    borderWidth: 1,
-  },
-  sectionContainer: {
-    marginBottom: 18,
-  },
-  page: {
-    ...(Platform.OS === "web"
-      ? {
-          marginLeft: "auto",
-          marginRight: "auto",
-          maxWidth: 1420,
-          width: "100%",
-        }
-      : {}),
-  },
-});
+import { TABLET_WIDTH } from "../../constants/mediaQueries";
+import { getStyles } from "./styles";
 
 export const HomeScreen = () => {
   const isTablet = useMediaQuery({ minWidth: TABLET_WIDTH });
@@ -95,6 +27,9 @@ export const HomeScreen = () => {
     removeTodo,
     state: { done, name, todos },
   } = useAppState();
+
+  const theme = useTheme();
+  const styles = useMemo(() => getStyles(theme), [theme]);
 
   const onSave = () => {
     if (!taskTitle || !taskDescription) return;

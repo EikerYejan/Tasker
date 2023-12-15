@@ -1,13 +1,12 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
-import type { NavigationProp } from "@react-navigation/native";
+import { useTheme, type NavigationProp } from "@react-navigation/native";
 
 import { TextInput } from "../components/TextInput/TextInput";
 import { Button } from "../components/Button/Button";
 import { ScreenWrapper } from "../components/ScreenWrapper";
 
 import { FONTS } from "../constants/fonts";
-import { COLORS } from "../constants/colors";
 
 import { useAppState } from "../store/store";
 
@@ -15,33 +14,37 @@ interface Props {
   navigation: NavigationProp<never, never>;
 }
 
-const styles = StyleSheet.create({
-  inner: {
-    marginBottom: "auto",
-    marginTop: "auto",
-    maxWidth: 450,
-    padding: 20,
-    width: "100%",
-  },
-  heading: {
-    fontFamily: FONTS.POPPINS_BOLD,
-    fontWeight: "700",
-    fontSize: 36,
-    marginBottom: 30,
-    textAlign: "center",
-  },
-  input: { width: "80%", marginLeft: "auto", marginRight: "auto" },
-  button: {
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: 15,
-  },
-});
-
 export const OnboardingScreen = ({ navigation }: Props) => {
   const [userName, setUserName] = useState<string>();
 
   const { setName } = useAppState();
+  const { colors } = useTheme();
+
+  const styles = StyleSheet.create({
+    inner: {
+      marginBottom: "auto",
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: "auto",
+      maxWidth: 450,
+      padding: 20,
+      width: "100%",
+    },
+    heading: {
+      color: colors.text,
+      fontFamily: FONTS.POPPINS_BOLD,
+      fontSize: 36,
+      fontWeight: "700",
+      marginBottom: 30,
+      textAlign: "center",
+    },
+    input: { width: "80%", marginLeft: "auto", marginRight: "auto" },
+    button: {
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: 15,
+    },
+  });
 
   const onNextPress = () => {
     if (userName) {

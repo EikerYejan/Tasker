@@ -5,6 +5,7 @@ import { FONTS } from "../../constants/fonts";
 import { COLORS } from "../../constants/colors";
 
 import type { ITodoItem } from "../../store/store";
+import { useTheme } from "@react-navigation/native";
 
 interface TaskProps {
   item: ITodoItem;
@@ -13,41 +14,44 @@ interface TaskProps {
   onRestore?: (id: string) => void;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    borderBottomColor: COLORS.BLACK,
-    borderBottomWidth: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 10,
-  },
-  containerDone: {
-    backgroundColor: COLORS.GREEN,
-  },
-  textDone: {
-    color: COLORS.WHITE,
-  },
-  title: {
-    fontFamily: FONTS.POPPINS_BOLD,
-    fontSize: 20,
-    fontWeight: "700",
-    marginBottom: 0,
-  },
-  description: {
-    fontSize: 14,
-    fontWeight: "400",
-    fontFamily: FONTS.POPPINS_REGULAR,
-  },
-  icons: {
-    flexDirection: "row",
-    gap: 8,
-  },
-});
-
 export const Task = ({ item, onComplete, onDelete, onRestore }: TaskProps) => {
   const { description, done, id, title } = item;
 
-  const iconColor = done ? COLORS.WHITE : COLORS.BLACK;
+  const { colors } = useTheme();
+  const iconColor = done ? COLORS.WHITE : colors.primaryInverse;
+
+  const styles = StyleSheet.create({
+    container: {
+      borderBottomColor: colors.border,
+      borderBottomWidth: 1,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      padding: 10,
+    },
+    containerDone: {
+      backgroundColor: colors.notification,
+    },
+    textDone: {
+      color: COLORS.WHITE,
+    },
+    title: {
+      color: colors.text,
+      fontFamily: FONTS.POPPINS_BOLD,
+      fontSize: 20,
+      fontWeight: "700",
+      marginBottom: 0,
+    },
+    description: {
+      color: colors.text,
+      fontFamily: FONTS.POPPINS_REGULAR,
+      fontSize: 14,
+      fontWeight: "400",
+    },
+    icons: {
+      flexDirection: "row",
+      gap: 8,
+    },
+  });
 
   return (
     <View style={[styles.container, done ? styles.containerDone : {}]}>
