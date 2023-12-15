@@ -34,10 +34,22 @@ const { persistAtom } = recoilPersist({
 export const appStore = atom<IAppStore>({
   key: "appStore",
   default: {
-    done: [],
+    done: [{
+      description: "Here you can see what you have done",
+      done: true,
+      id: "1",
+      title: "This is a done item",
+    }],
     loggedIn: false,
     name: "",
-    todos: [],
+    todos: [
+      {
+        description: "Here you can add a description",
+        done: false,
+        id: "1",
+        title: "This is a todo item",
+      },
+    ],
   },
   effects_UNSTABLE: [persistAtom],
 });

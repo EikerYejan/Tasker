@@ -47,15 +47,19 @@ export const Task = ({ item, onComplete, onDelete, onRestore }: TaskProps) => {
       fontSize: 14,
       fontWeight: "400",
     },
+    textWrapper: {
+      maxWidth: "85%",
+    },
     icons: {
       flexDirection: "row",
       gap: 8,
+      width: 50,
     },
   });
 
   return (
     <View style={[styles.container, done ? styles.containerDone : {}]}>
-      <View>
+      <View style={styles.textWrapper} >
         <Text style={[styles.title, done ? styles.textDone : {}]}>{title}</Text>
         <Text style={[styles.description, done ? styles.textDone : {}]}>
           {description}
