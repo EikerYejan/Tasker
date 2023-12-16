@@ -11,10 +11,8 @@ brew install node@20
 # link it to the path
 brew link node@20
 
-brew install yarn
-
 # Install dependencies you manage with CocoaPods.
-yarn
+npm install
 
 cd ./ios
 
