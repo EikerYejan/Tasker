@@ -7,9 +7,9 @@ cd /Volumes/workspace/repository
 
 brew install cocoapods
 # have to add node yourself
-brew install node@18
+brew install node@20.9.0
 # link it to the path
-brew link node@18
+brew link node@20.9.0
 
 brew install yarn
 
