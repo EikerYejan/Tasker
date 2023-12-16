@@ -1,34 +1,70 @@
 import {
+  Platform,
   SafeAreaView,
+  StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import { useAppearance } from "../hooks/useAppearance";
-import { useTheme } from "@react-navigation/native";
 
 export const NavBar = () => {
-  const { toggleAppearance } = useAppearance();
-  const { colors } = useTheme();
+  const { appearance, colors, toggleAppearance } = useAppearance();
 
   const styles = StyleSheet.create({
     container: {
+      backgroundColor: colors.background,
+      borderBottomColor: colors.border,
+      borderBottomWidth: 1,
       flexDirection: "row",
       justifyContent: "flex-end",
+      paddingBottom: 15,
       paddingRight: 10,
+      ...Platform.select({
+        web: {
+          paddingTop: 25,
+          paddingRight: 48,
+        },
+        native: {},
+      }),
     },
     safeAreaView: {
       backgroundColor: colors.background,
+    },
+    themeSwitch: {
+      alignItems: "center",
+      borderColor: colors.border,
+      borderWidth: 1,
+      flexDirection: "row",
+      height: 40,
+      width: 90,
+    },
+    themeSwitchHandle: {
+      backgroundColor: colors.text,
+      height: "100%",
+      left: appearance === "dark" ? 0 : 45,
+      position: "absolute",
+      width: 45,
+    },
+    icon: {
+      fontSize: 25,
+      textAlign: "center",
+      width: "50%",
     },
   });
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <StatusBar
+        barStyle={appearance === "dark" ? "light-content" : "dark-content"}
+      />
       <View style={styles.container}>
-        <TouchableOpacity onPress={toggleAppearance}>
-          <Text>Change Theme</Text>
+        <TouchableOpacity style={styles.themeSwitch} onPress={toggleAppearance}>
+          <View style={styles.themeSwitchHandle} />
+          <Icon color={colors.text} name="sunny-outline" style={styles.icon} />
+          <Icon color={colors.text} name="moon-outline" style={styles.icon} />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

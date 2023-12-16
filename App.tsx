@@ -44,7 +44,6 @@ export default function App() {
           {fontsLoaded ? <MainNavigator /> : null}
         </NavigationContainer>
       </RecoilRoot>
-      <StatusBar style="dark" />
     </View>
   );
 }
