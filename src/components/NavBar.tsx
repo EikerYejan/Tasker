@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Platform,
   SafeAreaView,
@@ -7,10 +8,13 @@ import {
   View,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import Animated, { useSharedValue, withSpring } from "react-native-reanimated";
 
 import { useAppearance } from "../hooks/useAppearance";
 
 export const NavBar = () => {
+  const switchOverlayTranslateX = useSharedValue(0);
+
   const { appearance, colors, toggleAppearance } = useAppearance();
 
   const styles = StyleSheet.create({
@@ -24,8 +28,9 @@ export const NavBar = () => {
       paddingRight: 10,
       ...Platform.select({
         web: {
-          paddingTop: 25,
+          paddingBottom: 25,
           paddingRight: 48,
+          paddingTop: 25,
         },
         native: {},
       }),
@@ -40,11 +45,11 @@ export const NavBar = () => {
       flexDirection: "row",
       height: 40,
       width: 90,
+      overflow: "hidden",
     },
     themeSwitchHandle: {
       backgroundColor: colors.text,
       height: "100%",
-      left: appearance === "dark" ? 0 : 45,
       position: "absolute",
       width: 45,
     },
@@ -55,6 +60,13 @@ export const NavBar = () => {
     },
   });
 
+  useEffect(() => {
+    switchOverlayTranslateX.value = withSpring(appearance === "dark" ? 44 : 0, {
+      stiffness: 90,
+      mass: 0.5,
+    });
+  }, [appearance]);
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar
@@ -62,7 +74,12 @@ export const NavBar = () => {
       />
       <View style={styles.container}>
         <TouchableOpacity style={styles.themeSwitch} onPress={toggleAppearance}>
-          <View style={styles.themeSwitchHandle} />
+          <Animated.View
+            style={[
+              styles.themeSwitchHandle,
+              { left: switchOverlayTranslateX },
+            ]}
+          />
           <Icon color={colors.text} name="sunny-outline" style={styles.icon} />
           <Icon color={colors.text} name="moon-outline" style={styles.icon} />
         </TouchableOpacity>
