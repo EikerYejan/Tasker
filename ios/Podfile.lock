@@ -558,7 +558,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - fmt
     - libevent
     - MMKV
@@ -734,6 +734,6 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: b76f1acfda8212aa16b7e26bcce3983230c82603
 
-PODFILE CHECKSUM: 82368a2795df77610d478081efc8428d67587746
+PODFILE CHECKSUM: 99c4054fe0832d17c5a23da3e340f45b02994234
 
 COCOAPODS: 1.11.3
