@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 import "@expo/match-media";
 
-import { StyleSheet, View, useColorScheme } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
@@ -11,13 +11,9 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { MainNavigator } from "./src/MainNavigator";
 
-import { DarkTheme, LightTheme } from "./src/constants/themes";
-
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const colorScheme = useColorScheme();
-
   const [fontsLoaded, fontError] = useFonts({
     PoppinsBold: require("./assets/fonts/Poppins-Bold.ttf"),
     PoppingsLight: require("./assets/fonts/Poppins-Light.ttf"),
@@ -40,7 +36,10 @@ export default function App() {
     <View style={styles.container} onLayout={onLayoutRootView}>
       <RecoilRoot>
         <NavigationContainer
-          theme={colorScheme === "dark" ? DarkTheme : LightTheme}
+          documentTitle={{
+            enabled: true,
+            formatter: (opts, route) => `TasksZen | ${route?.name}`,
+          }}
         >
           {fontsLoaded ? <MainNavigator /> : null}
         </NavigationContainer>

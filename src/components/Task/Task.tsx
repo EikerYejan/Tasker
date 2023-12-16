@@ -5,7 +5,8 @@ import { FONTS } from "../../constants/fonts";
 import { COLORS } from "../../constants/colors";
 
 import type { ITodoItem } from "../../store/store";
-import { useTheme } from "@react-navigation/native";
+
+import { useAppearance } from "../../hooks/useAppearance";
 
 interface TaskProps {
   item: ITodoItem;
@@ -17,7 +18,7 @@ interface TaskProps {
 export const Task = ({ item, onComplete, onDelete, onRestore }: TaskProps) => {
   const { description, done, id, title } = item;
 
-  const { colors } = useTheme();
+  const { colors } = useAppearance();
   const iconColor = done ? COLORS.WHITE : colors.primaryInverse;
 
   const styles = StyleSheet.create({
@@ -59,7 +60,7 @@ export const Task = ({ item, onComplete, onDelete, onRestore }: TaskProps) => {
 
   return (
     <View style={[styles.container, done ? styles.containerDone : {}]}>
-      <View style={styles.textWrapper} >
+      <View style={styles.textWrapper}>
         <Text style={[styles.title, done ? styles.textDone : {}]}>{title}</Text>
         <Text style={[styles.description, done ? styles.textDone : {}]}>
           {description}

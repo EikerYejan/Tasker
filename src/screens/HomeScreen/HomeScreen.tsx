@@ -1,6 +1,5 @@
 import { Alert, Platform, ScrollView, Text, View } from "react-native";
 import { useMemo, useState } from "react";
-import { useTheme } from "@react-navigation/native";
 
 import { ScreenWrapper } from "../../components/ScreenWrapper";
 import { Button } from "../../components/Button/Button";
@@ -13,6 +12,7 @@ import { generateId } from "../../utils";
 import { useMediaQuery } from "react-responsive";
 import { TABLET_WIDTH } from "../../constants/mediaQueries";
 import { getStyles } from "./styles";
+import { useAppearance } from "../../hooks/useAppearance";
 
 export const HomeScreen = () => {
   const isTablet = useMediaQuery({ minWidth: TABLET_WIDTH });
@@ -28,7 +28,7 @@ export const HomeScreen = () => {
     state: { done, name, todos },
   } = useAppState();
 
-  const theme = useTheme();
+  const { theme } = useAppearance();
   const styles = useMemo(() => getStyles(theme), [theme]);
 
   const onSave = () => {

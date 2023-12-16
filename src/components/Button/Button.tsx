@@ -5,16 +5,18 @@ import {
   TouchableOpacityProps,
   View,
 } from "react-native";
+
 import { COLORS } from "../../constants/colors";
 import { FONTS } from "../../constants/fonts";
-import { useTheme } from "@react-navigation/native";
+
+import { useAppearance } from "../../hooks/useAppearance";
 
 interface Props extends TouchableOpacityProps {
   label: string;
 }
 
 export const Button = ({ disabled, label, style, ...props }: Props) => {
-  const { colors } = useTheme();
+  const { colors } = useAppearance();
 
   const styles = StyleSheet.create({
     disabledButton: {

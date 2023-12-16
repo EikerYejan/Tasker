@@ -2,7 +2,6 @@ import { Platform, StyleSheet } from "react-native";
 import { Theme } from "@react-navigation/native";
 
 import { FONTS } from "../../constants/fonts";
-import { COLORS } from "../../constants/colors";
 
 export const getStyles = (theme: Theme) => {
   const { colors } = theme;

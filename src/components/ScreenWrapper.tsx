@@ -1,13 +1,14 @@
 import { SafeAreaView, StyleSheet, View } from "react-native";
 
 import { useTheme } from "@react-navigation/native";
+import { useAppearance } from "../hooks/useAppearance";
 
 interface Props {
   children: React.ReactNode;
 }
 
 export const ScreenWrapper = ({ children }: Props) => {
-  const { colors } = useTheme();
+  const { colors } = useAppearance();
 
   const styles = StyleSheet.create({
     container: {

@@ -1,10 +1,11 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { Suspense, lazy } from "react";
+import { ActivityIndicator } from "react-native";
 
 import { NavBar } from "./components/NavBar";
 
+import { useAppearance } from "./hooks/useAppearance";
 import { useAppState } from "./store/store";
-import { Suspense, lazy } from "react";
-import { ActivityIndicator } from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,8 @@ export const MainNavigator = () => {
   const {
     state: { loggedIn },
   } = useAppState();
+
+  useAppearance();
 
   // TODO: improve this
   const initialRouteName = loggedIn ? "Home" : "OnBoarding";

@@ -1,6 +1,7 @@
 import { atom, useRecoilState } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import { MMKV } from "react-native-mmkv";
+import { Appearance, ColorSchemeName } from "react-native";
 
 export interface ITodoItem {
   description: string;
@@ -13,10 +14,14 @@ export interface IAppStore {
   done: ITodoItem[];
   loggedIn: boolean;
   name: string;
+  theme: {
+    setByUser: boolean;
+    value: ColorSchemeName;
+  };
   todos: ITodoItem[];
 }
 
-const storage = new MMKV();
+export const storage = new MMKV();
 const storageAdapter = {
   getItem: (key: string) => {
     return storage.getString(key) ?? null;
@@ -31,26 +36,34 @@ const { persistAtom } = recoilPersist({
   storage: storageAdapter,
 });
 
-export const appStore = atom<IAppStore>({
-  key: "appStore",
-  default: {
-    done: [{
+const defaultState = {
+  theme: {
+    setByUser: false,
+    value: Appearance.getColorScheme(),
+  },
+  done: [
+    {
       description: "Here you can see what you have done",
       done: true,
       id: "1",
       title: "This is a done item",
-    }],
-    loggedIn: false,
-    name: "",
-    todos: [
-      {
-        description: "Here you can add a description",
-        done: false,
-        id: "1",
-        title: "This is a todo item",
-      },
-    ],
-  },
+    },
+  ],
+  loggedIn: false,
+  name: "",
+  todos: [
+    {
+      description: "Here you can add a description",
+      done: false,
+      id: "1",
+      title: "This is a todo item",
+    },
+  ],
+};
+
+export const appStore = atom<IAppStore>({
+  key: "appStore",
+  default: defaultState,
   effects_UNSTABLE: [persistAtom],
 });
 
@@ -113,12 +126,14 @@ export const useAppState = () => {
   };
 
   const resetState = () => {
-    setState({
-      done: [],
-      loggedIn: false,
-      name: "",
-      todos: [],
-    });
+    setState(defaultState);
+  };
+
+  const setTheme = (theme: ColorSchemeName) => {
+    setState((prevState) => ({
+      ...prevState,
+      theme: { setByUser: true, value: theme },
+    }));
   };
 
   return {
@@ -128,6 +143,7 @@ export const useAppState = () => {
     removeTodo,
     resetState,
     setName,
+    setTheme,
     state,
   };
 };

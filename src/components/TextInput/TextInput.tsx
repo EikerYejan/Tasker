@@ -3,15 +3,15 @@ import {
   TextInput as RNTextInput,
   TextInputProps,
 } from "react-native";
-import { useTheme } from "@react-navigation/native";
 
-import { COLORS } from "../../constants/colors";
 import { FONTS } from "../../constants/fonts";
+
+import { useAppearance } from "../../hooks/useAppearance";
 
 interface Props extends TextInputProps {}
 
 export const TextInput = ({ style, ...props }: Props) => {
-  const { colors } = useTheme();
+  const { colors } = useAppearance();
 
   const styles = StyleSheet.create({
     input: {
