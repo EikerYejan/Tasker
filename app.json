@@ -16,6 +16,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.eikeryejan.taskzen",
       "userInterfaceStyle": "automatic",
+      "usesNonExemptEncryption": false,
       "splash": {
         "image": "./assets/tasker_splash_light.png",
         "resizeMode": "cover",
