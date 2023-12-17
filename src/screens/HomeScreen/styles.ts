@@ -1,10 +1,10 @@
-import { Platform, StyleSheet } from "react-native";
-import { Theme } from "@react-navigation/native";
+import {Platform, StyleSheet} from "react-native";
+import type {Theme} from "@react-navigation/native";
 
-import { FONTS } from "../../constants/fonts";
+import {FONTS} from "../../constants/fonts";
 
 export const getStyles = (theme: Theme) => {
-  const { colors } = theme;
+  const {colors} = theme;
 
   return StyleSheet.create({
     pageTitle: {
@@ -15,13 +15,13 @@ export const getStyles = (theme: Theme) => {
       lineHeight: 50,
     },
     contentGrid: {
-      flexDirection: "row",
-      flexWrap: "wrap",
-      gap: 60,
-      justifyContent: "space-between",
+      gap: 20,
     },
     contentGridTablet: {
+      flexDirection: "row",
       flexWrap: "nowrap",
+      gap: 60,
+      justifyContent: "space-between",
     },
     contentRow: {
       width: "100%",

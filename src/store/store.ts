@@ -55,7 +55,7 @@ const defaultState = {
     {
       description: "Here you can add a description",
       done: false,
-      id: "1",
+      id: "2",
       title: "This is a todo item",
     },
   ],
