@@ -1,4 +1,10 @@
-import {KeyboardAvoidingView, StyleSheet, Text} from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import {useState} from "react";
 import {type NavigationProp} from "@react-navigation/native";
 
@@ -23,13 +29,11 @@ export const OnboardingScreen = ({navigation}: Props) => {
 
   const styles = StyleSheet.create({
     inner: {
-      marginBottom: "auto",
-      marginLeft: "auto",
-      marginRight: "auto",
-      marginTop: "auto",
       maxWidth: 450,
       padding: 20,
       width: "100%",
+      height: "100%",
+      justifyContent: "center",
     },
     heading: {
       color: colors.text,
@@ -60,22 +64,25 @@ export const OnboardingScreen = ({navigation}: Props) => {
 
   return (
     <ScreenWrapper>
-      <KeyboardAvoidingView style={styles.inner}>
-        <Text style={styles.heading}>Let me know your name.</Text>
-        <TextInput
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Your name"
-          style={styles.input}
-          onChangeText={onNameChange}
-          onSubmitEditing={onNextPress}
-        />
-        <Button
-          disabled={(userName?.length ?? 0) < 5}
-          label="Next"
-          style={styles.button}
-          onPress={onNextPress}
-        />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        <View style={styles.inner}>
+          <Text style={styles.heading}>Let me know your name.</Text>
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Your name"
+            style={styles.input}
+            onChangeText={onNameChange}
+            onSubmitEditing={onNextPress}
+          />
+          <Button
+            disabled={(userName?.length ?? 0) < 5}
+            label="Next"
+            style={styles.button}
+            onPress={onNextPress}
+          />
+        </View>
       </KeyboardAvoidingView>
     </ScreenWrapper>
   );

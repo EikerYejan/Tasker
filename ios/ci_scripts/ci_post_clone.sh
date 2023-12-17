@@ -11,10 +11,12 @@ brew install node@20
 # link it to the path
 brew link node@20
 
-# Install dependencies you manage with CocoaPods.
-npm install
+brew install yarn
 
-npx expo prebuild --platform ios
+# Install dependencies you manage with CocoaPods.
+yarn
+
+yarn expo prebuild --platform ios
 
 cd ./ios
 
