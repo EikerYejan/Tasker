@@ -19,7 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		13B07F961A680F5B00A75B9A /* tasker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* tasker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = tasker.app; path = TasksZen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = tasker/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = tasker/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = tasker/Images.xcassets; sourceTree = "<group>"; };
@@ -147,6 +147,7 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "tasker" */;
 			buildPhases = (
 				3FA1F4DA445F917D3F772D26 /* [CP] Check Pods Manifest.lock */,
+				E6EE253C2B2F88D0002AE4CD /* Set Bundle Version */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				0D7D3D509ADFC8A334CFA5BF /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -304,6 +305,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tasker/Pods-tasker-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		E6EE253C2B2F88D0002AE4CD /* Set Bundle Version */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Set Bundle Version";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Set version from package.json\nappVersion=$(node -e 'console.log(require(\"../package.json\").version)') \n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleShortVersionString $appVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -368,7 +388,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.eikeryejan.taskzen;
-				PRODUCT_NAME = "TasksZen";
+				PRODUCT_NAME = TasksZen;
 				SWIFT_OBJC_BRIDGING_HEADER = "tasker/tasker-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -400,7 +420,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.eikeryejan.taskzen;
-				PRODUCT_NAME = "TasksZen";
+				PRODUCT_NAME = TasksZen;
 				SWIFT_OBJC_BRIDGING_HEADER = "tasker/tasker-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
