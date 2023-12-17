@@ -27,8 +27,7 @@ export const getStyles = (theme: Theme) => {
       width: "100%",
     },
     contentRowTablet: {
-      maxWidth: "50%",
-      width: "50%",
+      flex: 1,
     },
     pageDescription: {
       color: colors.text,

@@ -29,11 +29,15 @@ export const OnboardingScreen = ({navigation}: Props) => {
 
   const styles = StyleSheet.create({
     inner: {
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: "auto",
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: "auto",
       maxWidth: 450,
       padding: 20,
       width: "100%",
-      height: "100%",
-      justifyContent: "center",
     },
     heading: {
       color: colors.text,
