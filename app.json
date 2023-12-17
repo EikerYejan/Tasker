@@ -15,13 +15,33 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.eikeryejan.taskzen",
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "splash": {
+        "image": "./assets/tasker_splash_light.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#ffffff",
+        "dark": {
+          "image": "./assets/tasker_splash_dark.png",
+          "resizeMode": "cover",
+          "backgroundColor": "#000000"
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/tasker_splash_light.png",
         "backgroundColor": "#ffffff",
         "userInterfaceStyle": "automatic"
+      },
+      "splash": {
+        "image": "./assets/tasker_splash_light.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#ffffff",
+        "dark": {
+          "image": "./assets/tasker_splash_dark.png",
+          "resizeMode": "cover",
+          "backgroundColor": "#000000"
+        }
       },
       "package": "com.eikeryejan.taskzen"
     },
