@@ -16,8 +16,6 @@ brew install yarn
 # Install dependencies you manage with CocoaPods.
 yarn
 
-yarn expo prebuild --platform ios
-
 cd ./ios
 
 pod install
