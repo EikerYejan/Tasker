@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useMemo} from "react";
 import {
   Platform,
   SafeAreaView,
@@ -35,7 +35,9 @@ export const NavBar = () => {
           paddingRight: 25,
           paddingTop: 25,
         },
-        native: {},
+        android: {
+          paddingTop: 25,
+        },
       }),
     },
     safeAreaView: {
@@ -75,10 +77,16 @@ export const NavBar = () => {
     });
   }, [appearance]);
 
+  const barStyle = useMemo(() => {
+    return appearance === "dark" ? "light-content" : "dark-content";
+  }, [appearance]);
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar
-        barStyle={appearance === "dark" ? "light-content" : "dark-content"}
+        animated
+        backgroundColor={colors.background}
+        barStyle={barStyle}
       />
       <View style={styles.container}>
         {Platform.OS !== "web" ? (

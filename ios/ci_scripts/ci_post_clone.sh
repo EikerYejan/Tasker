@@ -14,6 +14,8 @@ brew link node@20
 # Install dependencies you manage with CocoaPods.
 npm install
 
+npx expo prebuild --platform ios
+
 cd ./ios
 
 pod install
