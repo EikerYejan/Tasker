@@ -102,6 +102,7 @@ export const HomeScreen = () => {
               value={taskDescription}
               style={[styles.input, styles.textArea]}
               onChangeText={setTaskDescription}
+              onSubmitEditing={onSave}
             />
             <Button label="Save" disabled={saveDisabled} onPress={onSave} />
           </View>
