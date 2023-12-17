@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Animated, {useSharedValue, withSpring} from "react-native-reanimated";
+import {useNavigation} from "@react-navigation/native";
 
 import {useAppearance} from "../hooks/useAppearance";
 
@@ -17,19 +18,21 @@ export const NavBar = () => {
 
   const {appearance, colors, toggleAppearance} = useAppearance();
 
+  const {navigate} = useNavigation<any>();
+
   const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.background,
       borderBottomColor: colors.border,
       borderBottomWidth: 1,
       flexDirection: "row",
-      justifyContent: "flex-end",
+      justifyContent: "space-between",
       paddingBottom: 15,
-      paddingRight: 10,
+      paddingHorizontal: 10,
       ...Platform.select({
         web: {
           paddingBottom: 25,
-          paddingRight: 48,
+          paddingRight: 25,
           paddingTop: 25,
         },
         native: {},
@@ -44,8 +47,9 @@ export const NavBar = () => {
       borderWidth: 1,
       flexDirection: "row",
       height: 40,
-      width: 90,
+      marginLeft: "auto",
       overflow: "hidden",
+      width: 90,
     },
     themeSwitchHandle: {
       backgroundColor: colors.text,
@@ -60,6 +64,10 @@ export const NavBar = () => {
     },
   });
 
+  const navigateToMenu = () => {
+    navigate("Menu");
+  };
+
   useEffect(() => {
     switchOverlayTranslateX.value = withSpring(appearance === "dark" ? 44 : 0, {
       stiffness: 90,
@@ -73,6 +81,11 @@ export const NavBar = () => {
         barStyle={appearance === "dark" ? "light-content" : "dark-content"}
       />
       <View style={styles.container}>
+        {Platform.OS !== "web" ? (
+          <TouchableOpacity onPress={navigateToMenu}>
+            <Icon color={colors.text} name="menu-outline" size={30} />
+          </TouchableOpacity>
+        ) : null}
         <TouchableOpacity style={styles.themeSwitch} onPress={toggleAppearance}>
           <Animated.View
             style={[styles.themeSwitchHandle, {left: switchOverlayTranslateX}]}

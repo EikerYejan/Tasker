@@ -1,35 +1,35 @@
-import { createStackNavigator } from "@react-navigation/stack";
-import { Suspense, lazy } from "react";
-import { ActivityIndicator } from "react-native";
+import {createStackNavigator} from "@react-navigation/stack";
+import {Suspense, lazy} from "react";
+import {ActivityIndicator} from "react-native";
 
-import { NavBar } from "./components/NavBar";
+import {NavBar} from "./components/NavBar";
 
-import { useAppearance } from "./hooks/useAppearance";
-import { useAppState } from "./store/store";
+import {useAppearance} from "./hooks/useAppearance";
+import {useAppState} from "./store/store";
 
 const Stack = createStackNavigator();
 
 const OnboardingScreen = lazy(() =>
-  import("./screens/OnboardingScreen").then((mod) => ({
+  import("./screens/OnboardingScreen").then(mod => ({
     default: mod.OnboardingScreen,
   })),
 );
 
 const HomeScreen = lazy(() =>
-  import("./screens/HomeScreen/HomeScreen").then((mod) => ({
+  import("./screens/HomeScreen/HomeScreen").then(mod => ({
     default: mod.HomeScreen,
   })),
 );
 
 const MenuScreen = lazy(() =>
-  import("./screens/MenuScreen").then((mod) => ({
+  import("./screens/MenuScreen").then(mod => ({
     default: mod.MenuScreen,
   })),
 );
 
 export const MainNavigator = () => {
   const {
-    state: { loggedIn },
+    state: {loggedIn},
   } = useAppState();
 
   useAppearance();
@@ -42,10 +42,9 @@ export const MainNavigator = () => {
       initialRouteName={initialRouteName}
       screenOptions={{
         header: () => <NavBar />,
-      }}
-    >
+      }}>
       <Stack.Screen name="OnBoarding">
-        {(props) => (
+        {props => (
           <Suspense fallback={<ActivityIndicator />}>
             <OnboardingScreen {...props} />
           </Suspense>
@@ -58,7 +57,12 @@ export const MainNavigator = () => {
           </Suspense>
         )}
       </Stack.Screen>
-      <Stack.Screen name="Menu">
+      <Stack.Screen
+        name="Menu"
+        options={{
+          headerShown: false,
+          presentation: "modal",
+        }}>
         {() => (
           <Suspense fallback={<ActivityIndicator />}>
             <MenuScreen />
