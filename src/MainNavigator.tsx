@@ -12,19 +12,19 @@ const Stack = createStackNavigator();
 const OnboardingScreen = lazy(() =>
   import("./screens/OnboardingScreen").then((mod) => ({
     default: mod.OnboardingScreen,
-  }))
+  })),
 );
 
 const HomeScreen = lazy(() =>
   import("./screens/HomeScreen/HomeScreen").then((mod) => ({
     default: mod.HomeScreen,
-  }))
+  })),
 );
 
 const MenuScreen = lazy(() =>
   import("./screens/MenuScreen").then((mod) => ({
     default: mod.MenuScreen,
-  }))
+  })),
 );
 
 export const MainNavigator = () => {

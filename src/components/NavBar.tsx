@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import {useEffect} from "react";
 import {
   Platform,
   SafeAreaView,
@@ -8,14 +8,14 @@ import {
   View,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import Animated, { useSharedValue, withSpring } from "react-native-reanimated";
+import Animated, {useSharedValue, withSpring} from "react-native-reanimated";
 
-import { useAppearance } from "../hooks/useAppearance";
+import {useAppearance} from "../hooks/useAppearance";
 
 export const NavBar = () => {
   const switchOverlayTranslateX = useSharedValue(0);
 
-  const { appearance, colors, toggleAppearance } = useAppearance();
+  const {appearance, colors, toggleAppearance} = useAppearance();
 
   const styles = StyleSheet.create({
     container: {
@@ -75,10 +75,7 @@ export const NavBar = () => {
       <View style={styles.container}>
         <TouchableOpacity style={styles.themeSwitch} onPress={toggleAppearance}>
           <Animated.View
-            style={[
-              styles.themeSwitchHandle,
-              { left: switchOverlayTranslateX },
-            ]}
+            style={[styles.themeSwitchHandle, {left: switchOverlayTranslateX}]}
           />
           <Icon color={colors.text} name="sunny-outline" style={styles.icon} />
           <Icon color={colors.text} name="moon-outline" style={styles.icon} />

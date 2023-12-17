@@ -1,25 +1,25 @@
-import { StyleSheet, Text, View } from "react-native";
-import { useState } from "react";
-import { type NavigationProp } from "@react-navigation/native";
+import {StyleSheet, Text, View} from "react-native";
+import {useState} from "react";
+import {type NavigationProp} from "@react-navigation/native";
 
-import { TextInput } from "../components/TextInput/TextInput";
-import { Button } from "../components/Button/Button";
-import { ScreenWrapper } from "../components/ScreenWrapper";
+import {TextInput} from "../components/TextInput/TextInput";
+import {Button} from "../components/Button/Button";
+import {ScreenWrapper} from "../components/ScreenWrapper";
 
-import { FONTS } from "../constants/fonts";
+import {FONTS} from "../constants/fonts";
 
-import { useAppState } from "../store/store";
-import { useAppearance } from "../hooks/useAppearance";
+import {useAppState} from "../store/store";
+import {useAppearance} from "../hooks/useAppearance";
 
 interface Props {
   navigation: NavigationProp<never, never>;
 }
 
-export const OnboardingScreen = ({ navigation }: Props) => {
+export const OnboardingScreen = ({navigation}: Props) => {
   const [userName, setUserName] = useState<string>();
 
-  const { setName } = useAppState();
-  const { colors } = useAppearance();
+  const {setName} = useAppState();
+  const {colors} = useAppearance();
 
   const styles = StyleSheet.create({
     inner: {
@@ -39,7 +39,7 @@ export const OnboardingScreen = ({ navigation }: Props) => {
       marginBottom: 30,
       textAlign: "center",
     },
-    input: { width: "80%", marginLeft: "auto", marginRight: "auto" },
+    input: {width: "80%", marginLeft: "auto", marginRight: "auto"},
     button: {
       marginLeft: "auto",
       marginRight: "auto",

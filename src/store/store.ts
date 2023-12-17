@@ -1,7 +1,7 @@
-import { atom, useRecoilState } from "recoil";
-import { recoilPersist } from "recoil-persist";
-import { MMKV } from "react-native-mmkv";
-import { Appearance, ColorSchemeName } from "react-native";
+import {atom, useRecoilState} from "recoil";
+import {recoilPersist} from "recoil-persist";
+import {MMKV} from "react-native-mmkv";
+import {Appearance, type ColorSchemeName} from "react-native";
 
 export interface ITodoItem {
   description: string;
@@ -27,11 +27,11 @@ const storageAdapter = {
     return storage.getString(key) ?? null;
   },
   setItem: (key: string, value: string) => {
-    return storage.set(key, value);
+    storage.set(key, value);
   },
 };
 
-const { persistAtom } = recoilPersist({
+const {persistAtom} = recoilPersist({
   key: "appStore",
   storage: storageAdapter,
 });
@@ -71,54 +71,54 @@ export const useAppState = () => {
   const [state, setState] = useRecoilState(appStore);
 
   const addTodo = (todo: ITodoItem) => {
-    setState((prevState) => ({
+    setState(prevState => ({
       ...prevState,
       todos: [todo, ...prevState.todos],
     }));
   };
 
   const removeTodo = (id: string, done = false) => {
-    setState((prevState) => {
+    setState(prevState => {
       const items = done ? prevState.done : prevState.todos;
       const key = done ? "done" : "todos";
 
       return {
         ...prevState,
-        [key]: items.filter((todo) => todo.id !== id),
+        [key]: items.filter(todo => todo.id !== id),
       };
     });
   };
 
   const markAsDone = (id: string) => {
-    const todo = state.todos.find((todo) => todo.id === id);
+    const todo = state.todos.find(todo => todo.id === id);
 
     if (todo) {
-      const newItem = { ...todo, done: true };
+      const newItem = {...todo, done: true};
 
-      setState((prevState) => ({
+      setState(prevState => ({
         ...prevState,
         done: [newItem, ...prevState.done],
-        todos: prevState.todos.filter((todo) => todo.id !== id),
+        todos: prevState.todos.filter(t => t.id !== id),
       }));
     }
   };
 
   const markAsTodo = (id: string) => {
-    const todo = state.done.find((todo) => todo.id === id);
+    const todo = state.done.find(todo => todo.id === id);
 
     if (todo) {
-      const newItem = { ...todo, done: false };
+      const newItem = {...todo, done: false};
 
-      setState((prevState) => ({
+      setState(prevState => ({
         ...prevState,
-        done: prevState.done.filter((todo) => todo.id !== id),
+        done: prevState.done.filter(t => t.id !== id),
         todos: [newItem, ...prevState.todos],
       }));
     }
   };
 
   const setName = (name: string) => {
-    setState((prevState) => ({
+    setState(prevState => ({
       ...prevState,
       loggedIn: true,
       name,
@@ -130,9 +130,9 @@ export const useAppState = () => {
   };
 
   const setTheme = (theme: ColorSchemeName) => {
-    setState((prevState) => ({
+    setState(prevState => ({
       ...prevState,
-      theme: { setByUser: true, value: theme },
+      theme: {setByUser: true, value: theme},
     }));
   };
 

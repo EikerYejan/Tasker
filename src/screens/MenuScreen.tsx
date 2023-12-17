@@ -1,7 +1,7 @@
-import { View } from "react-native";
+import {View} from "react-native";
 
-import { ScreenWrapper } from "../components/ScreenWrapper";
-import { Button } from "../components/Button/Button";
+import {ScreenWrapper} from "../components/ScreenWrapper";
+import {Button} from "../components/Button/Button";
 
 export const MenuScreen = () => {
   return (

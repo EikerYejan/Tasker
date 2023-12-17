@@ -1,14 +1,14 @@
-import { useColorScheme } from "react-native";
-import { useEffect, useMemo } from "react";
+import {useColorScheme} from "react-native";
+import {useEffect, useMemo} from "react";
 
-import { useAppState } from "../store/store";
+import {useAppState} from "../store/store";
 
-import { DarkTheme, LightTheme } from "../constants/themes";
+import {DarkTheme, LightTheme} from "../constants/themes";
 
 export const useAppearance = () => {
-  const { setTheme, state } = useAppState();
+  const {setTheme, state} = useAppState();
   const {
-    theme: { setByUser, value: appearance },
+    theme: {setByUser, value: appearance},
   } = state;
 
   const colorScheme = useColorScheme();
@@ -21,7 +21,7 @@ export const useAppearance = () => {
 
   const theme = useMemo(
     () => (appearance === "light" ? LightTheme : DarkTheme),
-    [appearance]
+    [appearance],
   );
 
   useEffect(() => {
