@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tasker",
-    "slug": "tasker",
+    "name": "TasksZen",
+    "slug": "taskszen",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
