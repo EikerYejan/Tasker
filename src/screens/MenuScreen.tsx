@@ -16,6 +16,7 @@ export const MenuScreen = () => {
       borderBottomWidth: 1,
     },
     optionTitle: {
+      color: colors.text,
       fontFamily: FONTS.POPPINS_BOLD,
       fontSize: 24,
       fontWeight: "bold",

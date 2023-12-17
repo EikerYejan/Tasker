@@ -16,7 +16,7 @@ export const useAppearance = () => {
   const toggleAppearance = () => {
     const newAppearance = appearance === "light" ? "dark" : "light";
 
-    setTheme(newAppearance);
+    setTheme(newAppearance, true);
   };
 
   const theme = useMemo(

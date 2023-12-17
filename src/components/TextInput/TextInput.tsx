@@ -1,17 +1,17 @@
 import {
   StyleSheet,
   TextInput as RNTextInput,
-  TextInputProps,
+  type TextInputProps,
 } from "react-native";
 
-import { FONTS } from "../../constants/fonts";
+import {FONTS} from "../../constants/fonts";
 
-import { useAppearance } from "../../hooks/useAppearance";
+import {useAppearance} from "../../hooks/useAppearance";
 
 interface Props extends TextInputProps {}
 
-export const TextInput = ({ style, ...props }: Props) => {
-  const { colors } = useAppearance();
+export const TextInput = ({style, ...props}: Props) => {
+  const {colors} = useAppearance();
 
   const styles = StyleSheet.create({
     input: {

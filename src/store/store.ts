@@ -129,10 +129,10 @@ export const useAppState = () => {
     setState(defaultState);
   };
 
-  const setTheme = (theme: ColorSchemeName) => {
+  const setTheme = (theme: ColorSchemeName, setByUser = false) => {
     setState(prevState => ({
       ...prevState,
-      theme: {setByUser: true, value: theme},
+      theme: {setByUser, value: theme},
     }));
   };
 

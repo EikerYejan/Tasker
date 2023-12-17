@@ -81,9 +81,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.eikeryejan.tasker'
+    namespace 'com.eikeryejan.taskzen'
     defaultConfig {
-        applicationId 'com.eikeryejan.tasker'
+        applicationId 'com.eikeryejan.taskzen'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

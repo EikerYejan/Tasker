@@ -1,4 +1,4 @@
-package com.eikeryejan.tasker;
+package com.eikeryejan.taskzen;
 
 import android.app.Application;
 import android.content.res.Configuration;

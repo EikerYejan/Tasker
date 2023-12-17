@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from "react-native";
+import {KeyboardAvoidingView, StyleSheet, Text} from "react-native";
 import {useState} from "react";
 import {type NavigationProp} from "@react-navigation/native";
 
@@ -60,7 +60,7 @@ export const OnboardingScreen = ({navigation}: Props) => {
 
   return (
     <ScreenWrapper>
-      <View style={styles.inner}>
+      <KeyboardAvoidingView style={styles.inner}>
         <Text style={styles.heading}>Let me know your name.</Text>
         <TextInput
           autoCapitalize="none"
@@ -68,6 +68,7 @@ export const OnboardingScreen = ({navigation}: Props) => {
           placeholder="Your name"
           style={styles.input}
           onChangeText={onNameChange}
+          onSubmitEditing={onNextPress}
         />
         <Button
           disabled={(userName?.length ?? 0) < 5}
@@ -75,7 +76,7 @@ export const OnboardingScreen = ({navigation}: Props) => {
           style={styles.button}
           onPress={onNextPress}
         />
-      </View>
+      </KeyboardAvoidingView>
     </ScreenWrapper>
   );
 };
