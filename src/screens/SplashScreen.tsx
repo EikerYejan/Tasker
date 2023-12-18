@@ -3,12 +3,12 @@ import {useEffect, useState} from "react";
 
 import {MainNavigator} from "../MainNavigator";
 
-import {initializeFirebase, listenToAuthState} from "../utils/firebase";
+import {initializeAuth, listenToAuthState} from "../utils/auth/auth";
 import {useAppState} from "../store/store";
 import {OnboardingScreen} from "./OnboardingScreen";
 
 export const SplasScreen = () => {
-  const [firebaseInitialized, setFirebaseInitialized] = useState(false);
+  const [authInitialized, setAuthInitialized] = useState(false);
 
   const {
     setUser,
@@ -16,8 +16,8 @@ export const SplasScreen = () => {
   } = useAppState();
 
   useEffect(() => {
-    initializeFirebase().then(() => {
-      setFirebaseInitialized(true);
+    initializeAuth().then(() => {
+      setAuthInitialized(true);
 
       listenToAuthState(user => {
         console.log("Auth state changed", user);
@@ -27,7 +27,7 @@ export const SplasScreen = () => {
     });
   }, []);
 
-  if (!firebaseInitialized) {
+  if (!authInitialized) {
     return null;
   }
 

@@ -2,9 +2,9 @@ import {firebase} from "@react-native-firebase/app-check";
 import auth, {type FirebaseAuthTypes} from "@react-native-firebase/auth";
 
 import {IOS_APP_CHECK_DEBUG_TOKEN} from "@env";
-import type {IStoredUser} from "../types";
+import type {IStoredUser} from "../../types";
 
-export const initializeFirebase = async () => {
+export const initializeAuth = async () => {
   await initializeAppCheck();
 };
 

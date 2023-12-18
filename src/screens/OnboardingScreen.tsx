@@ -22,7 +22,7 @@ import {
   signInAnonymously,
   signInWithEmailAndPassword,
   signUpWithEmailAndPassword,
-} from "../utils/firebase";
+} from "../utils/auth/auth";
 
 import type {NavigationProp} from "@react-navigation/native";
 
