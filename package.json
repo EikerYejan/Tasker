@@ -8,7 +8,8 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "eslint src/**/*.{ts,tsx}",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "build:web": "expo export --platform web"
   },
   "dependencies": {
     "@expo/match-media": "0.4.0",

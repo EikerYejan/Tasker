@@ -3,7 +3,7 @@ import {recoilPersist} from "recoil-persist";
 import {MMKV} from "react-native-mmkv";
 import {Appearance, type ColorSchemeName} from "react-native";
 
-import {toStoredUser} from "../utils/firebase";
+import {toStoredUser} from "../utils/firebase.native";
 
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
 import type {IAppStore, ITodoItem} from "../types";
