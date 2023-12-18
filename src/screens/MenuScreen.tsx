@@ -43,6 +43,9 @@ export const MenuScreen = () => {
           Display Name: {user?.displayName ?? "NULL"}
         </Text>
         <Text style={styles.optionText}>
+          Anonymous: {String(user?.isAnonymous ?? "false")}
+        </Text>
+        <Text style={styles.optionText}>
           Created At:{" "}
           {new Date(user?.metadata.creationTime ?? "").toLocaleDateString(
             "en-US",
@@ -58,7 +61,7 @@ export const MenuScreen = () => {
       </View>
       <View style={styles.option}>
         <Text style={styles.optionTitle}>Debug Options</Text>
-        <Button label="Clear App Storage" onPress={resetState} />
+        <Button label="Clear App Data" onPress={resetState} />
       </View>
     </ScreenWrapper>
   );

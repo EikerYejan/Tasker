@@ -3,7 +3,7 @@ import {recoilPersist} from "recoil-persist";
 import {MMKV} from "react-native-mmkv";
 import {Appearance, type ColorSchemeName} from "react-native";
 
-import {toStoredUser} from "../utils/firebase.native";
+import {logOutUser, toStoredUser} from "../utils/firebase";
 
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
 import type {IAppStore, ITodoItem} from "../types";
@@ -104,12 +104,8 @@ export const useAppState = () => {
     }
   };
 
-  const setName = (name: string) => {
-    // TODO: update this
-    return null;
-  };
-
-  const resetState = () => {
+  const resetState = async () => {
+    await logOutUser();
     setState(defaultState);
   };
 
@@ -120,10 +116,12 @@ export const useAppState = () => {
     }));
   };
 
-  const setUser = (user: FirebaseAuthTypes.User) => {
+  const setUser = (user: FirebaseAuthTypes.User | null) => {
     setState(prevState => ({
       ...prevState,
-      user: toStoredUser(user),
+      user: user
+        ? {...toStoredUser(user), onBoardingComplete: true}
+        : undefined,
     }));
   };
 
@@ -133,7 +131,6 @@ export const useAppState = () => {
     markAsTodo,
     removeTodo,
     resetState,
-    setName,
     setTheme,
     setUser,
     state,

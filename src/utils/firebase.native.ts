@@ -5,19 +5,37 @@ import {IOS_APP_CHECK_DEBUG_TOKEN} from "@env";
 import type {IStoredUser} from "../types";
 
 export const initializeFirebase = async () => {
+  await initializeAppCheck();
+};
+
+export const signInAnonymously = async () => {
   try {
-    await initializeAppCheck();
-
-    let user = auth().currentUser;
-
-    if (!user) {
-      user = (await auth().signInAnonymously()).user;
-    }
-
+    const {user} = await auth().signInAnonymously();
     return user;
   } catch (error) {
     console.error(error);
   }
+};
+
+export const signUpWithEmailAndPassword = async (
+  email: string,
+  password: string,
+) => {
+  const {user} = await auth().createUserWithEmailAndPassword(email, password);
+
+  return user;
+};
+
+export const logOutUser = async () => {
+  await auth().signOut();
+};
+
+export const listenToAuthState = (
+  cb: (user: FirebaseAuthTypes.User | null) => void,
+) => {
+  return auth().onAuthStateChanged(result => {
+    cb?.(result);
+  });
 };
 
 const initializeAppCheck = () => {

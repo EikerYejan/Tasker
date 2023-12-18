@@ -1,12 +1,13 @@
 import {
+  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import {useState} from "react";
-import {type NavigationProp} from "@react-navigation/native";
 
 import {TextInput} from "../components/TextInput/TextInput";
 import {Button} from "../components/Button/Button";
@@ -14,17 +15,14 @@ import {ScreenWrapper} from "../components/ScreenWrapper";
 
 import {FONTS} from "../constants/fonts";
 
-import {useAppState} from "../store/store";
 import {useAppearance} from "../hooks/useAppearance";
 
-interface Props {
-  navigation: NavigationProp<never, never>;
-}
+import {signInAnonymously, signUpWithEmailAndPassword} from "../utils/firebase";
 
-export const OnboardingScreen = ({navigation}: Props) => {
-  const [userName, setUserName] = useState<string>();
+export const OnboardingScreen = () => {
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
 
-  const {setName} = useAppState();
   const {colors} = useAppearance();
 
   const styles = StyleSheet.create({
@@ -47,23 +45,48 @@ export const OnboardingScreen = ({navigation}: Props) => {
       marginBottom: 30,
       textAlign: "center",
     },
-    input: {width: "80%", marginLeft: "auto", marginRight: "auto"},
+    input: {
+      marginBottom: 15,
+      marginLeft: "auto",
+      marginRight: "auto",
+      width: "80%",
+    },
     button: {
       marginLeft: "auto",
       marginRight: "auto",
       marginTop: 15,
     },
+    continueWithoutAccountText: {
+      color: colors.text,
+      fontFamily: FONTS.POPPINS_REGULAR,
+      fontSize: 14,
+      fontWeight: "400",
+      marginTop: 10,
+    },
   });
 
-  const onNextPress = () => {
-    if (userName) {
-      setName(userName);
-      navigation.navigate("Home" as never);
+  const onNextPress = async () => {
+    try {
+      if (email && password) {
+        await signUpWithEmailAndPassword(email, password);
+      }
+    } catch (error) {
+      console.log(error);
+
+      let message = "Please try again";
+
+      if (error.code === "auth/invalid-email") {
+        message = "Invalid email";
+      } else if (error.code === "auth/weak-password") {
+        message = "Password is too weak";
+      }
+
+      Alert.alert("There's been an error", message);
     }
   };
 
-  const onNameChange = (name: string) => {
-    setUserName(name);
+  const onContinueWithoutAccountPress = async () => {
+    await signInAnonymously();
   };
 
   return (
@@ -71,21 +94,36 @@ export const OnboardingScreen = ({navigation}: Props) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.inner}>
-          <Text style={styles.heading}>Let me know your name.</Text>
+          <Text style={styles.heading}>Let&apos;s get started</Text>
           <TextInput
             autoCapitalize="none"
             autoCorrect={false}
-            placeholder="Your name"
+            keyboardType="email-address"
+            placeholder="Your email"
             style={styles.input}
-            onChangeText={onNameChange}
+            onChangeText={setEmail}
+            onSubmitEditing={onNextPress}
+          />
+          <TextInput
+            secureTextEntry
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Your password"
+            style={styles.input}
+            onChangeText={setPassword}
             onSubmitEditing={onNextPress}
           />
           <Button
-            disabled={(userName?.length ?? 0) < 5}
+            disabled={(email?.length ?? 0) < 10 || (password?.length ?? 0) < 5}
             label="Next"
             style={styles.button}
             onPress={onNextPress}
           />
+          <TouchableOpacity onPress={onContinueWithoutAccountPress}>
+            <Text style={styles.continueWithoutAccountText}>
+              Continue without an account
+            </Text>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </ScreenWrapper>

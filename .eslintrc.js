@@ -32,6 +32,7 @@ module.exports = {
     "@typescript-eslint/strict-boolean-expressions": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/promise-function-async": "off",
-    "@typescript-eslint/no-floating-promises": "off"
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/no-misused-promises": "off",
   },
 };

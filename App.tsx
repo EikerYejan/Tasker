@@ -7,7 +7,7 @@ import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import {RecoilRoot} from "recoil";
 
-import {AppContainer} from "./src/AppContainer";
+import {SplasScreen} from "./src/screens/SplashScreen";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,7 +36,7 @@ export default function App() {
       onLayout={() => {
         onLayoutRootView();
       }}>
-      <RecoilRoot>{fontsLoaded ? <AppContainer /> : null}</RecoilRoot>
+      <RecoilRoot>{fontsLoaded ? <SplasScreen /> : null}</RecoilRoot>
     </View>
   );
 }

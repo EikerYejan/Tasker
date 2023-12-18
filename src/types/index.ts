@@ -31,4 +31,6 @@ export type IStoredUser = Pick<
   | "providerData"
   | "providerId"
   | "uid"
->;
+> & {
+  onBoardingComplete?: boolean;
+};
