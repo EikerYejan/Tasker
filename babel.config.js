@@ -6,7 +6,8 @@ module.exports = function (api) {
       [
         "module:react-native-dotenv",
         {
-          allowUndefined: false,
+          allowUndefined: true,
+          safe: false,
         },
       ],
       "@babel/plugin-proposal-export-namespace-from",
