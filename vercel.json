@@ -1,6 +1,6 @@
 {
-  "buildCommand": "expo export:web",
-  "outputDirectory": "web-build",
+  "buildCommand": "yarn build:web",
+  "outputDirectory": "dist",
   "devCommand": "expo",
   "cleanUrls": true,
   "framework": null,
