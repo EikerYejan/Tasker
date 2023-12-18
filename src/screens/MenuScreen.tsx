@@ -17,6 +17,7 @@ export const MenuScreen = () => {
     option: {
       borderBottomColor: colors.border,
       borderBottomWidth: 1,
+      marginTop: 30,
     },
     optionTitle: {
       color: colors.text,
@@ -60,8 +61,7 @@ export const MenuScreen = () => {
         </Text>
       </View>
       <View style={styles.option}>
-        <Text style={styles.optionTitle}>Debug Options</Text>
-        <Button label="Clear App Data" onPress={resetState} />
+        <Button label="Log Out" onPress={resetState} />
       </View>
     </ScreenWrapper>
   );

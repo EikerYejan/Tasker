@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 
 import {TextInput} from "../components/TextInput/TextInput";
 import {Button} from "../components/Button/Button";
@@ -17,9 +17,16 @@ import {FONTS} from "../constants/fonts";
 
 import {useAppearance} from "../hooks/useAppearance";
 
-import {signInAnonymously, signUpWithEmailAndPassword} from "../utils/firebase";
+import {
+  getIsEmailUsed,
+  signInAnonymously,
+  signInWithEmailAndPassword,
+  signUpWithEmailAndPassword,
+} from "../utils/firebase";
 
 export const OnboardingScreen = () => {
+  const [existingUser, setExistingUser] = useState<boolean>();
+
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
@@ -61,14 +68,27 @@ export const OnboardingScreen = () => {
       fontFamily: FONTS.POPPINS_REGULAR,
       fontSize: 14,
       fontWeight: "400",
+      marginBottom: 20,
       marginTop: 10,
     },
   });
 
   const onNextPress = async () => {
     try {
+      if (email && !password) {
+        const isEmailUsed = await getIsEmailUsed(email);
+
+        setExistingUser(isEmailUsed);
+
+        return;
+      }
+
       if (email && password) {
-        await signUpWithEmailAndPassword(email, password);
+        if (existingUser) {
+          await signInWithEmailAndPassword(email, password);
+        } else {
+          await signUpWithEmailAndPassword(email, password);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -89,6 +109,14 @@ export const OnboardingScreen = () => {
     await signInAnonymously();
   };
 
+  const buttonText = useMemo(() => {
+    if (typeof existingUser === "boolean") {
+      return existingUser ? "Sign in" : "Sign up";
+    }
+
+    return "Next";
+  }, [existingUser]);
+
   return (
     <ScreenWrapper>
       <KeyboardAvoidingView
@@ -104,21 +132,28 @@ export const OnboardingScreen = () => {
             onChangeText={setEmail}
             onSubmitEditing={onNextPress}
           />
-          <TextInput
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholder="Your password"
-            style={styles.input}
-            onChangeText={setPassword}
-            onSubmitEditing={onNextPress}
-          />
+          {typeof existingUser === "boolean" && (
+            <TextInput
+              secureTextEntry
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Your password"
+              style={styles.input}
+              onChangeText={setPassword}
+              onSubmitEditing={onNextPress}
+            />
+          )}
           <Button
-            disabled={(email?.length ?? 0) < 10 || (password?.length ?? 0) < 5}
-            label="Next"
+            label={buttonText}
             style={styles.button}
             onPress={onNextPress}
           />
+          <TouchableOpacity
+            onPress={() => {
+              setExistingUser(undefined);
+            }}>
+            <Text style={styles.continueWithoutAccountText}>Go Back</Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={onContinueWithoutAccountPress}>
             <Text style={styles.continueWithoutAccountText}>
               Continue without an account

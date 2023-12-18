@@ -17,13 +17,32 @@ export const signInAnonymously = async () => {
   }
 };
 
+export const signInWithEmailAndPassword = async (
+  email: string,
+  password: string,
+) => {
+  const {user} = await auth().signInWithEmailAndPassword(email, password);
+
+  return user;
+};
+
 export const signUpWithEmailAndPassword = async (
   email: string,
   password: string,
 ) => {
   const {user} = await auth().createUserWithEmailAndPassword(email, password);
 
+  await user.sendEmailVerification();
+
   return user;
+};
+
+export const getIsEmailUsed = async (email: string) => {
+  const methods = await auth().fetchSignInMethodsForEmail(email);
+
+  console.log("methods", methods);
+
+  return methods.length > 0;
 };
 
 export const logOutUser = async () => {
