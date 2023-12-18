@@ -3,23 +3,10 @@ import {recoilPersist} from "recoil-persist";
 import {MMKV} from "react-native-mmkv";
 import {Appearance, type ColorSchemeName} from "react-native";
 
-export interface ITodoItem {
-  description: string;
-  done?: boolean;
-  id: string;
-  title: string;
-}
+import {toStoredUser} from "../utils/firebase";
 
-export interface IAppStore {
-  done: ITodoItem[];
-  loggedIn: boolean;
-  name: string;
-  theme: {
-    setByUser: boolean;
-    value: ColorSchemeName;
-  };
-  todos: ITodoItem[];
-}
+import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
+import type {IAppStore, ITodoItem} from "../types";
 
 export const storage = new MMKV();
 const storageAdapter = {
@@ -118,11 +105,8 @@ export const useAppState = () => {
   };
 
   const setName = (name: string) => {
-    setState(prevState => ({
-      ...prevState,
-      loggedIn: true,
-      name,
-    }));
+    // TODO: update this
+    return null;
   };
 
   const resetState = () => {
@@ -136,6 +120,13 @@ export const useAppState = () => {
     }));
   };
 
+  const setUser = (user: FirebaseAuthTypes.User) => {
+    setState(prevState => ({
+      ...prevState,
+      user: toStoredUser(user),
+    }));
+  };
+
   return {
     addTodo,
     markAsDone,
@@ -144,6 +135,7 @@ export const useAppState = () => {
     resetState,
     setName,
     setTheme,
+    setUser,
     state,
   };
 };

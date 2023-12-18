@@ -25,7 +25,7 @@ export const HomeScreen = () => {
     markAsDone,
     markAsTodo,
     removeTodo,
-    state: {done, name, todos},
+    state: {done, user, todos},
   } = useAppState();
 
   const {theme} = useAppearance();
@@ -77,7 +77,7 @@ export const HomeScreen = () => {
         keyboardDismissMode="interactive"
         scrollIndicatorInsets={{right: -3}}
         style={styles.page}>
-        <Text style={styles.pageTitle}>Ahoy! {name}</Text>
+        <Text style={styles.pageTitle}>Ahoy! {user?.displayName}</Text>
         <Text style={styles.pageDescription}>Welcome to Tasker</Text>
         <View
           style={[

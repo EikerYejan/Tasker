@@ -1,12 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import { FONTS } from "../../constants/fonts";
-import { COLORS } from "../../constants/colors";
+import {FONTS} from "../../constants/fonts";
+import {COLORS} from "../../constants/colors";
 
-import type { ITodoItem } from "../../store/store";
+import type {ITodoItem} from "../../types";
 
-import { useAppearance } from "../../hooks/useAppearance";
+import {useAppearance} from "../../hooks/useAppearance";
 
 interface TaskProps {
   item: ITodoItem;
@@ -15,10 +15,10 @@ interface TaskProps {
   onRestore?: (id: string) => void;
 }
 
-export const Task = ({ item, onComplete, onDelete, onRestore }: TaskProps) => {
-  const { description, done, id, title } = item;
+export const Task = ({item, onComplete, onDelete, onRestore}: TaskProps) => {
+  const {description, done, id, title} = item;
 
-  const { colors } = useAppearance();
+  const {colors} = useAppearance();
   const iconColor = done ? COLORS.WHITE : colors.primaryInverse;
 
   const styles = StyleSheet.create({
@@ -71,12 +71,18 @@ export const Task = ({ item, onComplete, onDelete, onRestore }: TaskProps) => {
           <Icon color={iconColor} name="trash-outline" size={20} />
         </TouchableOpacity>
         {onComplete ? (
-          <TouchableOpacity onPress={() => onComplete?.(id)}>
+          <TouchableOpacity
+            onPress={() => {
+              onComplete?.(id);
+            }}>
             <Icon color={iconColor} name="checkmark-done-outline" size={20} />
           </TouchableOpacity>
         ) : null}
         {done ? (
-          <TouchableOpacity onPress={() => onRestore?.(id)}>
+          <TouchableOpacity
+            onPress={() => {
+              onRestore?.(id);
+            }}>
             <Icon color={iconColor} name="arrow-undo-outline" size={20} />
           </TouchableOpacity>
         ) : null}
