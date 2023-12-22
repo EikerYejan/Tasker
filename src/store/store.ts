@@ -1,6 +1,6 @@
 import {atom, useRecoilState} from "recoil";
 
-import {logOutUser, toStoredUser} from "../utils/auth/auth";
+import {AuthService, toStoredUser} from "../utils/auth/auth";
 import {FirestoreService} from "../utils/firestore/firestore";
 import {getInitialState} from "./constants";
 
@@ -63,7 +63,7 @@ export const useAppState = () => {
   };
 
   const resetState = async () => {
-    await logOutUser();
+    await AuthService.logOutUser();
     await FirestoreService.replaceInstance();
 
     setState(getInitialState());

@@ -5,11 +5,7 @@ import * as RNSplashScreen from "expo-splash-screen";
 import {OnboardingScreen} from "./OnboardingScreen";
 import {MainNavigator} from "../MainNavigator";
 
-import {
-  initializeAuth,
-  listenToAuthState,
-  signInAnonymously,
-} from "../utils/auth/auth";
+import {AuthService} from "../utils/auth/auth";
 import {useAppState} from "../store/store";
 import {FirestoreService} from "../utils/firestore/firestore";
 
@@ -31,14 +27,14 @@ export const SplasScreen = () => {
   };
 
   const onContinueWithoutAccount = async () => {
-    const user = await signInAnonymously();
+    const user = await AuthService.signInAnonymously();
     await initializeDatabase();
 
     setUser(user);
   };
 
   useEffect(() => {
-    initializeAuth().then(async user => {
+    AuthService.init().then(async user => {
       if (user) {
         setUser(user);
 
@@ -49,12 +45,13 @@ export const SplasScreen = () => {
 
       await RNSplashScreen.hideAsync();
 
-      listenToAuthState(snapshot => {
+      AuthService.listenToAuthState(snapshot => {
         if (snapshot) setUser(snapshot);
       });
     });
 
     return () => {
+      AuthService.stopListeningToAuthState();
       FirestoreService.stopListeningForChanges();
     };
   }, []);

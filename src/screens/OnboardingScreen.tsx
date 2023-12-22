@@ -17,12 +17,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import {FONTS} from "../constants/fonts";
 
 import {useAppearance} from "../hooks/useAppearance";
-import {
-  getIsEmailUsed,
-  logOutUser,
-  signInWithEmailAndPassword,
-  signUpWithEmailAndPassword,
-} from "../utils/auth/auth";
+import {AuthService} from "../utils/auth/auth";
 import {FirestoreService} from "../utils/firestore/firestore";
 import {useAppState} from "../store/store";
 
@@ -97,7 +92,7 @@ export const OnboardingScreen = ({
   const onNextPress = async () => {
     try {
       if (email && !password) {
-        const isEmailUsed = await getIsEmailUsed(email);
+        const isEmailUsed = await AuthService.getIsEmailUsed(email);
 
         setExistingUser(isEmailUsed);
 
@@ -106,9 +101,9 @@ export const OnboardingScreen = ({
 
       if (email && password) {
         if (existingUser) {
-          await signInWithEmailAndPassword(email, password);
+          await AuthService.signInWithEmailAndPassword(email, password);
         } else {
-          await signUpWithEmailAndPassword(email, password);
+          await AuthService.signUpWithEmailAndPassword(email, password);
         }
 
         await FirestoreService.replaceInstance();
@@ -199,7 +194,7 @@ export const OnboardingScreen = ({
             </TouchableOpacity>
           ) : null}
           {__DEV__ ? (
-            <TouchableOpacity onPress={logOutUser}>
+            <TouchableOpacity onPress={AuthService.logOutUser}>
               <Text style={styles.continueWithoutAccountText}>Test LogOut</Text>
             </TouchableOpacity>
           ) : null}
