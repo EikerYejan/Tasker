@@ -2,21 +2,23 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableOpacityProps,
+  type TouchableOpacityProps,
   View,
+  ActivityIndicator,
 } from "react-native";
 
-import { COLORS } from "../../constants/colors";
-import { FONTS } from "../../constants/fonts";
+import {COLORS} from "../../constants/colors";
+import {FONTS} from "../../constants/fonts";
 
-import { useAppearance } from "../../hooks/useAppearance";
+import {useAppearance} from "../../hooks/useAppearance";
 
 interface Props extends TouchableOpacityProps {
   label: string;
+  loading?: boolean;
 }
 
-export const Button = ({ disabled, label, style, ...props }: Props) => {
-  const { colors } = useAppearance();
+export const Button = ({disabled, label, loading, style, ...props}: Props) => {
+  const {colors} = useAppearance();
 
   const styles = StyleSheet.create({
     disabledButton: {
@@ -54,9 +56,12 @@ export const Button = ({ disabled, label, style, ...props }: Props) => {
     <TouchableOpacity
       {...props}
       disabled={disabled}
-      style={[styles.wrapper, style, disabled ? styles.disabledButton : {}]}
-    >
-      <Text style={styles.text}>{label}</Text>
+      style={[styles.wrapper, style, disabled ? styles.disabledButton : {}]}>
+      {loading ? (
+        <ActivityIndicator color={colors.primary} />
+      ) : (
+        <Text style={styles.text}>{label}</Text>
+      )}
       <View style={styles.overlay} />
     </TouchableOpacity>
   );
