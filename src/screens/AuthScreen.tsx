@@ -30,8 +30,8 @@ interface Props {
   onContinueWithoutAccountPress?: () => void;
 }
 
-// TODO: Rename to AuthScreen, loading state, error state, etc.
-export const OnboardingScreen = ({
+// TODO: error state, transitions.
+export const AuthScreen = ({
   navigation,
   onContinueWithoutAccountPress,
 }: Props) => {

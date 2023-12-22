@@ -2,7 +2,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 
 import {HomeScreen} from "./screens/HomeScreen/HomeScreen";
 import {MenuScreen} from "./screens/MenuScreen";
-import {OnboardingScreen} from "./screens/OnboardingScreen";
+import {AuthScreen} from "./screens/AuthScreen";
 import {NavBar} from "./components/NavBar";
 
 const Stack = createStackNavigator();
@@ -24,7 +24,7 @@ export const MainNavigator = () => {
         }}
       />
       <Stack.Screen
-        component={OnboardingScreen}
+        component={AuthScreen}
         name="Login"
         options={{
           headerShown: false,

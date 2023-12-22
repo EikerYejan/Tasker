@@ -2,7 +2,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import {useEffect, useState} from "react";
 import * as RNSplashScreen from "expo-splash-screen";
 
-import {OnboardingScreen} from "./OnboardingScreen";
+import {AuthScreen} from "./AuthScreen";
 import {MainNavigator} from "../MainNavigator";
 
 import {AuthService} from "../utils/auth/auth";
@@ -62,9 +62,7 @@ export const SplasScreen = () => {
 
   if (!user?.uid) {
     return (
-      <OnboardingScreen
-        onContinueWithoutAccountPress={onContinueWithoutAccount}
-      />
+      <AuthScreen onContinueWithoutAccountPress={onContinueWithoutAccount} />
     );
   }
 
