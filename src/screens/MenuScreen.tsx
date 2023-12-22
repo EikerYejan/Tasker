@@ -87,6 +87,13 @@ export const MenuScreen = ({navigation}: Props) => {
               navigation.navigate("Login");
             }}
           />
+          {__DEV__ ? (
+            <Text
+              onPress={resetState}
+              style={[styles.optionText, {marginBottom: 10}]}>
+              Clear App Data
+            </Text>
+          ) : null}
         </View>
       )}
     </ScreenWrapper>

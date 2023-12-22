@@ -2,10 +2,19 @@ import {firebase} from "@react-native-firebase/app-check";
 import auth, {type FirebaseAuthTypes} from "@react-native-firebase/auth";
 
 import {IOS_APP_CHECK_DEBUG_TOKEN} from "@env";
+
 import type {IStoredUser} from "../../types";
 
 export const initializeAuth = async () => {
   await initializeAppCheck();
+
+  const user = auth().currentUser;
+
+  if (!user) {
+    await signInAnonymously();
+  }
+
+  return auth().currentUser;
 };
 
 export const signInAnonymously = async () => {
@@ -40,8 +49,6 @@ export const signUpWithEmailAndPassword = async (
 export const getIsEmailUsed = async (email: string) => {
   const methods = await auth().fetchSignInMethodsForEmail(email);
 
-  console.log("methods", methods);
-
   return methods.length > 0;
 };
 
@@ -55,6 +62,10 @@ export const listenToAuthState = (
   return auth().onAuthStateChanged(result => {
     cb?.(result);
   });
+};
+
+export const getCurrentUser = () => {
+  return auth().currentUser;
 };
 
 const initializeAppCheck = () => {

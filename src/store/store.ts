@@ -1,12 +1,14 @@
 import {atom, useRecoilState} from "recoil";
 import {recoilPersist} from "recoil-persist";
 import {MMKV} from "react-native-mmkv";
-import {Appearance, type ColorSchemeName} from "react-native";
 
 import {logOutUser, toStoredUser} from "../utils/auth/auth";
+import {setDocumentData} from "../utils/firestore/firestore";
+import {getInitialState} from "./constants";
 
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
-import type {IAppStore, ITodoItem} from "../types";
+import type {IAppStore, IStoredUser, ITodoItem} from "../types";
+import {type ColorSchemeName} from "react-native";
 
 export const storage = new MMKV();
 const storageAdapter = {
@@ -23,106 +25,87 @@ const {persistAtom} = recoilPersist({
   storage: storageAdapter,
 });
 
-const defaultState = {
-  theme: {
-    setByUser: false,
-    value: Appearance.getColorScheme(),
-  },
-  done: [
-    {
-      description: "Here you can see what you have done",
-      done: true,
-      id: "1",
-      title: "This is a done item",
-    },
-  ],
-  loggedIn: false,
-  name: "",
-  todos: [
-    {
-      description: "Here you can add a description",
-      done: false,
-      id: "2",
-      title: "This is a todo item",
-    },
-  ],
-};
-
 export const appStore = atom<IAppStore>({
   key: "appStore",
-  default: defaultState,
+  default: getInitialState(),
   effects_UNSTABLE: [persistAtom],
 });
 
 export const useAppState = () => {
   const [state, setState] = useRecoilState(appStore);
 
-  const addTodo = (todo: ITodoItem) => {
-    setState(prevState => ({
-      ...prevState,
-      todos: [todo, ...prevState.todos],
-    }));
+  const addTodo = async (todo: ITodoItem) => {
+    await setDocumentData({todos: [todo, ...state.todos]});
   };
 
-  const removeTodo = (id: string, done = false) => {
-    setState(prevState => {
-      const items = done ? prevState.done : prevState.todos;
-      const key = done ? "done" : "todos";
+  const removeTodo = async (id: string, done = false) => {
+    const items = done ? state.done : state.todos;
+    const key = done ? "done" : "todos";
 
-      return {
-        ...prevState,
-        [key]: items.filter(todo => todo.id !== id),
-      };
-    });
+    const newState = {
+      ...state,
+      [key]: items.filter(todo => todo.id !== id),
+    };
+
+    await setDocumentData(newState);
   };
 
-  const markAsDone = (id: string) => {
+  const markAsDone = async (id: string) => {
     const todo = state.todos.find(todo => todo.id === id);
 
     if (todo) {
       const newItem = {...todo, done: true};
+      const newState = {
+        ...state,
+        done: [newItem, ...state.done],
+        todos: state.todos.filter(t => t.id !== id),
+      };
 
-      setState(prevState => ({
-        ...prevState,
-        done: [newItem, ...prevState.done],
-        todos: prevState.todos.filter(t => t.id !== id),
-      }));
+      await setDocumentData(newState);
     }
   };
 
-  const markAsTodo = (id: string) => {
+  const markAsTodo = async (id: string) => {
     const todo = state.done.find(todo => todo.id === id);
 
     if (todo) {
       const newItem = {...todo, done: false};
+      const newState = {
+        ...state,
+        done: state.done.filter(t => t.id !== id),
+        todos: [newItem, ...state.todos],
+      };
 
-      setState(prevState => ({
-        ...prevState,
-        done: prevState.done.filter(t => t.id !== id),
-        todos: [newItem, ...prevState.todos],
-      }));
+      await setDocumentData(newState);
     }
   };
 
   const resetState = async () => {
     await logOutUser();
-    setState(defaultState);
+    setState(getInitialState());
   };
 
-  const setTheme = (theme: ColorSchemeName, setByUser = false) => {
-    setState(prevState => ({
-      ...prevState,
-      theme: {setByUser, value: theme},
-    }));
+  const setTheme = async (theme: ColorSchemeName, setByUser = false) => {
+    await setDocumentData({theme: {setByUser, value: theme}});
   };
 
-  const setUser = (user: FirebaseAuthTypes.User | null) => {
-    setState(prevState => ({
-      ...prevState,
+  const setUser = async (user: FirebaseAuthTypes.User | null) => {
+    await setDocumentData({
       user: user
-        ? {...toStoredUser(user), onBoardingComplete: true}
+        ? {
+            ...(state.user ? {...state.user} : {}),
+            ...toStoredUser(user),
+          }
         : undefined,
-    }));
+    });
+  };
+
+  const updateUser = async (data: Partial<IStoredUser> = {}) => {
+    const user = {...data, ...state.user};
+
+    await setDocumentData({
+      user: user as IStoredUser,
+    });
   };
 
   return {
@@ -131,8 +114,10 @@ export const useAppState = () => {
     markAsTodo,
     removeTodo,
     resetState,
+    setState,
     setTheme,
     setUser,
     state,
+    updateUser,
   };
 };

@@ -1,28 +1,58 @@
 import {NavigationContainer} from "@react-navigation/native";
 import {useEffect, useState} from "react";
+import * as RNSplashScreen from "expo-splash-screen";
 
+import {OnboardingScreen} from "./OnboardingScreen";
 import {MainNavigator} from "../MainNavigator";
 
 import {initializeAuth, listenToAuthState} from "../utils/auth/auth";
 import {useAppState} from "../store/store";
-import {OnboardingScreen} from "./OnboardingScreen";
+import {getOrCreateDocumentInstance} from "../utils/firestore/firestore";
+
+import type {IAppStore} from "../types";
 
 export const SplasScreen = () => {
   const [authInitialized, setAuthInitialized] = useState(false);
 
   const {
+    setState,
     setUser,
     state: {user},
+    updateUser,
   } = useAppState();
 
+  const initializeDatabase = async () => {
+    const databaseItem = await getOrCreateDocumentInstance();
+
+    if (databaseItem) {
+      const unsubscribe = databaseItem.onSnapshot(snapshot => {
+        setState(snapshot.data() as IAppStore);
+      });
+
+      return unsubscribe;
+    }
+  };
+
+  const onContinueWithoutAccount = () => {
+    updateUser({
+      onBoardingComplete: true,
+    });
+  };
+
   useEffect(() => {
-    initializeAuth().then(() => {
+    initializeAuth().then(async user => {
+      if (user) {
+        setUser(user);
+
+        await initializeDatabase();
+      }
+
       setAuthInitialized(true);
 
-      listenToAuthState(user => {
-        console.log("Auth state changed", user);
+      await RNSplashScreen.hideAsync();
 
-        setUser(user);
+      listenToAuthState(snapshot => {
+        setUser(snapshot);
       });
     });
   }, []);
@@ -32,7 +62,11 @@ export const SplasScreen = () => {
   }
 
   if (!user?.onBoardingComplete) {
-    return <OnboardingScreen />;
+    return (
+      <OnboardingScreen
+        onContinueWithoutAccountPress={onContinueWithoutAccount}
+      />
+    );
   }
 
   return (

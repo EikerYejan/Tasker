@@ -19,18 +19,23 @@ import {FONTS} from "../constants/fonts";
 import {useAppearance} from "../hooks/useAppearance";
 import {
   getIsEmailUsed,
-  signInAnonymously,
+  logOutUser,
   signInWithEmailAndPassword,
   signUpWithEmailAndPassword,
 } from "../utils/auth/auth";
+import {getOrCreateDocumentInstance} from "../utils/firestore/firestore";
 
 import type {NavigationProp} from "@react-navigation/native";
 
 interface Props {
   navigation?: NavigationProp<any, any>;
+  onContinueWithoutAccountPress?: () => void;
 }
 
-export const OnboardingScreen = ({navigation}: Props) => {
+export const OnboardingScreen = ({
+  navigation,
+  onContinueWithoutAccountPress,
+}: Props) => {
   const [existingUser, setExistingUser] = useState<boolean>();
 
   const [email, setEmail] = useState<string>();
@@ -102,6 +107,8 @@ export const OnboardingScreen = ({navigation}: Props) => {
           await signUpWithEmailAndPassword(email, password);
         }
 
+        await getOrCreateDocumentInstance();
+
         if (navigation?.navigate) {
           navigation.navigate("Home");
         }
@@ -118,14 +125,6 @@ export const OnboardingScreen = ({navigation}: Props) => {
       }
 
       Alert.alert("There's been an error", message);
-    }
-  };
-
-  const onContinueWithoutAccountPress = async () => {
-    await signInAnonymously();
-
-    if (navigation?.navigate) {
-      navigation.navigate("Home");
     }
   };
 
@@ -176,7 +175,7 @@ export const OnboardingScreen = ({navigation}: Props) => {
             style={styles.button}
             onPress={onNextPress}
           />
-          {existingUser ? (
+          {typeof existingUser === "boolean" ? (
             <TouchableOpacity
               onPress={() => {
                 setExistingUser(undefined);
@@ -184,10 +183,15 @@ export const OnboardingScreen = ({navigation}: Props) => {
               <Text style={styles.continueWithoutAccountText}>Go Back</Text>
             </TouchableOpacity>
           ) : null}
-          <TouchableOpacity onPress={onContinueWithoutAccountPress}>
-            <Text style={styles.continueWithoutAccountText}>
-              Continue without an account
-            </Text>
+          {onContinueWithoutAccountPress ? (
+            <TouchableOpacity onPress={onContinueWithoutAccountPress}>
+              <Text style={styles.continueWithoutAccountText}>
+                Continue without an account
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+          <TouchableOpacity onPress={logOutUser}>
+            <Text style={styles.continueWithoutAccountText}>Test LogOut</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
