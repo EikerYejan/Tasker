@@ -42,8 +42,6 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
       },
     });
 
-    console.log();
-
     return (
       <View style={[styles.container, style]}>
         <RNTextInput
