@@ -6,8 +6,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  type TextInput as RNTextInput,
 } from "react-native";
-import {useMemo, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 
 import {TextInput} from "../components/TextInput/TextInput";
 import {Button} from "../components/Button/Button";
@@ -17,9 +18,10 @@ import Icon from "react-native-vector-icons/Ionicons";
 import {FONTS} from "../constants/fonts";
 
 import {useAppearance} from "../hooks/useAppearance";
+import {useAppState} from "../store/store";
 import {AuthService} from "../utils/auth/auth";
 import {FirestoreService} from "../utils/firestore/firestore";
-import {useAppState} from "../store/store";
+import {isEmailValid} from "../utils";
 
 import type {NavigationProp} from "@react-navigation/native";
 
@@ -36,11 +38,14 @@ export const OnboardingScreen = ({
   const {setState} = useAppState();
 
   const [existingUser, setExistingUser] = useState<boolean>();
+  const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
   const {colors} = useAppearance();
+
+  const passwordInputRef = useRef<RNTextInput>(null);
 
   const styles = StyleSheet.create({
     inner: {
@@ -91,10 +96,13 @@ export const OnboardingScreen = ({
 
   const onNextPress = async () => {
     try {
+      setLoading(true);
+
       if (email && !password) {
         const isEmailUsed = await AuthService.getIsEmailUsed(email);
 
         setExistingUser(isEmailUsed);
+        passwordInputRef?.current?.focus();
 
         return;
       }
@@ -128,6 +136,8 @@ export const OnboardingScreen = ({
       }
 
       Alert.alert("There's been an error", message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -137,6 +147,22 @@ export const OnboardingScreen = ({
     }
 
     return "Next";
+  }, [existingUser]);
+
+  const submitButtonDisabled = useMemo(() => {
+    const validEmail = email && isEmailValid(email);
+
+    return (
+      loading || !validEmail || (typeof existingUser === "boolean" && !password)
+    );
+  }, [email, existingUser, loading, password]);
+
+  const pageTitle = useMemo(() => {
+    if (typeof existingUser === "boolean") {
+      return existingUser ? "Welcome Back!" : "Let's create your account";
+    }
+
+    return "Let's get started";
   }, [existingUser]);
 
   return (
@@ -151,7 +177,7 @@ export const OnboardingScreen = ({
               <Icon name="close-outline" size={35} color={colors.text} />
             </TouchableOpacity>
           ) : null}
-          <Text style={styles.heading}>Let&apos;s get started</Text>
+          <Text style={styles.heading}>{pageTitle}</Text>
           <TextInput
             autoCapitalize="none"
             autoComplete="email"
@@ -168,12 +194,15 @@ export const OnboardingScreen = ({
               autoCapitalize="none"
               autoCorrect={false}
               placeholder="Your password"
+              ref={passwordInputRef}
               style={styles.input}
               onChangeText={setPassword}
               onSubmitEditing={onNextPress}
             />
           )}
           <Button
+            loading={loading}
+            disabled={submitButtonDisabled}
             label={buttonText}
             style={styles.button}
             onPress={onNextPress}
