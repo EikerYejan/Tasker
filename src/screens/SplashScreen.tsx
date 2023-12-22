@@ -5,11 +5,13 @@ import * as RNSplashScreen from "expo-splash-screen";
 import {OnboardingScreen} from "./OnboardingScreen";
 import {MainNavigator} from "../MainNavigator";
 
-import {initializeAuth, listenToAuthState} from "../utils/auth/auth";
+import {
+  initializeAuth,
+  listenToAuthState,
+  signInAnonymously,
+} from "../utils/auth/auth";
 import {useAppState} from "../store/store";
-import {getOrCreateDocumentInstance} from "../utils/firestore/firestore";
-
-import type {IAppStore} from "../types";
+import {FirestoreService} from "../utils/firestore/firestore";
 
 export const SplasScreen = () => {
   const [authInitialized, setAuthInitialized] = useState(false);
@@ -18,25 +20,21 @@ export const SplasScreen = () => {
     setState,
     setUser,
     state: {user},
-    updateUser,
   } = useAppState();
 
   const initializeDatabase = async () => {
-    const databaseItem = await getOrCreateDocumentInstance();
+    await FirestoreService.init();
 
-    if (databaseItem) {
-      const unsubscribe = databaseItem.onSnapshot(snapshot => {
-        setState(snapshot.data() as IAppStore);
-      });
-
-      return unsubscribe;
-    }
+    FirestoreService.listenForChanges(snapshot => {
+      if (snapshot) setState(snapshot);
+    });
   };
 
-  const onContinueWithoutAccount = () => {
-    updateUser({
-      onBoardingComplete: true,
-    });
+  const onContinueWithoutAccount = async () => {
+    const user = await signInAnonymously();
+    await initializeDatabase();
+
+    setUser(user);
   };
 
   useEffect(() => {
@@ -52,16 +50,20 @@ export const SplasScreen = () => {
       await RNSplashScreen.hideAsync();
 
       listenToAuthState(snapshot => {
-        setUser(snapshot);
+        if (snapshot) setUser(snapshot);
       });
     });
+
+    return () => {
+      FirestoreService.stopListeningForChanges();
+    };
   }, []);
 
   if (!authInitialized) {
     return null;
   }
 
-  if (!user?.onBoardingComplete) {
+  if (!user?.uid) {
     return (
       <OnboardingScreen
         onContinueWithoutAccountPress={onContinueWithoutAccount}

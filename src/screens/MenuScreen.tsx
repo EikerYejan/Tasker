@@ -6,6 +6,7 @@ import {Button} from "../components/Button/Button";
 
 import {useAppearance} from "../hooks/useAppearance";
 import {useAppState} from "../store/store";
+import {FirestoreService} from "../utils/firestore/firestore.native";
 
 import {FONTS} from "../constants/fonts";
 
@@ -49,6 +50,8 @@ export const MenuScreen = ({navigation}: Props) => {
     },
   });
 
+  const dbInstanceId = FirestoreService.instanceId;
+
   return (
     <ScreenWrapper>
       <TouchableOpacity style={styles.closeButton} onPress={navigation.goBack}>
@@ -57,6 +60,7 @@ export const MenuScreen = ({navigation}: Props) => {
       <View>
         <Text style={styles.optionTitle}>User Data</Text>
         <Text style={styles.optionText}>UID: {user?.uid}</Text>
+        <Text style={styles.optionText}>DB collection ID: {dbInstanceId}</Text>
         <Text style={styles.optionText}>Email: {user?.email ?? "NULL"}</Text>
         <Text style={styles.optionText}>
           Anonymous: {String(user?.isAnonymous ?? "false")}

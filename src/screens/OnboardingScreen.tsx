@@ -23,7 +23,8 @@ import {
   signInWithEmailAndPassword,
   signUpWithEmailAndPassword,
 } from "../utils/auth/auth";
-import {getOrCreateDocumentInstance} from "../utils/firestore/firestore";
+import {FirestoreService} from "../utils/firestore/firestore";
+import {useAppState} from "../store/store";
 
 import type {NavigationProp} from "@react-navigation/native";
 
@@ -32,10 +33,13 @@ interface Props {
   onContinueWithoutAccountPress?: () => void;
 }
 
+// TODO: Rename to AuthScreen, loading state, error state, etc.
 export const OnboardingScreen = ({
   navigation,
   onContinueWithoutAccountPress,
 }: Props) => {
+  const {setState} = useAppState();
+
   const [existingUser, setExistingUser] = useState<boolean>();
 
   const [email, setEmail] = useState<string>();
@@ -107,7 +111,11 @@ export const OnboardingScreen = ({
           await signUpWithEmailAndPassword(email, password);
         }
 
-        await getOrCreateDocumentInstance();
+        await FirestoreService.replaceInstance();
+
+        FirestoreService.listenForChanges(snapshot => {
+          if (snapshot) setState(snapshot);
+        });
 
         if (navigation?.navigate) {
           navigation.navigate("Home");
@@ -190,9 +198,11 @@ export const OnboardingScreen = ({
               </Text>
             </TouchableOpacity>
           ) : null}
-          <TouchableOpacity onPress={logOutUser}>
-            <Text style={styles.continueWithoutAccountText}>Test LogOut</Text>
-          </TouchableOpacity>
+          {__DEV__ ? (
+            <TouchableOpacity onPress={logOutUser}>
+              <Text style={styles.continueWithoutAccountText}>Test LogOut</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       </KeyboardAvoidingView>
     </ScreenWrapper>

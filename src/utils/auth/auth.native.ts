@@ -8,28 +8,22 @@ import type {IStoredUser} from "../../types";
 export const initializeAuth = async () => {
   await initializeAppCheck();
 
-  const user = auth().currentUser;
-
-  if (!user) {
-    await signInAnonymously();
-  }
-
   return auth().currentUser;
 };
 
 export const signInAnonymously = async () => {
-  try {
-    const {user} = await auth().signInAnonymously();
-    return user;
-  } catch (error) {
-    console.error(error);
-  }
+  if (auth().currentUser) await auth().signOut();
+
+  const {user} = await auth().signInAnonymously();
+  return user;
 };
 
 export const signInWithEmailAndPassword = async (
   email: string,
   password: string,
 ) => {
+  if (auth().currentUser) await auth().signOut();
+
   const {user} = await auth().signInWithEmailAndPassword(email, password);
 
   return user;
@@ -39,6 +33,8 @@ export const signUpWithEmailAndPassword = async (
   email: string,
   password: string,
 ) => {
+  if (auth().currentUser) await auth().signOut();
+
   const {user} = await auth().createUserWithEmailAndPassword(email, password);
 
   await user.sendEmailVerification();
