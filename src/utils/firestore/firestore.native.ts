@@ -2,7 +2,7 @@ import firestore, {
   type FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 
-import {getCurrentUser} from "../auth/auth";
+import {AuthService} from "../auth/auth";
 import {getInitialState} from "../../store/constants";
 
 import {COLLECTION_NAME} from "./constants";
@@ -19,7 +19,7 @@ class FirestoreServiceBase {
   private unsubscribe: (() => void) | null = null;
 
   async init() {
-    const user = getCurrentUser();
+    const user = AuthService.getCurrentUser();
 
     if (user) {
       this.user = user;
