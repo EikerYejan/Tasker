@@ -1,11 +1,14 @@
 import firestore, {
   type FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
+import {Platform} from "react-native";
+import DeviceInfo from "react-native-device-info";
 
 import {AuthService} from "../auth/auth";
 import {getInitialState} from "../../store/constants";
 
 import {COLLECTION_NAME} from "./constants";
+import {version} from "../../../package.json";
 
 import type {IStoredUser, IAppStore} from "../../types";
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
@@ -28,7 +31,7 @@ class FirestoreServiceBase {
       const document = await instance.get();
 
       if (!document.data()) {
-        await instance.set(getInitialState());
+        await this.setDocumentData(getInitialState());
       }
 
       this.instance =
@@ -42,6 +45,15 @@ class FirestoreServiceBase {
 
   get instanceId() {
     return this.instance?.id;
+  }
+
+  private get documentMetadata() {
+    return {
+      appVersion: version,
+      build: DeviceInfo.getBuildNumber() ?? null,
+      platform: Platform.OS,
+      updatedAt: firestore.FieldValue.serverTimestamp(),
+    };
   }
 
   replaceInstance = async () => {
@@ -69,7 +81,10 @@ class FirestoreServiceBase {
 
   setDocumentData = async (data: Partial<IAppStore>) => {
     if (this.instance) {
-      await this.instance.update(this.sanitizeData(data));
+      await this.instance.update({
+        ...this.sanitizeData(data),
+        ...this.documentMetadata,
+      });
     }
   };
 
