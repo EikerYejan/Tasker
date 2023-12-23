@@ -76,7 +76,7 @@ export const HomeScreen = () => {
         indicatorStyle="black"
         keyboardDismissMode="interactive"
         scrollIndicatorInsets={{right: -3}}
-        style={styles.page}>
+        contentContainerStyle={styles.page}>
         <Text style={styles.pageTitle}>Ahoy! {user?.displayName}</Text>
         <Text style={styles.pageDescription}>Welcome to Tasker</Text>
         <View
