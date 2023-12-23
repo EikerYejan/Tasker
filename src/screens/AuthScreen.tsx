@@ -4,9 +4,9 @@ import {
   Platform,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   type TextInput as RNTextInput,
+  Pressable,
 } from "react-native";
 import {useMemo, useRef, useState} from "react";
 
@@ -102,7 +102,11 @@ export const AuthScreen = ({
         const isEmailUsed = await AuthService.getIsEmailUsed(email);
 
         setExistingUser(isEmailUsed);
-        passwordInputRef?.current?.focus();
+
+        // Need timeout in web for some reason.
+        setTimeout(() => {
+          passwordInputRef?.current?.focus();
+        }, 100);
 
         return;
       }
@@ -175,11 +179,9 @@ export const AuthScreen = ({
         behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.inner}>
           {navigation && navigation?.goBack ? (
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={navigation.goBack}>
+            <Pressable style={styles.closeButton} onPress={navigation.goBack}>
               <Icon name="close-outline" size={35} color={colors.text} />
-            </TouchableOpacity>
+            </Pressable>
           ) : null}
           <Text style={styles.heading}>{pageTitle}</Text>
           <TextInput
@@ -192,18 +194,21 @@ export const AuthScreen = ({
             onChangeText={setEmail}
             onSubmitEditing={onNextPress}
           />
-          {typeof existingUser === "boolean" && (
-            <TextInput
-              secureTextEntry
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="Your password"
-              ref={passwordInputRef}
-              style={styles.input}
-              onChangeText={setPassword}
-              onSubmitEditing={onNextPress}
-            />
-          )}
+          <TextInput
+            focusable
+            autoCapitalize="none"
+            autoCorrect={false}
+            id="passwordInput"
+            placeholder="Your password"
+            ref={passwordInputRef}
+            secureTextEntry
+            style={[
+              styles.input,
+              typeof existingUser !== "boolean" ? {display: "none"} : {},
+            ]}
+            onChangeText={setPassword}
+            onSubmitEditing={onNextPress}
+          />
           <Button
             loading={loading}
             disabled={submitButtonDisabled}
@@ -212,24 +217,27 @@ export const AuthScreen = ({
             onPress={onNextPress}
           />
           {typeof existingUser === "boolean" ? (
-            <TouchableOpacity
+            <Pressable
+              disabled={loading}
               onPress={() => {
                 setExistingUser(undefined);
               }}>
               <Text style={styles.continueWithoutAccountText}>Go Back</Text>
-            </TouchableOpacity>
+            </Pressable>
           ) : null}
           {onContinueWithoutAccountPress ? (
-            <TouchableOpacity onPress={onContinueWithoutAccountPress}>
+            <Pressable
+              disabled={loading}
+              onPress={onContinueWithoutAccountPress}>
               <Text style={styles.continueWithoutAccountText}>
                 Continue without an account
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           ) : null}
           {__DEV__ ? (
-            <TouchableOpacity onPress={AuthService.logOutUser}>
+            <Pressable disabled={loading} onPress={AuthService.logOutUser}>
               <Text style={styles.continueWithoutAccountText}>Test LogOut</Text>
-            </TouchableOpacity>
+            </Pressable>
           ) : null}
         </View>
       </KeyboardAvoidingView>
