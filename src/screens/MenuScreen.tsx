@@ -6,7 +6,7 @@ import {Button} from "../components/Button/Button";
 
 import {useAppearance} from "../hooks/useAppearance";
 import {useAppState} from "../store/store";
-import {FirestoreService} from "../utils/firestore/firestore.native";
+import {FirestoreService} from "../utils/firestore/firestore";
 
 import {FONTS} from "../constants/fonts";
 
@@ -51,6 +51,15 @@ export const MenuScreen = ({navigation}: Props) => {
   });
 
   const dbInstanceId = FirestoreService.instanceId;
+  const userCreatedAt = new Date(
+    Number(user?.metadata.creationTime ?? user?.metadata?.createdAt ?? 0),
+  ).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
 
   return (
     <ScreenWrapper>
@@ -65,19 +74,7 @@ export const MenuScreen = ({navigation}: Props) => {
         <Text style={styles.optionText}>
           Anonymous: {String(user?.isAnonymous ?? "false")}
         </Text>
-        <Text style={styles.optionText}>
-          Created At:{" "}
-          {new Date(user?.metadata.creationTime ?? "").toLocaleDateString(
-            "en-US",
-            {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-              hour: "numeric",
-              minute: "numeric",
-            },
-          )}
-        </Text>
+        <Text style={styles.optionText}>Created At: {userCreatedAt}</Text>
       </View>
       {user && !user?.isAnonymous ? (
         <View style={styles.option}>

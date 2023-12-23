@@ -8,6 +8,8 @@ import {
 } from "firebase/auth";
 import {WebFirebaseService} from "../webFirebaseService";
 
+import type {IStoredUser} from "../../types";
+
 class AuthServiceBase {
   private unsubscribeAuthState: (() => void) | null = null;
 
@@ -61,10 +63,11 @@ class AuthServiceBase {
     await this.auth.signOut();
   };
 
-  // TODO: add type
-  listenToAuthState = (cb: (user: any | null) => void) => {
+  listenToAuthState = (cb: (user: IStoredUser | null) => void) => {
     const unsubscribe = this.auth.onAuthStateChanged(result => {
-      cb?.(result);
+      const user = result as IStoredUser;
+
+      cb?.(user);
     });
 
     this.unsubscribeAuthState = unsubscribe;

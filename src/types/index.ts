@@ -24,13 +24,18 @@ export type IStoredUser = Pick<
   | "email"
   | "emailVerified"
   | "isAnonymous"
-  | "metadata"
-  | "multiFactor"
   | "phoneNumber"
   | "photoURL"
   | "providerData"
   | "providerId"
   | "uid"
 > & {
+  metadata: {
+    createdAt?: string;
+    creationTime?: string;
+    lastLoginAt?: string;
+    lastSignInTime?: string;
+  };
+  multiFactor?: Pick<FirebaseAuthTypes.User, "multiFactor">;
   onBoardingComplete?: boolean;
 };
