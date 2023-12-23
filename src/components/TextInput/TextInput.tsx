@@ -25,6 +25,7 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
     const styles = StyleSheet.create({
       container: {
         width: "100%",
+        height: 40,
       },
       passwordIcon: {
         position: "absolute",
@@ -36,9 +37,9 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
         borderWidth: 1,
         color: colors.text,
         fontFamily: FONTS.POPPINS_REGULAR,
-        minHeight: 40,
         padding: 10,
         width: "100%",
+        height: "100%",
       },
     });
 
