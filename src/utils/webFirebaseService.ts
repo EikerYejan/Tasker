@@ -1,9 +1,6 @@
 import {WEB_RECAPTCHA_SITE_KEY} from "@env";
 import {type FirebaseApp, initializeApp} from "firebase/app";
-import {
-  initializeAppCheck,
-  ReCaptchaEnterpriseProvider,
-} from "firebase/app-check";
+import {initializeAppCheck, ReCaptchaV3Provider} from "firebase/app-check";
 
 class WebFirebaseServiceBase {
   private readonly app: FirebaseApp = initializeApp({
@@ -22,7 +19,7 @@ class WebFirebaseServiceBase {
     }
 
     initializeAppCheck(this.app, {
-      provider: new ReCaptchaEnterpriseProvider(WEB_RECAPTCHA_SITE_KEY),
+      provider: new ReCaptchaV3Provider(WEB_RECAPTCHA_SITE_KEY),
       isTokenAutoRefreshEnabled: true,
     });
   }
