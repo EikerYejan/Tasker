@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "REMOTE",
+    "project_number": "1005272971972",
     "project_id": "taskszen",
     "storage_bucket": "taskszen.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "REMOTE",
+        "mobilesdk_app_id": "1:1005272971972:android:2a64fca3f13495c93f6791",
         "android_client_info": {
           "package_name": "com.eikeryejan.taskzen"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "REMOTE"
+          "current_key": "AIzaSyCysH5M9bGDtXQqGStOiM2EUkIXkpn8BYU"
         }
       ],
       "services": {

@@ -133,6 +133,10 @@ export const AuthScreen = ({
         message = "Invalid email";
       } else if (error.code === "auth/weak-password") {
         message = "Password is too weak";
+      } else if (error.code === "auth/wrong-password") {
+        message = "Check your email and password";
+      } else if (error.code === "auth/network-request-failed") {
+        message = "Network request failed";
       }
 
       Alert.alert("There's been an error", message);
