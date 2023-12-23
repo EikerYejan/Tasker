@@ -1,8 +1,9 @@
 import {atom, useRecoilState} from "recoil";
 
-import {AuthService, toStoredUser} from "../utils/auth/auth";
+import {AuthService} from "../utils/auth/auth";
 import {FirestoreService} from "../utils/firestore/firestore";
 import {getInitialState} from "./constants";
+import {toStoredUser} from "../utils";
 
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
 import type {IAppStore, IStoredUser, ITodoItem} from "../types";

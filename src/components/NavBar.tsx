@@ -89,11 +89,9 @@ export const NavBar = () => {
         barStyle={barStyle}
       />
       <View style={styles.container}>
-        {Platform.OS !== "web" ? (
-          <TouchableOpacity onPress={navigateToMenu}>
-            <Icon color={colors.text} name="menu-outline" size={30} />
-          </TouchableOpacity>
-        ) : null}
+        <TouchableOpacity onPress={navigateToMenu}>
+          <Icon color={colors.text} name="menu-outline" size={30} />
+        </TouchableOpacity>
         <TouchableOpacity style={styles.themeSwitch} onPress={toggleAppearance}>
           <Animated.View
             style={[styles.themeSwitchHandle, {left: switchOverlayTranslateX}]}

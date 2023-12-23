@@ -3,38 +3,6 @@ import auth, {type FirebaseAuthTypes} from "@react-native-firebase/auth";
 
 import {IOS_APP_CHECK_DEBUG_TOKEN} from "@env";
 
-import type {IStoredUser} from "../../types";
-
-export const toStoredUser = (user: FirebaseAuthTypes.User): IStoredUser => {
-  const {
-    displayName,
-    email,
-    emailVerified,
-    isAnonymous,
-    metadata,
-    multiFactor,
-    phoneNumber,
-    photoURL,
-    providerData,
-    providerId,
-    uid,
-  } = user;
-
-  return {
-    displayName,
-    email,
-    emailVerified,
-    isAnonymous,
-    metadata,
-    multiFactor,
-    phoneNumber,
-    photoURL,
-    providerData,
-    providerId,
-    uid,
-  };
-};
-
 class AuthServiceBase {
   private unsubscribeAuthState: (() => void) | null = null;
 
