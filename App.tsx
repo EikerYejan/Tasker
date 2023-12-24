@@ -1,5 +1,6 @@
 import "react-native-gesture-handler";
 import "@expo/match-media";
+import "@expo/metro-runtime";
 
 import {StyleSheet, View} from "react-native";
 import {useFonts} from "expo-font";

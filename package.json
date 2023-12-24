@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@expo/match-media": "0.4.0",
+    "@expo/metro-runtime": "2.2.16",
     "@expo/webpack-config": "19.0.0",
     "@react-native-firebase/app": "18.7.3",
     "@react-native-firebase/app-check": "18.7.3",
