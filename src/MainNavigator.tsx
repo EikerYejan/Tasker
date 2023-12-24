@@ -1,9 +1,14 @@
+import {Platform} from "react-native";
+import {Suspense, lazy} from "react";
 import {createStackNavigator} from "@react-navigation/stack";
 
 import {HomeScreen} from "./screens/HomeScreen/HomeScreen";
-import {MenuScreen} from "./screens/MenuScreen";
 import {AuthScreen} from "./screens/AuthScreen";
 import {NavBar} from "./components/NavBar";
+
+const MenuScreen = lazy(() =>
+  import("./screens/MenuScreen").then(mod => ({default: mod.MenuScreen})),
+);
 
 const Stack = createStackNavigator();
 
@@ -15,14 +20,20 @@ export const MainNavigator = () => {
         header: () => <NavBar />,
       }}>
       <Stack.Screen component={HomeScreen} name="Home" />
-      <Stack.Screen
-        component={MenuScreen}
-        name="Menu"
-        options={{
-          headerShown: false,
-          presentation: "modal",
-        }}
-      />
+      {Platform.OS !== "web" ? (
+        <Stack.Screen
+          name="Menu"
+          options={{
+            headerShown: false,
+            presentation: "modal",
+          }}>
+          {props => (
+            <Suspense>
+              <MenuScreen {...props} />
+            </Suspense>
+          )}
+        </Stack.Screen>
+      ) : null}
       <Stack.Screen
         component={AuthScreen}
         name="Login"

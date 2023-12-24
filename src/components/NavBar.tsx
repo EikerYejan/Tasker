@@ -1,4 +1,4 @@
-import {useEffect, useMemo} from "react";
+import {Suspense, lazy, useEffect, useMemo, useState} from "react";
 import {
   Platform,
   SafeAreaView,
@@ -13,12 +13,20 @@ import {useNavigation} from "@react-navigation/native";
 
 import {useAppearance} from "../hooks/useAppearance";
 
+const WebMenu = lazy(() =>
+  import("./WebMenu").then(mod => ({default: mod.WebMenu})),
+);
+
 export const NavBar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const isWeb = Platform.OS === "web";
+
   const switchOverlayTranslateX = useSharedValue(0);
 
   const {appearance, colors, toggleAppearance} = useAppearance();
 
-  const {navigate} = useNavigation<any>();
+  const navigation = useNavigation<any>();
 
   const styles = StyleSheet.create({
     container: {
@@ -67,7 +75,15 @@ export const NavBar = () => {
   });
 
   const navigateToMenu = () => {
-    navigate("Menu");
+    if (isWeb) {
+      setIsMenuOpen(true);
+    } else {
+      navigation.navigate("Menu");
+    }
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   useEffect(() => {
@@ -83,6 +99,11 @@ export const NavBar = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      {isWeb ? (
+        <Suspense fallback={null}>
+          <WebMenu isOpen={isMenuOpen} onClose={closeMenu} />
+        </Suspense>
+      ) : null}
       <StatusBar
         animated
         backgroundColor={colors.background}

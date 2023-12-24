@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import {ScreenWrapper} from "../components/ScreenWrapper";
@@ -14,9 +14,10 @@ import type {NavigationProp} from "@react-navigation/native";
 
 interface Props {
   navigation: NavigationProp<any>;
+  onClose?: () => void;
 }
 
-export const MenuScreen = ({navigation}: Props) => {
+export const MenuScreen = ({navigation, onClose}: Props) => {
   const {colors} = useAppearance();
   const {
     resetState,
@@ -26,7 +27,7 @@ export const MenuScreen = ({navigation}: Props) => {
   const styles = StyleSheet.create({
     option: {
       borderBottomColor: colors.border,
-      borderBottomWidth: 1,
+      borderBottomWidth: Platform.OS === "web" ? 0 : 1,
       marginTop: 30,
     },
     optionTitle: {
@@ -61,9 +62,17 @@ export const MenuScreen = ({navigation}: Props) => {
     minute: "numeric",
   });
 
+  const onCloseButtonPress = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <ScreenWrapper>
-      <TouchableOpacity style={styles.closeButton} onPress={navigation.goBack}>
+      <TouchableOpacity style={styles.closeButton} onPress={onCloseButtonPress}>
         <Icon name="close-outline" size={35} color={colors.text} />
       </TouchableOpacity>
       <View>
@@ -87,6 +96,7 @@ export const MenuScreen = ({navigation}: Props) => {
           <Button
             label="Log In"
             onPress={() => {
+              onClose?.();
               navigation.navigate("Login");
             }}
           />
