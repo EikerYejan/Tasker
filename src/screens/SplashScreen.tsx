@@ -20,10 +20,6 @@ export const SplasScreen = () => {
 
   const initializeDatabase = async () => {
     await FirestoreService.init();
-
-    FirestoreService.listenForChanges(snapshot => {
-      if (snapshot) setState(snapshot);
-    });
   };
 
   const onContinueWithoutAccount = async () => {
@@ -44,6 +40,10 @@ export const SplasScreen = () => {
       setAuthInitialized(true);
 
       await RNSplashScreen.hideAsync();
+
+      FirestoreService.listenForChanges(snapshot => {
+        if (snapshot) setState(snapshot);
+      });
 
       AuthService.listenToAuthState(snapshot => {
         if (snapshot) setUser(snapshot);

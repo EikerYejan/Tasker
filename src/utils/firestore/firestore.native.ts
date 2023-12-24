@@ -6,6 +6,7 @@ import DeviceInfo from "react-native-device-info";
 
 import {AuthService} from "../auth/auth";
 import {getInitialState} from "../../store/constants";
+import {toStoredUser} from "..";
 
 import {COLLECTION_NAME} from "./constants";
 import {version} from "../../../package.json";
@@ -18,6 +19,8 @@ class FirestoreServiceBase {
 
   private unsubscribe: (() => void) | null = null;
 
+  private stateChangeListener: ((data?: IAppStore) => void) | null = null;
+
   async init() {
     const user = AuthService.getCurrentUser();
 
@@ -29,7 +32,13 @@ class FirestoreServiceBase {
         instance as FirebaseFirestoreTypes.DocumentReference<IAppStore>;
 
       if (!document.data()) {
-        await this.setDocumentData(getInitialState());
+        await instance.set(
+          this.sanitizeData({
+            user: toStoredUser(user),
+            ...getInitialState(),
+            ...this.documentMetadata,
+          }),
+        );
       }
     }
   }
@@ -57,6 +66,10 @@ class FirestoreServiceBase {
     if (this.unsubscribe) this.unsubscribe();
 
     await this.init();
+
+    if (this.stateChangeListener) {
+      this.listenForChanges(this.stateChangeListener);
+    }
   };
 
   sanitizeData = <T extends Record<string, unknown>>(data: T) => {
@@ -73,6 +86,8 @@ class FirestoreServiceBase {
   };
 
   listenForChanges = async (callback: (data?: IAppStore) => void) => {
+    this.stateChangeListener = callback;
+
     if (this.instance) {
       this.unsubscribe = this.instance.onSnapshot(snapshot => {
         const data = snapshot.data();
@@ -83,6 +98,8 @@ class FirestoreServiceBase {
 
   stopListeningForChanges = () => {
     if (this.unsubscribe) {
+      this.stateChangeListener = null;
+
       this.unsubscribe();
     }
   };

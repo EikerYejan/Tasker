@@ -18,6 +18,7 @@ import {getInitialState} from "../../store/constants";
 import {version} from "../../../package.json";
 
 import type {IAppStore} from "../../types";
+import {toStoredUser} from "..";
 
 class FirestoreServiceBase {
   private readonly app = WebFirebaseService.firebaseApp;
@@ -25,6 +26,8 @@ class FirestoreServiceBase {
   private instance: DocumentReference<IAppStore, IAppStore> | null = null;
 
   private unsubscribe: (() => void) | null = null;
+
+  private stateChangeListener: ((data?: IAppStore) => void) | null = null;
 
   private get db() {
     return getFirestore(this.app);
@@ -40,9 +43,14 @@ class FirestoreServiceBase {
       this.instance = document as typeof this.instance;
 
       if (!item.data()) {
-        await setDoc(document, {});
-
-        await this.setDocumentData(getInitialState());
+        await setDoc(
+          document,
+          this.sanitizeData({
+            user: toStoredUser(user),
+            ...getInitialState(),
+            ...this.documentMetadata,
+          }),
+        );
       }
     }
   }
@@ -70,6 +78,10 @@ class FirestoreServiceBase {
     if (this.unsubscribe) this.unsubscribe();
 
     await this.init();
+
+    if (this.stateChangeListener) {
+      this.listenForChanges(this.stateChangeListener);
+    }
   };
 
   sanitizeData = <T extends Record<string, unknown>>(data: T) => {
@@ -86,6 +98,8 @@ class FirestoreServiceBase {
   };
 
   listenForChanges = async (callback: (data?: IAppStore) => void) => {
+    this.stateChangeListener = callback;
+
     if (!this.instance) return;
 
     this.unsubscribe = onSnapshot(this.instance, snapshot => {
@@ -95,6 +109,8 @@ class FirestoreServiceBase {
 
   stopListeningForChanges = () => {
     if (this.unsubscribe) {
+      this.stateChangeListener = null;
+
       this.unsubscribe();
     }
   };

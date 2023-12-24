@@ -18,7 +18,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 import {FONTS} from "../constants/fonts";
 
 import {useAppearance} from "../hooks/useAppearance";
-import {useAppState} from "../store/store";
 import {AuthService} from "../utils/auth/auth";
 import {FirestoreService} from "../utils/firestore/firestore";
 import {isEmailValid} from "../utils";
@@ -30,13 +29,11 @@ interface Props {
   onContinueWithoutAccountPress?: () => void;
 }
 
-// TODO: error state, transitions.
+// TODO: error state.
 export const AuthScreen = ({
   navigation,
   onContinueWithoutAccountPress,
 }: Props) => {
-  const {setState} = useAppState();
-
   const [existingUser, setExistingUser] = useState<boolean>();
   const [loading, setLoading] = useState(false);
 
@@ -119,10 +116,6 @@ export const AuthScreen = ({
         }
 
         await FirestoreService.replaceInstance();
-
-        FirestoreService.listenForChanges(snapshot => {
-          if (snapshot) setState(snapshot);
-        });
 
         if (navigation?.navigate) {
           navigation.navigate("Home");
