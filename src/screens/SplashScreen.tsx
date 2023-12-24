@@ -22,13 +22,6 @@ export const SplasScreen = () => {
     await FirestoreService.init();
   };
 
-  const onContinueWithoutAccount = async () => {
-    const user = await AuthService.signInAnonymously();
-    await initializeDatabase();
-
-    setUser(user);
-  };
-
   useEffect(() => {
     AuthService.init().then(async user => {
       if (user) {
@@ -61,9 +54,7 @@ export const SplasScreen = () => {
   }
 
   if (!user?.uid) {
-    return (
-      <AuthScreen onContinueWithoutAccountPress={onContinueWithoutAccount} />
-    );
+    return <AuthScreen enableAnonymousLogin />;
   }
 
   return (

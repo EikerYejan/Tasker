@@ -25,15 +25,12 @@ import {isEmailValid} from "../utils";
 import type {NavigationProp} from "@react-navigation/native";
 
 interface Props {
+  enableAnonymousLogin?: boolean;
   navigation?: NavigationProp<any, any>;
-  onContinueWithoutAccountPress?: () => void;
 }
 
 // TODO: error state.
-export const AuthScreen = ({
-  navigation,
-  onContinueWithoutAccountPress,
-}: Props) => {
+export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   const [existingUser, setExistingUser] = useState<boolean>();
   const [loading, setLoading] = useState(false);
 
@@ -142,6 +139,17 @@ export const AuthScreen = ({
     }
   };
 
+  const onContinueWithoutAccount = async () => {
+    setLoading(true);
+
+    await AuthService.signInAnonymously();
+    await FirestoreService.replaceInstance();
+
+    if (navigation?.navigate) {
+      navigation.navigate("Home");
+    }
+  };
+
   const buttonText = useMemo(() => {
     if (typeof existingUser === "boolean") {
       return existingUser ? "Sign in" : "Sign up";
@@ -218,10 +226,8 @@ export const AuthScreen = ({
               <Text style={styles.continueWithoutAccountText}>Go Back</Text>
             </Pressable>
           ) : null}
-          {onContinueWithoutAccountPress ? (
-            <Pressable
-              disabled={loading}
-              onPress={onContinueWithoutAccountPress}>
+          {enableAnonymousLogin ? (
+            <Pressable disabled={loading} onPress={onContinueWithoutAccount}>
               <Text style={styles.continueWithoutAccountText}>
                 Continue without an account
               </Text>
