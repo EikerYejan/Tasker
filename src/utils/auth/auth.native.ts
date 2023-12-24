@@ -44,7 +44,15 @@ class AuthServiceBase {
   };
 
   logOutUser = async () => {
-    await auth().signOut();
+    if (auth().currentUser) await auth().signOut();
+  };
+
+  deleteUser = () => {
+    const user = auth().currentUser;
+
+    if (!user) return Promise.reject(Error("No user"));
+
+    return user.delete();
   };
 
   listenToAuthState = (cb: (user: FirebaseAuthTypes.User | null) => void) => {

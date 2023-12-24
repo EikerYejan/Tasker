@@ -85,6 +85,12 @@ class FirestoreServiceBase {
     }
   };
 
+  deleteDocument = async () => {
+    if (this.instance) {
+      await this.instance.delete();
+    }
+  };
+
   listenForChanges = async (callback: (data?: IAppStore) => void) => {
     this.stateChangeListener = callback;
 

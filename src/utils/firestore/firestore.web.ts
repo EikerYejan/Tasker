@@ -7,6 +7,7 @@ import {
   updateDoc,
   serverTimestamp,
   setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import DeviceInfo from "react-native-device-info";
 import {Platform} from "react-native";
@@ -94,6 +95,12 @@ class FirestoreServiceBase {
         ...this.sanitizeData(data),
         ...this.documentMetadata,
       });
+    }
+  };
+
+  deleteDocument = async () => {
+    if (this.instance) {
+      await deleteDoc(this.instance);
     }
   };
 

@@ -1,4 +1,11 @@
-import {Platform, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+  Alert,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import {ScreenWrapper} from "../components/ScreenWrapper";
@@ -7,6 +14,7 @@ import {Button} from "../components/Button/Button";
 import {useAppearance} from "../hooks/useAppearance";
 import {useAppState} from "../store/store";
 import {FirestoreService} from "../utils/firestore/firestore";
+import {AuthService} from "../utils/auth/auth";
 
 import {FONTS} from "../constants/fonts";
 
@@ -70,6 +78,33 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
     }
   };
 
+  const onDeleteScreen = () => {
+    const alertTitle = "Are you sure you want to delete your account?";
+
+    const deleteAccount = async () => {
+      await FirestoreService.deleteDocument();
+      await AuthService.deleteUser();
+
+      resetState();
+    };
+
+    // TODO: Handle IOS users that don't allow popups.
+    if (Platform.OS === "web" && window.confirm(alertTitle)) {
+      deleteAccount();
+    } else {
+      Alert.alert(alertTitle, "", [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: deleteAccount,
+        },
+      ]);
+    }
+  };
+
   return (
     <ScreenWrapper>
       <TouchableOpacity style={styles.closeButton} onPress={onCloseButtonPress}>
@@ -90,6 +125,13 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
       {user && !user?.isAnonymous ? (
         <View style={styles.option}>
           <Button label="Log Out" onPress={resetState} />
+          {!user?.isAnonymous ? (
+            <Text
+              onPress={onDeleteScreen}
+              style={[styles.optionText, {marginBottom: 10}]}>
+              Delete Account
+            </Text>
+          ) : null}
         </View>
       ) : (
         <View style={styles.option}>

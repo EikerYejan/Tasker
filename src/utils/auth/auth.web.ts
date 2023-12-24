@@ -5,6 +5,7 @@ import {
   sendEmailVerification,
   signInAnonymously,
   signInWithEmailAndPassword,
+  deleteUser as deleteCurrentUser,
 } from "firebase/auth";
 import {WebFirebaseService} from "../webFirebaseService";
 
@@ -61,6 +62,12 @@ class AuthServiceBase {
 
   logOutUser = async () => {
     await this.auth.signOut();
+  };
+
+  deleteUser = () => {
+    if (!this.auth.currentUser) return Promise.reject(Error("No user"));
+
+    return deleteCurrentUser(this.auth.currentUser);
   };
 
   listenToAuthState = (cb: (user: IStoredUser | null) => void) => {
