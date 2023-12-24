@@ -39,6 +39,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
 
   const {colors} = useAppearance();
 
+  const emailInputRef = useRef<RNTextInput>(null);
   const passwordInputRef = useRef<RNTextInput>(null);
 
   const styles = StyleSheet.create({
@@ -87,6 +88,15 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       top: 0,
     },
   });
+
+  const onBackPress = () => {
+    setExistingUser(undefined);
+
+    // Need timeout in web for some reason.
+    setTimeout(() => {
+      emailInputRef?.current?.focus();
+    }, 100);
+  };
 
   const onNextPress = async () => {
     try {
@@ -189,16 +199,18 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             autoCapitalize="none"
             autoComplete="email"
             autoCorrect={false}
+            disabled={typeof existingUser === "boolean" ?? loading}
             inputMode="email"
             placeholder="Your email"
+            ref={emailInputRef}
             style={styles.input}
             onChangeText={setEmail}
             onSubmitEditing={onNextPress}
           />
           <TextInput
-            focusable
             autoCapitalize="none"
             autoCorrect={false}
+            disabled={loading}
             id="passwordInput"
             placeholder="Your password"
             ref={passwordInputRef}
@@ -218,11 +230,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             onPress={onNextPress}
           />
           {typeof existingUser === "boolean" ? (
-            <Pressable
-              disabled={loading}
-              onPress={() => {
-                setExistingUser(undefined);
-              }}>
+            <Pressable disabled={loading} onPress={onBackPress}>
               <Text style={styles.continueWithoutAccountText}>Go Back</Text>
             </Pressable>
           ) : null}
