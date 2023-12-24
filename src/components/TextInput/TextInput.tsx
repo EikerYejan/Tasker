@@ -12,8 +12,15 @@ import {FONTS} from "../../constants/fonts";
 
 import {useAppearance} from "../../hooks/useAppearance";
 
-export const TextInput = forwardRef<RNTextInput, TextInputProps>(
-  function TextInputWithRef({style, secureTextEntry, ...props}, ref) {
+interface Props extends TextInputProps {
+  disabled?: boolean;
+}
+
+export const TextInput = forwardRef<RNTextInput, Props>(
+  function TextInputWithRef(
+    {disabled = false, style, secureTextEntry, ...props},
+    ref,
+  ) {
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const onPasswordIconPress = () => {
@@ -26,6 +33,10 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
       container: {
         width: "100%",
         height: 40,
+      },
+      disabledContainer: {
+        opacity: 0.5,
+        pointerEvents: "none",
       },
       passwordIcon: {
         position: "absolute",
@@ -44,7 +55,13 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
     });
 
     return (
-      <View style={[styles.container, style]}>
+      <View
+        aria-disabled={disabled}
+        style={[
+          styles.container,
+          style,
+          disabled ? styles.disabledContainer : {},
+        ]}>
         <RNTextInput
           {...props}
           ref={ref}
