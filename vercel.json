@@ -4,7 +4,7 @@
   "devCommand": "expo",
   "cleanUrls": true,
   "framework": null,
-  "redirects": [
+  "redirect": [
     {
       "source": "/privacy-policy",
       "destination": "/assets/assets/static/privacy-policy.html"
