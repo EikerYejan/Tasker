@@ -18,7 +18,7 @@ import {FirestoreService} from "../utils/firestore/firestore";
 import {AuthService} from "../utils/auth/auth";
 
 import {FONTS} from "../constants/fonts";
-import {PRIVACY_POLICIY_URL} from "../constants/urls";
+import {PRIVACY_POLICIY_URL, TERMS_OF_SERVICE_URL} from "../constants/urls";
 
 import type {NavigationProp} from "@react-navigation/native";
 
@@ -116,6 +116,10 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
     Linking.openURL(PRIVACY_POLICIY_URL);
   };
 
+  const onTermsAndConditionsPress = () => {
+    Linking.openURL(TERMS_OF_SERVICE_URL);
+  };
+
   return (
     <ScreenWrapper>
       <TouchableOpacity style={styles.closeButton} onPress={onCloseButtonPress}>
@@ -164,6 +168,9 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
       )}
       <TouchableOpacity onPress={onPrivacyPolicyPress}>
         <Text style={[styles.optionText, {marginTop: 10}]}>Privacy Policy</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onTermsAndConditionsPress}>
+        <Text style={styles.optionText}>Terms & Conditions</Text>
       </TouchableOpacity>
     </ScreenWrapper>
   );
