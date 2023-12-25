@@ -150,13 +150,19 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   };
 
   const onContinueWithoutAccount = async () => {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    await AuthService.signInAnonymously();
-    await FirestoreService.replaceInstance();
+      await AuthService.signInAnonymously();
+      await FirestoreService.replaceInstance();
 
-    if (navigation?.navigate) {
-      navigation.navigate("Home");
+      if (navigation?.navigate) {
+        navigation.navigate("Home");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
