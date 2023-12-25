@@ -7,6 +7,7 @@ declare module "@react-navigation/native" {
       background: string;
       border: string;
       card: string;
+      error: string;
       notification: string;
       primary: string;
       primaryInverse: string;

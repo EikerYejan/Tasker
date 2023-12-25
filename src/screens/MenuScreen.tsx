@@ -1,5 +1,6 @@
 import {
   Alert,
+  Linking,
   Platform,
   StyleSheet,
   Text,
@@ -17,6 +18,7 @@ import {FirestoreService} from "../utils/firestore/firestore";
 import {AuthService} from "../utils/auth/auth";
 
 import {FONTS} from "../constants/fonts";
+import {PRIVACY_POLICIY_URL} from "../constants/urls";
 
 import type {NavigationProp} from "@react-navigation/native";
 
@@ -33,6 +35,11 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
   } = useAppState();
 
   const styles = StyleSheet.create({
+    deleteAccount: {
+      color: colors.error,
+      fontFamily: FONTS.POPPINS_BOLD,
+      fontWeight: "bold",
+    },
     option: {
       borderBottomColor: colors.border,
       borderBottomWidth: Platform.OS === "web" ? 0 : 1,
@@ -105,6 +112,10 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
     }
   };
 
+  const onPrivacyPolicyPress = () => {
+    Linking.openURL(PRIVACY_POLICIY_URL);
+  };
+
   return (
     <ScreenWrapper>
       <TouchableOpacity style={styles.closeButton} onPress={onCloseButtonPress}>
@@ -128,7 +139,7 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
           {!user?.isAnonymous ? (
             <Text
               onPress={onDeleteScreen}
-              style={[styles.optionText, {marginBottom: 10}]}>
+              style={[styles.optionText, styles.deleteAccount]}>
               Delete Account
             </Text>
           ) : null}
@@ -151,6 +162,9 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
           ) : null}
         </View>
       )}
+      <TouchableOpacity onPress={onPrivacyPolicyPress}>
+        <Text style={[styles.optionText, {marginTop: 10}]}>Privacy Policy</Text>
+      </TouchableOpacity>
     </ScreenWrapper>
   );
 };
