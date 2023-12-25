@@ -9,8 +9,7 @@
     "web": "expo start --web",
     "lint": "eslint src/**/*.{ts,tsx}",
     "type-check": "tsc",
-    "copy-static-assets": "cp -r ./assets/static ./dist/assets/assets/static",
-    "build:web": "expo export --platform web && yarn copy-static-assets"
+    "build:web": "expo export --platform web"
   },
   "dependencies": {
     "@expo/match-media": "0.4.0",
