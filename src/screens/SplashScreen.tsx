@@ -61,7 +61,7 @@ export const SplasScreen = () => {
     <NavigationContainer
       documentTitle={{
         enabled: true,
-        formatter: (opts, route) => `TasksZen | ${route?.name}`,
+        formatter: (_, route) => `TasksZen | ${route?.name}`,
       }}>
       <MainNavigator />
     </NavigationContainer>
