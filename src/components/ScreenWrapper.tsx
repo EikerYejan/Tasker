@@ -4,8 +4,10 @@ import Animated, {useSharedValue, withSpring} from "react-native-reanimated";
 
 import {useAppearance} from "../hooks/useAppearance";
 
+import type {ReactNode} from "react";
+
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export const ScreenWrapper = ({children}: Props) => {

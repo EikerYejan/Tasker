@@ -14,7 +14,7 @@ class WebFirebaseServiceBase {
   });
 
   constructor() {
-    if (__DEV__) {
+    if (process.env.NODE_ENV === "development") {
       (self as any).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
     }
 

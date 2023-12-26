@@ -120,6 +120,8 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
     Linking.openURL(TERMS_OF_SERVICE_URL);
   };
 
+  const dev = process.env.NODE_ENV === "development";
+
   return (
     <ScreenWrapper>
       <TouchableOpacity style={styles.closeButton} onPress={onCloseButtonPress}>
@@ -129,7 +131,7 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
         <Text style={styles.optionTitle}>User Data</Text>
         <Text style={styles.optionText}>UID: {user?.uid}</Text>
         <Text style={styles.optionText}>
-          Connected To Database: {String(!!dbInstanceId)}
+          Connected To Database: {Boolean(dbInstanceId).toString()}
         </Text>
         <Text style={styles.optionText}>Email: {user?.email ?? "NULL"}</Text>
         <Text style={styles.optionText}>
@@ -140,13 +142,13 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
       {user && !user?.isAnonymous ? (
         <View style={styles.option}>
           <Button label="Log Out" onPress={resetState} />
-          {!user?.isAnonymous ? (
+          {!user?.isAnonymous && (
             <Text
               onPress={onDeleteScreen}
               style={[styles.optionText, styles.deleteAccount]}>
               Delete Account
             </Text>
-          ) : null}
+          )}
         </View>
       ) : (
         <View style={styles.option}>
@@ -157,7 +159,7 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
               navigation.navigate("Login");
             }}
           />
-          {__DEV__ ? (
+          {dev ? (
             <Text
               onPress={resetState}
               style={[styles.optionText, {marginBottom: 10}]}>

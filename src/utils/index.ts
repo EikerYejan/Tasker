@@ -34,7 +34,7 @@ export const toStoredUser = (user: FirebaseAuthTypes.User): IStoredUser => {
     emailVerified,
     isAnonymous,
     metadata,
-    multiFactor,
+    multiFactor: multiFactor as any,
     phoneNumber,
     photoURL,
     providerData,

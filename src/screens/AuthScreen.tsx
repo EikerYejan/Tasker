@@ -205,7 +205,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             autoCapitalize="none"
             autoComplete="email"
             autoCorrect={false}
-            disabled={typeof existingUser === "boolean" ?? loading}
+            disabled={typeof existingUser === "boolean" || loading}
             inputMode="email"
             placeholder="Your email"
             ref={emailInputRef}
@@ -223,7 +223,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             secureTextEntry
             style={[
               styles.input,
-              typeof existingUser !== "boolean" ? {display: "none"} : {},
+              typeof existingUser !== "boolean" && {display: "none"},
             ]}
             onChangeText={setPassword}
             onSubmitEditing={onNextPress}
@@ -245,11 +245,6 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
               <Text style={styles.continueWithoutAccountText}>
                 Continue without an account
               </Text>
-            </Pressable>
-          ) : null}
-          {__DEV__ ? (
-            <Pressable disabled={loading} onPress={AuthService.logOutUser}>
-              <Text style={styles.continueWithoutAccountText}>Test LogOut</Text>
             </Pressable>
           ) : null}
         </View>

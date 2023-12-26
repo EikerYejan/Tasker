@@ -8,6 +8,7 @@ module.exports = {
     "standard-with-typescript",
     "plugin:react/recommended",
     "plugin:import/typescript",
+    "xo",
     "plugin:prettier/recommended",
   ],
   overrides: [
@@ -35,5 +36,6 @@ module.exports = {
     "@typescript-eslint/promise-function-async": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-misused-promises": "off",
+    "no-implicit-coercion": "off",
   },
 };
