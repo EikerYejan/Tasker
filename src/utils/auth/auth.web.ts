@@ -1,11 +1,14 @@
 import {
   createUserWithEmailAndPassword,
+  deleteUser as deleteCurrentUser,
+  EmailAuthProvider,
   fetchSignInMethodsForEmail,
   getAuth,
+  linkWithCredential,
   sendEmailVerification,
   signInAnonymously,
+  signInWithCredential,
   signInWithEmailAndPassword,
-  deleteUser as deleteCurrentUser,
 } from "firebase/auth";
 import {WebFirebaseService} from "../webFirebaseService";
 
@@ -43,6 +46,17 @@ class AuthServiceBase {
   };
 
   signUpWithEmailAndPassword = async (email: string, password: string) => {
+    if (this.auth.currentUser) {
+      const credential = EmailAuthProvider.credential(email, password);
+
+      await linkWithCredential(this.auth.currentUser, credential);
+      await signInWithCredential(this.auth, credential);
+
+      sendEmailVerification(this.auth.currentUser);
+
+      return this.auth.currentUser;
+    }
+
     const {user} = await createUserWithEmailAndPassword(
       this.auth,
       email,
@@ -71,7 +85,7 @@ class AuthServiceBase {
   };
 
   listenToAuthState = (cb: (user: IStoredUser | null) => void) => {
-    const unsubscribe = this.auth.onAuthStateChanged(result => {
+    const unsubscribe = this.auth.onIdTokenChanged(result => {
       const user = result as IStoredUser;
 
       cb?.(user);

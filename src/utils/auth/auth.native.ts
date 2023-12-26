@@ -3,6 +3,8 @@ import auth, {type FirebaseAuthTypes} from "@react-native-firebase/auth";
 
 import {IOS_APP_CHECK_DEBUG_TOKEN} from "@env";
 
+const dev = process.env.NODE_ENV === "development";
+
 class AuthServiceBase {
   private unsubscribeAuthState: (() => void) | null = null;
 
@@ -28,11 +30,22 @@ class AuthServiceBase {
   };
 
   signUpWithEmailAndPassword = async (email: string, password: string) => {
-    if (auth().currentUser) await auth().signOut();
+    const {currentUser} = auth();
+
+    if (currentUser) {
+      const credential = auth.EmailAuthProvider.credential(email, password);
+
+      await currentUser.linkWithCredential(credential);
+      await auth().signInWithCredential(credential);
+
+      auth().currentUser?.sendEmailVerification();
+
+      return auth().currentUser;
+    }
 
     const {user} = await auth().createUserWithEmailAndPassword(email, password);
 
-    await user.sendEmailVerification();
+    user.sendEmailVerification();
 
     return user;
   };
@@ -56,7 +69,7 @@ class AuthServiceBase {
   };
 
   listenToAuthState = (cb: (user: FirebaseAuthTypes.User | null) => void) => {
-    const unsubscribe = auth().onAuthStateChanged(result => {
+    const unsubscribe = auth().onUserChanged(result => {
       cb?.(result);
     });
 
@@ -80,17 +93,13 @@ class AuthServiceBase {
 
     rnfbProvider.configure({
       android: {
-        provider: __DEV__ ? "debug" : "playIntegrity",
+        provider: dev ? "debug" : "playIntegrity",
         debugToken: "TODO",
       },
       apple: {
-        provider: __DEV__ ? "debug" : "appAttestWithDeviceCheckFallback",
+        provider: dev ? "debug" : "appAttestWithDeviceCheckFallback",
         debugToken: IOS_APP_CHECK_DEBUG_TOKEN,
       },
-      /*   web: {
-        provider: "reCaptchaV3",
-        siteKey: "unknown",
-      }, */
     });
 
     return firebase.appCheck().initializeAppCheck({
