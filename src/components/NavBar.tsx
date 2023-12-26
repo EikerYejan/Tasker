@@ -36,11 +36,10 @@ export const NavBar = () => {
       flexDirection: "row",
       justifyContent: "space-between",
       paddingBottom: 15,
-      paddingHorizontal: 10,
+      paddingHorizontal: 20,
       ...Platform.select({
         web: {
           paddingBottom: 25,
-          paddingRight: 25,
           paddingTop: 25,
         },
         android: {

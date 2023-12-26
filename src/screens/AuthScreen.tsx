@@ -129,7 +129,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.code, error.message);
 
       let message = "Please try again";
 
@@ -141,6 +141,8 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
         message = "Check your email and password";
       } else if (error.code === "auth/network-request-failed") {
         message = "Network request failed";
+      } else if (error.code === "auth/too-many-requests") {
+        message = "Too many requests, please try again later";
       }
 
       Alert.alert("There's been an error", message);
