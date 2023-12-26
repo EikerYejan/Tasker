@@ -1,12 +1,4 @@
-import {
-  Alert,
-  Linking,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import {Linking, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import {ScreenWrapper} from "../components/ScreenWrapper";
@@ -16,6 +8,7 @@ import {useAppearance} from "../hooks/useAppearance";
 import {useAppState} from "../store/store";
 import {FirestoreService} from "../utils/firestore/firestore";
 import {AuthService} from "../utils/auth/auth";
+import {Alert} from "../utils/alert/alert";
 
 import {FONTS} from "../constants/fonts";
 import {PRIVACY_POLICIY_URL, TERMS_OF_SERVICE_URL} from "../constants/urls";
@@ -42,7 +35,7 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
     },
     option: {
       borderBottomColor: colors.border,
-      borderBottomWidth: Platform.OS === "web" ? 0 : 1,
+      borderBottomWidth: 1,
       marginTop: 30,
     },
     optionTitle: {
@@ -95,21 +88,17 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
       resetState();
     };
 
-    // TODO: Handle IOS users that don't allow popups.
-    if (Platform.OS === "web" && window.confirm(alertTitle)) {
-      deleteAccount();
-    } else {
-      Alert.alert(alertTitle, "", [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          onPress: deleteAccount,
-        },
-      ]);
-    }
+    Alert.alert(alertTitle, "", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Delete",
+        onPress: deleteAccount,
+        style: "destructive",
+      },
+    ]);
   };
 
   const onPrivacyPolicyPress = () => {

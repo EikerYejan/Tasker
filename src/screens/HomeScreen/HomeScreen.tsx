@@ -1,5 +1,6 @@
-import {Alert, Platform, ScrollView, Text, View} from "react-native";
+import {ScrollView, Text, View} from "react-native";
 import {useMemo, useState} from "react";
+import {useMediaQuery} from "react-responsive";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {Button} from "../../components/Button/Button";
@@ -9,10 +10,11 @@ import {Task} from "../../components/Task/Task";
 import {useAppState} from "../../store/store";
 
 import {generateId} from "../../utils";
-import {useMediaQuery} from "react-responsive";
+
 import {TABLET_WIDTH} from "../../constants/mediaQueries";
 import {getStyles} from "./styles";
 import {useAppearance} from "../../hooks/useAppearance";
+import {Alert} from "../../utils/alert/alert";
 
 export const HomeScreen = () => {
   const isTablet = useMediaQuery({minWidth: TABLET_WIDTH});
@@ -46,12 +48,6 @@ export const HomeScreen = () => {
 
   const onDelete = (id: string, done = false) => {
     if (!done) {
-      if (Platform.OS === "web" && window.confirm("Delete task?")) {
-        removeTodo(id, done);
-
-        return;
-      }
-
       Alert.alert("Delete task", "Are you sure you want to delete this task?", [
         {
           text: "Cancel",
@@ -59,9 +55,7 @@ export const HomeScreen = () => {
         },
         {
           text: "Delete",
-          onPress: () => {
-            removeTodo?.(id);
-          },
+          onPress: () => removeTodo(id),
           style: "destructive",
         },
       ]);

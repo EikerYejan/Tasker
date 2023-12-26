@@ -1,5 +1,4 @@
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -20,6 +19,7 @@ import {FONTS} from "../constants/fonts";
 import {useAppearance} from "../hooks/useAppearance";
 import {AuthService} from "../utils/auth/auth";
 import {FirestoreService} from "../utils/firestore/firestore";
+import {Alert} from "../utils/alert/alert";
 import {isEmailValid} from "../utils";
 
 import type {NavigationProp} from "@react-navigation/native";
