@@ -98,6 +98,34 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     }, 100);
   };
 
+  const onCompleteAuth = async () => {
+    await FirestoreService.replaceInstance();
+
+    if (navigation?.navigate) {
+      navigation.navigate("Home");
+    }
+  };
+
+  const alertError = (error: {code?: string; message: string}) => {
+    console.log(error.code, error.message);
+
+    let message = "Please try again";
+
+    if (error.code === "auth/invalid-email") {
+      message = "Invalid email";
+    } else if (error.code === "auth/weak-password") {
+      message = "Password is too weak";
+    } else if (error.code === "auth/wrong-password") {
+      message = "Check your email and password";
+    } else if (error.code === "auth/network-request-failed") {
+      message = "Network request failed";
+    } else if (error.code === "auth/too-many-requests") {
+      message = "Too many requests, please try again later";
+    }
+
+    Alert.alert("There's been an error", message);
+  };
+
   const onNextPress = async () => {
     try {
       setLoading(true);
@@ -117,35 +145,46 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
 
       if (email && password) {
         if (existingUser) {
-          await AuthService.signInWithEmailAndPassword(email, password);
+          const isLoggedInAsAnonymous =
+            AuthService.getCurrentUser()?.isAnonymous;
+
+          const emailSignIn = async () => {
+            try {
+              setLoading(true);
+              await AuthService.signInWithEmailAndPassword(email, password);
+              await onCompleteAuth();
+              setLoading(false);
+            } catch (error) {
+              alertError({code: error.code, message: error.message});
+            } finally {
+              setLoading(false);
+            }
+          };
+
+          if (isLoggedInAsAnonymous) {
+            Alert.alert(
+              "Be careful",
+              "If you sign in with this email, you will lose all your data.",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "Sign in",
+                  onPress: emailSignIn,
+                },
+              ],
+            );
+          } else {
+            await emailSignIn();
+          }
         } else {
           await AuthService.signUpWithEmailAndPassword(email, password);
         }
-
-        await FirestoreService.replaceInstance();
-
-        if (navigation?.navigate) {
-          navigation.navigate("Home");
-        }
       }
     } catch (error) {
-      console.log(error.code, error.message);
-
-      let message = "Please try again";
-
-      if (error.code === "auth/invalid-email") {
-        message = "Invalid email";
-      } else if (error.code === "auth/weak-password") {
-        message = "Password is too weak";
-      } else if (error.code === "auth/wrong-password") {
-        message = "Check your email and password";
-      } else if (error.code === "auth/network-request-failed") {
-        message = "Network request failed";
-      } else if (error.code === "auth/too-many-requests") {
-        message = "Too many requests, please try again later";
-      }
-
-      Alert.alert("There's been an error", message);
+      alertError({code: error.code, message: error.message});
     } finally {
       setLoading(false);
     }
