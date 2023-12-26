@@ -6,6 +6,7 @@ import {
   getAuth,
   linkWithCredential,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInAnonymously,
   signInWithCredential,
   signInWithEmailAndPassword,
@@ -66,6 +67,10 @@ class AuthServiceBase {
     await sendEmailVerification(user);
 
     return user;
+  };
+
+  sendPasswordResetEmail = async (email: string) => {
+    await sendPasswordResetEmail(this.auth, email);
   };
 
   getIsEmailUsed = async (email: string) => {

@@ -220,8 +220,8 @@ class AlertBase {
 
   prompt(
     title: string,
-    callbackOrButtons?: CallbackOrButtons,
     message?: string,
+    callbackOrButtons?: CallbackOrButtons,
   ) {
     const dialog = this.createDialogElement({
       callbackOrButtons,

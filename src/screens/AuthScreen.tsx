@@ -207,6 +207,21 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     }
   };
 
+  const onForgotPasswordPress = () => {
+    Alert.prompt("Forgot your password?", "Enter your email", async email => {
+      try {
+        await AuthService.sendPasswordResetEmail(email.replace(/\s/g, ""));
+
+        Alert.alert(
+          "Password reset email sent",
+          "Please check your email for further instructions.",
+        );
+      } catch (error) {
+        alertError({code: error.code, message: error.message});
+      }
+    });
+  };
+
   const buttonText = useMemo(() => {
     if (typeof existingUser === "boolean") {
       return existingUser ? "Sign in" : "Sign up";
@@ -288,6 +303,11 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
               </Text>
             </Pressable>
           ) : null}
+          <Pressable disabled={loading} onPress={onForgotPasswordPress}>
+            <Text style={[styles.continueWithoutAccountText, {marginTop: 0}]}>
+              Forgot your password?
+            </Text>
+          </Pressable>
         </View>
       </KeyboardAvoidingView>
     </ScreenWrapper>

@@ -50,6 +50,10 @@ class AuthServiceBase {
     return user;
   };
 
+  sendPasswordResetEmail = async (email: string) => {
+    await auth().sendPasswordResetEmail(email);
+  };
+
   getIsEmailUsed = async (email: string) => {
     const methods = await auth().fetchSignInMethodsForEmail(email);
 
