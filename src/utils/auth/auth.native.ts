@@ -1,7 +1,7 @@
 import {firebase} from "@react-native-firebase/app-check";
 import auth, {type FirebaseAuthTypes} from "@react-native-firebase/auth";
 
-import {IOS_APP_CHECK_DEBUG_TOKEN} from "@env";
+import {ANDROID_APP_CHECK_DEBUG_TOKEN, IOS_APP_CHECK_DEBUG_TOKEN} from "@env";
 
 const dev = process.env.NODE_ENV === "development";
 
@@ -98,7 +98,7 @@ class AuthServiceBase {
     rnfbProvider.configure({
       android: {
         provider: dev ? "debug" : "playIntegrity",
-        debugToken: "TODO",
+        debugToken: ANDROID_APP_CHECK_DEBUG_TOKEN,
       },
       apple: {
         provider: dev ? "debug" : "appAttestWithDeviceCheckFallback",
