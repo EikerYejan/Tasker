@@ -6,6 +6,7 @@ import {
   View,
   type TextInput as RNTextInput,
   Pressable,
+  Linking,
 } from "react-native";
 import {useMemo, useRef, useState} from "react";
 
@@ -15,6 +16,7 @@ import {ScreenWrapper} from "../components/ScreenWrapper";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import {FONTS} from "../constants/fonts";
+import {PRIVACY_POLICIY_URL} from "../constants/urls";
 
 import {useAppearance} from "../hooks/useAppearance";
 import {AuthService} from "../utils/auth/auth";
@@ -80,6 +82,16 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       fontWeight: "400",
       marginBottom: 20,
       marginTop: 10,
+      textAlign: "center",
+    },
+    termsButton: {
+      fontSize: 12,
+      marginTop: "auto",
+    },
+    termsLink: {
+      color: colors.link,
+      fontFamily: FONTS.POPPINS_BOLD,
+      fontWeight: "bold",
     },
     closeButton: {
       position: "absolute",
@@ -296,7 +308,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
               <Text style={styles.continueWithoutAccountText}>Go Back</Text>
             </Pressable>
           ) : null}
-          {enableAnonymousLogin ? (
+          {enableAnonymousLogin && existingUser === undefined ? (
             <Pressable disabled={loading} onPress={onContinueWithoutAccount}>
               <Text style={styles.continueWithoutAccountText}>
                 Continue without an account
@@ -309,6 +321,21 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             </Text>
           </Pressable>
         </View>
+
+        {existingUser === false && (
+          <Text style={styles.continueWithoutAccountText}>
+            By pressing Sign Up you agree to our{" "}
+            <Pressable
+              onPress={() => {
+                Linking.openURL(PRIVACY_POLICIY_URL);
+              }}>
+              <Text
+                style={[styles.continueWithoutAccountText, styles.termsLink]}>
+                Terms & Conditions
+              </Text>
+            </Pressable>
+          </Text>
+        )}
       </KeyboardAvoidingView>
     </ScreenWrapper>
   );
