@@ -24,6 +24,12 @@ class AuthServiceBase {
     return getAuth(this.app);
   }
 
+  get isAppleAuthSupported() {
+    const isSupported = false;
+
+    return isSupported;
+  }
+
   init = async () => {
     await this.auth.authStateReady();
 

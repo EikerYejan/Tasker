@@ -2,11 +2,22 @@ import {firebase} from "@react-native-firebase/app-check";
 import auth, {type FirebaseAuthTypes} from "@react-native-firebase/auth";
 
 import {ANDROID_APP_CHECK_DEBUG_TOKEN, IOS_APP_CHECK_DEBUG_TOKEN} from "@env";
+import appleAuth from "@invertase/react-native-apple-authentication";
 
 const dev = process.env.NODE_ENV === "development";
 
 class AuthServiceBase {
   private unsubscribeAuthState: (() => void) | null = null;
+
+  private readonly sendEmailVerification = async () => {
+    await auth()
+      .currentUser?.sendEmailVerification()
+      .catch(() => null);
+  };
+
+  get isAppleAuthSupported() {
+    return appleAuth.isSupported;
+  }
 
   init = async () => {
     await this.initializeAppCheck();
@@ -38,14 +49,45 @@ class AuthServiceBase {
       await currentUser.linkWithCredential(credential);
       await auth().signInWithCredential(credential);
 
-      auth().currentUser?.sendEmailVerification();
+      this.sendEmailVerification();
 
       return auth().currentUser;
     }
 
     const {user} = await auth().createUserWithEmailAndPassword(email, password);
 
-    user.sendEmailVerification();
+    this.sendEmailVerification();
+
+    return user;
+  };
+
+  signInWithApple = async () => {
+    const {identityToken, nonce} = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+    });
+
+    if (!identityToken) {
+      throw new Error("No identity token");
+    }
+
+    const credential = firebase.auth.AppleAuthProvider.credential(
+      identityToken,
+      nonce,
+    );
+
+    if (auth().currentUser?.isAnonymous) {
+      await auth().currentUser?.linkWithCredential(credential);
+      await auth().signInWithCredential(credential);
+
+      this.sendEmailVerification();
+
+      return auth().currentUser;
+    }
+
+    const {user} = await auth().signInWithCredential(credential);
+
+    this.sendEmailVerification();
 
     return user;
   };

@@ -14,6 +14,7 @@ import {TextInput} from "../components/TextInput/TextInput";
 import {Button} from "../components/Button/Button";
 import {ScreenWrapper} from "../components/ScreenWrapper";
 import Icon from "react-native-vector-icons/Ionicons";
+import {AppleAuthButton} from "../components/AppleAuthButton/AppleAuthButton";
 
 import {FONTS} from "../constants/fonts";
 import {PRIVACY_POLICIY_URL} from "../constants/urls";
@@ -204,16 +205,30 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
 
   const onContinueWithoutAccount = async () => {
     try {
+      if (loading) return;
+
       setLoading(true);
 
       await AuthService.signInAnonymously();
-      await FirestoreService.replaceInstance();
 
-      if (navigation?.navigate) {
-        navigation.navigate("Home");
-      }
+      await onCompleteAuth();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onAppleSignInPress = async () => {
+    try {
+      if (loading) return;
+
+      setLoading(true);
+
+      await AuthService.signInWithApple();
+      await onCompleteAuth();
+    } catch (error) {
+      alertError({code: error.code, message: error.message});
     } finally {
       setLoading(false);
     }
@@ -303,6 +318,11 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             style={styles.button}
             onPress={onNextPress}
           />
+          {existingUser === undefined && AuthService.isAppleAuthSupported ? (
+            <View>
+              <AppleAuthButton onPress={onAppleSignInPress} />
+            </View>
+          ) : null}
           {typeof existingUser === "boolean" ? (
             <Pressable disabled={loading} onPress={onBackPress}>
               <Text style={styles.continueWithoutAccountText}>Go Back</Text>
