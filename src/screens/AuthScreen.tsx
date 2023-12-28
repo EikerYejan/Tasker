@@ -100,6 +100,10 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       right: 0,
       top: 0,
     },
+    socialAuthWrapper: {
+      marginBottom: 10,
+      marginTop: 5,
+    },
   });
 
   const onBackPress = () => {
@@ -320,11 +324,11 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             style={styles.button}
             onPress={onNextPress}
           />
-          {existingUser === undefined && AuthService.isAppleAuthSupported ? (
-            <View>
+          <View style={styles.socialAuthWrapper}>
+            {existingUser === undefined && AuthService.isAppleAuthSupported ? (
               <AppleAuthButton onPress={onAppleSignInPress} />
-            </View>
-          ) : null}
+            ) : null}
+          </View>
           {typeof existingUser === "boolean" ? (
             <Pressable disabled={loading} onPress={onBackPress}>
               <Text style={styles.continueWithoutAccountText}>Go Back</Text>
