@@ -5,13 +5,17 @@ import {
   fetchSignInMethodsForEmail,
   getAuth,
   linkWithCredential,
+  OAuthProvider,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInAnonymously,
   signInWithCredential,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from "firebase/auth";
 import {WebFirebaseService} from "../webFirebaseService";
+
+import {WEB_ENABLE_APPLE_AUTH} from "@env";
 
 import type {IStoredUser} from "../../types";
 
@@ -25,9 +29,7 @@ class AuthServiceBase {
   }
 
   get isAppleAuthSupported() {
-    const isSupported = false;
-
-    return isSupported;
+    return Boolean(WEB_ENABLE_APPLE_AUTH);
   }
 
   init = async () => {
@@ -59,7 +61,7 @@ class AuthServiceBase {
       await linkWithCredential(this.auth.currentUser, credential);
       await signInWithCredential(this.auth, credential);
 
-      sendEmailVerification(this.auth.currentUser);
+      sendEmailVerification(this.auth.currentUser).catch(() => null);
 
       return this.auth.currentUser;
     }
@@ -70,9 +72,30 @@ class AuthServiceBase {
       password,
     );
 
-    await sendEmailVerification(user);
+    await sendEmailVerification(user).catch(() => null);
 
     return user;
+  };
+
+  signInWithApple = async () => {
+    const provider = new OAuthProvider("apple.com");
+
+    provider.addScope("email");
+
+    const result = await signInWithPopup(this.auth, provider);
+    const credential = OAuthProvider.credentialFromResult(result);
+
+    if (!credential) {
+      throw Error("No credential");
+    }
+
+    if (this.auth.currentUser?.isAnonymous) {
+      await linkWithCredential(this.auth.currentUser, credential);
+    }
+
+    await signInWithCredential(this.auth, credential);
+
+    return this.auth.currentUser;
   };
 
   sendPasswordResetEmail = async (email: string) => {

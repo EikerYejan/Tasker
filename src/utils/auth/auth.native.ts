@@ -78,18 +78,13 @@ class AuthServiceBase {
 
     if (auth().currentUser?.isAnonymous) {
       await auth().currentUser?.linkWithCredential(credential);
-      await auth().signInWithCredential(credential);
-
-      this.sendEmailVerification();
-
-      return auth().currentUser;
     }
 
-    const {user} = await auth().signInWithCredential(credential);
+    await auth().signInWithCredential(credential);
 
     this.sendEmailVerification();
 
-    return user;
+    return auth().currentUser;
   };
 
   sendPasswordResetEmail = async (email: string) => {
