@@ -1,5 +1,6 @@
 import {atom, useRecoilState} from "recoil";
 import {recoilPersist} from "recoil-persist";
+import {MMKV} from "react-native-mmkv";
 
 import {AuthService} from "../utils/auth/auth";
 import {FirestoreService} from "../utils/firestore/firestore";
@@ -9,7 +10,22 @@ import {toStoredUser} from "../utils";
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
 import type {IAppStore, IStoredUser, ITodoItem} from "../types";
 
-const {persistAtom} = recoilPersist();
+const storage = new MMKV({
+  id: "appStorage",
+});
+
+const {persistAtom} = recoilPersist({
+  storage: {
+    getItem(key) {
+      const value = storage.getString(key);
+
+      return value ? JSON.parse(value) : null;
+    },
+    setItem(key, value) {
+      storage.set(key, JSON.stringify(value));
+    },
+  },
+});
 
 export const appStore = atom<IAppStore>({
   key: "appStore",
