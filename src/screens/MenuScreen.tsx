@@ -63,11 +63,14 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
   const dbInstanceId = FirestoreService.instanceId;
 
   const userCreatedAt = useMemo(() => {
-    const date = user?.metadata.creationTime ?? user?.metadata?.createdAt;
+    const dateString = user?.metadata.creationTime ?? user?.metadata?.createdAt;
+    const timestamp = Number(dateString);
 
-    if (!date) return null;
+    if (!dateString) return null;
 
-    return new Date(date).toLocaleDateString("en-US", {
+    return new Date(
+      isNaN(timestamp) ? dateString : timestamp,
+    ).toLocaleDateString("en-US", {
       day: "numeric",
       month: "long",
       year: "numeric",
