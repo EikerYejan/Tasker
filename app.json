@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+    "plugins": ["@react-native-google-signin/google-signin"],
     "splash": {
       "image": "./assets/tasker_splash_light.png",
       "resizeMode": "cover",
@@ -16,7 +17,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.eikeryejan.taskzen",
       "userInterfaceStyle": "automatic",
-      "usesNonExemptEncryption": false,
+      "config": {"usesNonExemptEncryption": false},
       "splash": {
         "image": "./assets/tasker_splash_light.png",
         "resizeMode": "cover",
@@ -44,7 +45,8 @@
           "backgroundColor": "#000000"
         }
       },
-      "package": "com.eikeryejan.taskzen"
+      "package": "com.eikeryejan.taskzen",
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png",
