@@ -1,3 +1,4 @@
+import {useMemo} from "react";
 import {Linking, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -60,15 +61,20 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
   });
 
   const dbInstanceId = FirestoreService.instanceId;
-  const userCreatedAt = new Date(
-    Number(user?.metadata.creationTime ?? user?.metadata?.createdAt ?? 0),
-  ).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  });
+
+  const userCreatedAt = useMemo(() => {
+    const date = user?.metadata.creationTime ?? user?.metadata?.createdAt;
+
+    if (!date) return null;
+
+    return new Date(date).toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    });
+  }, [user?.metadata]);
 
   const onCloseButtonPress = () => {
     if (onClose) {
