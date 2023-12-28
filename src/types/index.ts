@@ -39,3 +39,8 @@ export type IStoredUser = Pick<
   multiFactor?: Pick<FirebaseAuthTypes.User, "multiFactor">;
   onBoardingComplete?: boolean;
 };
+
+export enum SocialLoginProvider {
+  APPLE = "apple",
+  GOOGLE = "google",
+}

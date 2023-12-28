@@ -9,15 +9,16 @@ import {
   Linking,
 } from "react-native";
 import {useMemo, useRef, useState} from "react";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import {TextInput} from "../components/TextInput/TextInput";
 import {Button} from "../components/Button/Button";
 import {ScreenWrapper} from "../components/ScreenWrapper";
-import Icon from "react-native-vector-icons/Ionicons";
-import {AppleAuthButton} from "../components/AppleAuthButton/AppleAuthButton";
+import {SocialAuthButton} from "../components/SocialAuthButton/SocialAuthButton";
 
 import {FONTS} from "../constants/fonts";
 import {PRIVACY_POLICIY_URL} from "../constants/urls";
+import {SocialLoginProvider} from "../types";
 
 import {useAppearance} from "../hooks/useAppearance";
 import {AuthService} from "../utils/auth/auth";
@@ -101,8 +102,10 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       top: 0,
     },
     socialAuthWrapper: {
-      marginBottom: 10,
-      marginTop: 5,
+      marginBottom: 15,
+      marginTop: 10,
+      flexDirection: "row",
+      gap: 15,
     },
   });
 
@@ -225,19 +228,21 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     }
   };
 
-  const onAppleSignInPress = async () => {
-    try {
-      if (loading) return;
+  const onSocialLoginPress = (provider: SocialLoginProvider) => {
+    return async () => {
+      try {
+        if (loading) return;
 
-      setLoading(true);
+        setLoading(true);
 
-      await AuthService.signInWithApple();
-      await onCompleteAuth();
-    } catch (error) {
-      alertError({code: error.code, message: error.message});
-    } finally {
-      setLoading(false);
-    }
+        await AuthService.signInWithProvider(provider);
+        await onCompleteAuth();
+      } catch (error) {
+        alertError({code: error.code, message: error.message});
+      } finally {
+        setLoading(false);
+      }
+    };
   };
 
   const onForgotPasswordPress = () => {
@@ -324,11 +329,22 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             style={styles.button}
             onPress={onNextPress}
           />
-          <View style={styles.socialAuthWrapper}>
-            {existingUser === undefined && AuthService.isAppleAuthSupported ? (
-              <AppleAuthButton onPress={onAppleSignInPress} />
-            ) : null}
-          </View>
+          {existingUser === undefined ? (
+            <View style={styles.socialAuthWrapper}>
+              {AuthService.isAppleAuthSupported ? (
+                <SocialAuthButton
+                  onPress={onSocialLoginPress(SocialLoginProvider.APPLE)}
+                  provider={SocialLoginProvider.APPLE}
+                />
+              ) : null}
+              {AuthService.isGoogleAuthSupported ? (
+                <SocialAuthButton
+                  onPress={onSocialLoginPress(SocialLoginProvider.GOOGLE)}
+                  provider={SocialLoginProvider.GOOGLE}
+                />
+              ) : null}
+            </View>
+          ) : null}
           {typeof existingUser === "boolean" ? (
             <Pressable disabled={loading} onPress={onBackPress}>
               <Text style={styles.continueWithoutAccountText}>Go Back</Text>

@@ -3,11 +3,22 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import {useAppearance} from "../../hooks/useAppearance";
 
-interface Props {
+import {SocialLoginProvider} from "../../types";
+
+interface SocialAuthButtonProps {
   onPress: () => void;
+  provider: SocialLoginProvider;
 }
 
-export const AppleAuthButton = ({onPress}: Props) => {
+export const SocialAuthButton = ({
+  onPress,
+  provider,
+}: SocialAuthButtonProps) => {
+  const iconNames = {
+    [SocialLoginProvider.APPLE]: "logo-apple",
+    [SocialLoginProvider.GOOGLE]: "logo-google",
+  };
+
   const {colors} = useAppearance();
 
   const styles = StyleSheet.create({
@@ -25,7 +36,7 @@ export const AppleAuthButton = ({onPress}: Props) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Icon name="logo-apple" size={25} color={colors.text} />
+      <Icon name={iconNames[provider]} size={25} color={colors.text} />
     </TouchableOpacity>
   );
 };
