@@ -4,6 +4,7 @@ import {
   EmailAuthProvider,
   fetchSignInMethodsForEmail,
   getAuth,
+  GoogleAuthProvider,
   linkWithCredential,
   OAuthProvider,
   sendEmailVerification,
@@ -15,9 +16,9 @@ import {
 } from "firebase/auth";
 import {WebFirebaseService} from "../webFirebaseService";
 
-import {WEB_ENABLE_APPLE_AUTH} from "@env";
+import {WEB_ENABLE_APPLE_AUTH, WEB_ENABLE_GOOGLE_AUTH} from "@env";
 
-import type {IStoredUser} from "../../types";
+import {type IStoredUser, SocialLoginProvider} from "../../types";
 
 class AuthServiceBase {
   private unsubscribeAuthState: (() => void) | null = null;
@@ -30,6 +31,10 @@ class AuthServiceBase {
 
   get isAppleAuthSupported() {
     return Boolean(WEB_ENABLE_APPLE_AUTH);
+  }
+
+  get isGoogleAuthSupported() {
+    return Boolean(WEB_ENABLE_GOOGLE_AUTH);
   }
 
   init = async () => {
@@ -72,7 +77,7 @@ class AuthServiceBase {
       password,
     );
 
-    await sendEmailVerification(user).catch(() => null);
+    sendEmailVerification(user).catch(() => null);
 
     return user;
   };
@@ -96,6 +101,36 @@ class AuthServiceBase {
     await signInWithCredential(this.auth, credential);
 
     return this.auth.currentUser;
+  };
+
+  signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(this.auth, provider);
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+
+    if (!credential) {
+      throw Error("No credential");
+    }
+
+    if (this.auth.currentUser?.isAnonymous) {
+      await linkWithCredential(this.auth.currentUser, credential);
+    }
+
+    await signInWithCredential(this.auth, credential);
+
+    return this.auth.currentUser;
+  };
+
+  signInWithProvider = (provider: SocialLoginProvider) => {
+    switch (provider) {
+      case SocialLoginProvider.APPLE:
+        return this.signInWithApple();
+      case SocialLoginProvider.GOOGLE:
+        return this.signInWithGoogle();
+      default: {
+        throw Error("Unknown provider");
+      }
+    }
   };
 
   sendPasswordResetEmail = async (email: string) => {
