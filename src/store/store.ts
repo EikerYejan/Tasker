@@ -1,4 +1,5 @@
 import {atom, useRecoilState} from "recoil";
+import {recoilPersist} from "recoil-persist";
 
 import {AuthService} from "../utils/auth/auth";
 import {FirestoreService} from "../utils/firestore/firestore";
@@ -7,11 +8,13 @@ import {toStoredUser} from "../utils";
 
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
 import type {IAppStore, IStoredUser, ITodoItem} from "../types";
-import {type ColorSchemeName} from "react-native";
+
+const {persistAtom} = recoilPersist();
 
 export const appStore = atom<IAppStore>({
   key: "appStore",
   default: getInitialState(),
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const useAppState = () => {
@@ -64,14 +67,11 @@ export const useAppState = () => {
   };
 
   const resetState = async () => {
+    // TODO: Auth or Firestore service should not be used here
     await AuthService.logOutUser();
     await FirestoreService.replaceInstance();
 
     setState(getInitialState());
-  };
-
-  const setTheme = async (theme: ColorSchemeName, setByUser = false) => {
-    await FirestoreService.setDocumentData({theme: {setByUser, value: theme}});
   };
 
   const setUser = async (user: FirebaseAuthTypes.User | null) => {
@@ -88,6 +88,12 @@ export const useAppState = () => {
     });
   };
 
+  const setStateFromFirestore = async (user: IAppStore) => {
+    const {theme: _, ...rest} = user;
+
+    setState({...rest, theme: state.theme});
+  };
+
   return {
     addTodo,
     markAsDone,
@@ -95,7 +101,7 @@ export const useAppState = () => {
     removeTodo,
     resetState,
     setState,
-    setTheme,
+    setStateFromFirestore,
     setUser,
     state,
     updateUser,

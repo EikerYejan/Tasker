@@ -1,4 +1,4 @@
-import {useColorScheme} from "react-native";
+import {type ColorSchemeName, useColorScheme} from "react-native";
 import {useEffect, useMemo} from "react";
 
 import {useAppState} from "../store/store";
@@ -6,12 +6,22 @@ import {useAppState} from "../store/store";
 import {DarkTheme, LightTheme} from "../constants/themes";
 
 export const useAppearance = () => {
-  const {setTheme, state} = useAppState();
-  const {
-    theme: {setByUser, value: appearance},
-  } = state;
-
+  const {setState, state} = useAppState();
   const colorScheme = useColorScheme();
+
+  const appearance = state.theme?.value ?? colorScheme;
+  const setByUser = state.theme?.setByUser ?? false;
+
+  const setTheme = (newAppearance: ColorSchemeName, setByUser = false) => {
+    setState(state => ({
+      ...state,
+      theme: {
+        ...state.theme,
+        value: newAppearance,
+        setByUser,
+      },
+    }));
+  };
 
   const toggleAppearance = () => {
     const newAppearance = appearance === "light" ? "dark" : "light";

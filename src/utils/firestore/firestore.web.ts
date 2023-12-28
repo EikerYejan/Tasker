@@ -94,6 +94,7 @@ class FirestoreServiceBase {
       await updateDoc(this.instance, {
         ...this.sanitizeData(data),
         ...this.documentMetadata,
+        theme: null,
       });
     }
   };

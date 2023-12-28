@@ -15,7 +15,7 @@ export const SplasScreen = () => {
   const [authInitialized, setAuthInitialized] = useState(false);
 
   const {
-    setState,
+    setStateFromFirestore,
     setUser,
     state: {user},
   } = useAppState();
@@ -45,7 +45,7 @@ export const SplasScreen = () => {
       await RNSplashScreen.hideAsync();
 
       FirestoreService.listenForChanges(snapshot => {
-        if (snapshot) setState(snapshot);
+        if (snapshot) setStateFromFirestore(snapshot);
       });
 
       AuthService.listenToAuthState(snapshot => {

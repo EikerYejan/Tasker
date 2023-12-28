@@ -37,5 +37,6 @@ module.exports = {
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "no-implicit-coercion": "off",
+    "camelcase": "off",
   },
 };

@@ -11,10 +11,10 @@ export interface ITodoItem {
 export interface IAppStore {
   done: ITodoItem[];
   user?: IStoredUser;
-  theme: {
+  theme?: {
     setByUser: boolean;
     value: ColorSchemeName;
-  };
+  } | null;
   todos: ITodoItem[];
 }
 
