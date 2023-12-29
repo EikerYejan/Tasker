@@ -148,6 +148,19 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     Alert.alert("There's been an error", message);
   };
 
+  const alertUserForDataReset = (callback?: () => void) => {
+    Alert.alert("Be careful", "If you sign in, you will lose all your data.", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "Sign in",
+        onPress: callback,
+      },
+    ]);
+  };
+
   const onNextPress = async () => {
     try {
       setLoading(true);
@@ -184,20 +197,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
           };
 
           if (isLoggedInAsAnonymous) {
-            Alert.alert(
-              "Be careful",
-              "If you sign in with this email, you will lose all your data.",
-              [
-                {
-                  text: "Cancel",
-                  style: "cancel",
-                },
-                {
-                  text: "Sign in",
-                  onPress: emailSignIn,
-                },
-              ],
-            );
+            alertUserForDataReset(emailSignIn);
           } else {
             await emailSignIn();
           }
@@ -235,8 +235,18 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
 
         setLoading(true);
 
-        await AuthService.signInWithProvider(provider);
-        await onCompleteAuth();
+        const isLoggedInAsAnonymous = AuthService.getCurrentUser()?.isAnonymous;
+
+        const socialSignIn = async () => {
+          await AuthService.signInWithProvider(provider);
+          await onCompleteAuth();
+        };
+
+        if (isLoggedInAsAnonymous) {
+          alertUserForDataReset(socialSignIn);
+        } else {
+          await socialSignIn();
+        }
       } catch (error) {
         alertError({code: error.code, message: error.message});
       } finally {
