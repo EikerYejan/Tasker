@@ -129,6 +129,8 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   };
 
   const alertError = (error: {code?: string; message: string}) => {
+    const dismissableErrorCodes = ["auth/popup-closed-by-user", "1001", "-5"];
+
     console.log(error.code, error.message);
 
     let message = "Please try again";
@@ -145,7 +147,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       message = "Too many requests, please try again later";
     } else if (error.code === "auth/account-exists-with-different-credential") {
       message = "Account already exists with a different social provider";
-    } else if (error.code === "auth/popup-closed-by-user") {
+    } else if (error.code && dismissableErrorCodes.includes(error.code)) {
       return;
     }
 
