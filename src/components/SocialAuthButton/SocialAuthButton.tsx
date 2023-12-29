@@ -1,4 +1,4 @@
-import {StyleSheet, TouchableOpacity} from "react-native";
+import {Pressable, StyleSheet} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import {useAppearance} from "../../hooks/useAppearance";
@@ -19,6 +19,7 @@ export const SocialAuthButton = ({
   const iconNames = {
     [SocialLoginProvider.APPLE]: "logo-apple",
     [SocialLoginProvider.GOOGLE]: "logo-google",
+    [SocialLoginProvider.TWITTER]: "logo-twitter",
   };
 
   const {colors} = useAppearance();
@@ -40,11 +41,12 @@ export const SocialAuthButton = ({
   });
 
   return (
-    <TouchableOpacity
+    <Pressable
       disabled={disabled}
       style={[styles.container, disabled && styles.disabled]}
+      accessibilityLabel={`Sign in with ${provider}`}
       onPress={onPress}>
       <Icon name={iconNames[provider]} size={25} color={colors.text} />
-    </TouchableOpacity>
+    </Pressable>
   );
 };

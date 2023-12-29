@@ -13,10 +13,15 @@ import {
   signInWithCredential,
   signInWithEmailAndPassword,
   signInWithPopup,
+  TwitterAuthProvider,
 } from "firebase/auth";
 import {WebFirebaseService} from "../webFirebaseService";
 
-import {WEB_ENABLE_APPLE_AUTH, WEB_ENABLE_GOOGLE_AUTH} from "@env";
+import {
+  WEB_ENABLE_APPLE_AUTH,
+  WEB_ENABLE_GOOGLE_AUTH,
+  WEB_ENABLE_TWITTER_AUTH,
+} from "@env";
 
 import {type IStoredUser, SocialLoginProvider} from "../../types";
 
@@ -35,6 +40,10 @@ class AuthServiceBase {
 
   get isGoogleAuthSupported() {
     return Boolean(WEB_ENABLE_GOOGLE_AUTH);
+  }
+
+  get isTwitterAuthSupported() {
+    return Boolean(WEB_ENABLE_TWITTER_AUTH);
   }
 
   init = async () => {
@@ -121,12 +130,32 @@ class AuthServiceBase {
     return this.auth.currentUser;
   };
 
+  signInWithTwitter = async () => {
+    const provider = new TwitterAuthProvider();
+    const result = await signInWithPopup(this.auth, provider);
+    const credential = TwitterAuthProvider.credentialFromResult(result);
+
+    if (!credential) {
+      throw Error("No credential");
+    }
+
+    if (this.auth.currentUser?.isAnonymous) {
+      await linkWithCredential(this.auth.currentUser, credential);
+    }
+
+    await signInWithCredential(this.auth, credential);
+
+    return this.auth.currentUser;
+  };
+
   signInWithProvider = (provider: SocialLoginProvider) => {
     switch (provider) {
       case SocialLoginProvider.APPLE:
         return this.signInWithApple();
       case SocialLoginProvider.GOOGLE:
         return this.signInWithGoogle();
+      case SocialLoginProvider.TWITTER:
+        return this.signInWithTwitter();
       default: {
         throw Error("Unknown provider");
       }

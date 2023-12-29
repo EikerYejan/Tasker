@@ -36,6 +36,8 @@ class AuthServiceBase {
     return this.hasPlayServices;
   }
 
+  readonly isTwitterAuthSupported = false;
+
   init = async () => {
     await this.initializeAppCheck();
 

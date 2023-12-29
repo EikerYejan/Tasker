@@ -143,6 +143,8 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       message = "Network request failed";
     } else if (error.code === "auth/too-many-requests") {
       message = "Too many requests, please try again later";
+    } else if (error.code === "auth/account-exists-with-different-credential") {
+      message = "Account already exists with a different social provider";
     } else if (error.code === "auth/popup-closed-by-user") {
       return;
     }
@@ -354,6 +356,13 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
                 disabled={loading}
                 provider={SocialLoginProvider.GOOGLE}
                 onPress={onSocialLoginPress(SocialLoginProvider.GOOGLE)}
+              />
+            ) : null}
+            {AuthService.isTwitterAuthSupported ? (
+              <SocialAuthButton
+                disabled={loading}
+                provider={SocialLoginProvider.TWITTER}
+                onPress={onSocialLoginPress(SocialLoginProvider.TWITTER)}
               />
             ) : null}
           </View>
