@@ -33,9 +33,11 @@ interface Props {
   navigation?: NavigationProp<any, any>;
 }
 
+type UserType = "existing" | "new" | "undetermined";
+
 // TODO: error state.
 export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
-  const [existingUser, setExistingUser] = useState<boolean>();
+  const [userType, setUserType] = useState<UserType>("undetermined");
   const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState<string>();
@@ -110,7 +112,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   });
 
   const onBackPress = () => {
-    setExistingUser(undefined);
+    setUserType("undetermined");
 
     // Need timeout in web for some reason.
     setTimeout(() => {
@@ -168,7 +170,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       if (email && !password) {
         const isEmailUsed = await AuthService.getIsEmailUsed(email);
 
-        setExistingUser(isEmailUsed);
+        setUserType(isEmailUsed ? "existing" : "new");
 
         // Need timeout in web for some reason.
         setTimeout(() => {
@@ -179,7 +181,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       }
 
       if (email && password) {
-        if (existingUser) {
+        if (userType === "existing") {
           const isLoggedInAsAnonymous =
             AuthService.getCurrentUser()?.isAnonymous;
 
@@ -271,28 +273,28 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   };
 
   const buttonText = useMemo(() => {
-    if (typeof existingUser === "boolean") {
-      return existingUser ? "Sign in" : "Sign up";
+    if (userType !== "undetermined") {
+      return userType === "existing" ? "Sign in" : "Sign up";
     }
 
     return "Next";
-  }, [existingUser]);
+  }, [userType]);
 
   const submitButtonDisabled = useMemo(() => {
     const validEmail = email && isEmailValid(email);
 
-    return (
-      loading || !validEmail || (typeof existingUser === "boolean" && !password)
-    );
-  }, [email, existingUser, loading, password]);
+    return loading || !validEmail || (userType !== "undetermined" && !password);
+  }, [email, loading, password, userType]);
 
   const pageTitle = useMemo(() => {
-    if (typeof existingUser === "boolean") {
-      return existingUser ? "Welcome Back!" : "Let's create your account";
+    if (userType !== "undetermined") {
+      return userType === "existing"
+        ? "Welcome Back!"
+        : "Let's create your account";
     }
 
     return "Let's get started";
-  }, [existingUser]);
+  }, [userType]);
 
   return (
     <ScreenWrapper>
@@ -309,7 +311,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             autoCapitalize="none"
             autoComplete="email"
             autoCorrect={false}
-            disabled={typeof existingUser === "boolean" || loading}
+            disabled={userType !== "undetermined" || loading}
             inputMode="email"
             placeholder="Your email"
             ref={emailInputRef}
@@ -327,7 +329,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             secureTextEntry
             style={[
               styles.input,
-              typeof existingUser !== "boolean" && {display: "none"},
+              userType === "undetermined" && {display: "none"},
             ]}
             onChangeText={setPassword}
             onSubmitEditing={onNextPress}
@@ -339,28 +341,28 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             style={styles.button}
             onPress={onNextPress}
           />
-          {existingUser === undefined ? (
-            <View style={styles.socialAuthWrapper}>
-              {AuthService.isAppleAuthSupported ? (
-                <SocialAuthButton
-                  onPress={onSocialLoginPress(SocialLoginProvider.APPLE)}
-                  provider={SocialLoginProvider.APPLE}
-                />
-              ) : null}
-              {AuthService.isGoogleAuthSupported ? (
-                <SocialAuthButton
-                  onPress={onSocialLoginPress(SocialLoginProvider.GOOGLE)}
-                  provider={SocialLoginProvider.GOOGLE}
-                />
-              ) : null}
-            </View>
-          ) : null}
-          {typeof existingUser === "boolean" ? (
+          <View style={styles.socialAuthWrapper}>
+            {AuthService.isAppleAuthSupported ? (
+              <SocialAuthButton
+                disabled={loading}
+                provider={SocialLoginProvider.APPLE}
+                onPress={onSocialLoginPress(SocialLoginProvider.APPLE)}
+              />
+            ) : null}
+            {AuthService.isGoogleAuthSupported ? (
+              <SocialAuthButton
+                disabled={loading}
+                provider={SocialLoginProvider.GOOGLE}
+                onPress={onSocialLoginPress(SocialLoginProvider.GOOGLE)}
+              />
+            ) : null}
+          </View>
+          {userType !== "undetermined" && (
             <Pressable disabled={loading} onPress={onBackPress}>
               <Text style={styles.continueWithoutAccountText}>Go Back</Text>
             </Pressable>
-          ) : null}
-          {enableAnonymousLogin && existingUser === undefined ? (
+          )}
+          {userType === "undetermined" && enableAnonymousLogin ? (
             <Pressable disabled={loading} onPress={onContinueWithoutAccount}>
               <Text style={styles.continueWithoutAccountText}>
                 Continue without an account
@@ -374,7 +376,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
           </Pressable>
         </View>
 
-        {existingUser === false && (
+        {userType === "new" && (
           <Text style={styles.continueWithoutAccountText}>
             By pressing Sign Up you agree to our{" "}
             <Pressable

@@ -6,11 +6,13 @@ import {useAppearance} from "../../hooks/useAppearance";
 import {SocialLoginProvider} from "../../types";
 
 interface SocialAuthButtonProps {
+  disabled?: boolean;
   onPress: () => void;
   provider: SocialLoginProvider;
 }
 
 export const SocialAuthButton = ({
+  disabled,
   onPress,
   provider,
 }: SocialAuthButtonProps) => {
@@ -32,10 +34,16 @@ export const SocialAuthButton = ({
       justifyContent: "center",
       width: 50,
     },
+    disabled: {
+      opacity: 0.5,
+    },
   });
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      disabled={disabled}
+      style={[styles.container, disabled && styles.disabled]}
+      onPress={onPress}>
       <Icon name={iconNames[provider]} size={25} color={colors.text} />
     </TouchableOpacity>
   );
