@@ -16,6 +16,11 @@ export interface IAppStore {
     value: ColorSchemeName;
   } | null;
   todos: ITodoItem[];
+  /**
+   * @deprecated
+   */
+  platform?: string;
+  platforms?: string[];
 }
 
 export type IStoredUser = Pick<

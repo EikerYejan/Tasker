@@ -55,7 +55,6 @@ class FirestoreServiceBase {
     return {
       appVersion: version,
       build: DeviceInfo.getBuildNumber() ?? null,
-      platform: Platform.OS,
       updatedAt: firestore.FieldValue.serverTimestamp(),
     };
   }
@@ -76,12 +75,21 @@ class FirestoreServiceBase {
     return JSON.parse(JSON.stringify(data)) as T;
   };
 
+  getPlatforms = (platforms?: string | string[] | undefined) => {
+    const existingPlatforms = (
+      Array.isArray(platforms) ? platforms : [platforms]
+    ).filter(Boolean) as string[];
+
+    return [...new Set([...existingPlatforms, Platform.OS])];
+  };
+
   setDocumentData = async (data: Partial<IAppStore>) => {
     if (this.instance) {
       await this.instance.update({
         ...this.sanitizeData(data),
         ...this.documentMetadata,
-        theme: null,
+        ...(data?.theme ? {theme: null} : {}),
+        platforms: this.getPlatforms(data?.platform ?? data?.platforms),
       });
     }
   };
