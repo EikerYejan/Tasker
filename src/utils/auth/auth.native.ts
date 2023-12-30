@@ -28,6 +28,10 @@ class AuthServiceBase {
     this.hasPlayServices = await GoogleSignin.hasPlayServices();
   };
 
+  readonly isTwitterAuthSupported = false;
+
+  readonly isGithubAuthSupported = false;
+
   get isAppleAuthSupported() {
     return appleAuth.isSupported;
   }
@@ -35,8 +39,6 @@ class AuthServiceBase {
   get isGoogleAuthSupported() {
     return this.hasPlayServices;
   }
-
-  readonly isTwitterAuthSupported = false;
 
   init = async () => {
     await this.initializeAppCheck();

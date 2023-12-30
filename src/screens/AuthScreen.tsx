@@ -367,6 +367,13 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
                 onPress={onSocialLoginPress(SocialLoginProvider.TWITTER)}
               />
             ) : null}
+            {AuthService.isGithubAuthSupported ? (
+              <SocialAuthButton
+                disabled={loading}
+                provider={SocialLoginProvider.GITHUB}
+                onPress={onSocialLoginPress(SocialLoginProvider.GITHUB)}
+              />
+            ) : null}
           </View>
           {userType !== "undetermined" && (
             <Pressable disabled={loading} onPress={onBackPress}>

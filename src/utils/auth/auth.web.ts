@@ -4,6 +4,7 @@ import {
   EmailAuthProvider,
   fetchSignInMethodsForEmail,
   getAuth,
+  GithubAuthProvider,
   GoogleAuthProvider,
   linkWithCredential,
   OAuthProvider,
@@ -19,6 +20,7 @@ import {WebFirebaseService} from "../webFirebaseService";
 
 import {
   WEB_ENABLE_APPLE_AUTH,
+  WEB_ENABLE_GITHUB_AUTH,
   WEB_ENABLE_GOOGLE_AUTH,
   WEB_ENABLE_TWITTER_AUTH,
 } from "@env";
@@ -44,6 +46,10 @@ class AuthServiceBase {
 
   get isTwitterAuthSupported() {
     return Boolean(WEB_ENABLE_TWITTER_AUTH);
+  }
+
+  get isGithubAuthSupported() {
+    return Boolean(WEB_ENABLE_GITHUB_AUTH);
   }
 
   init = async () => {
@@ -148,6 +154,24 @@ class AuthServiceBase {
     return this.auth.currentUser;
   };
 
+  signInWithGithub = async () => {
+    const provider = new GithubAuthProvider();
+    const result = await signInWithPopup(this.auth, provider);
+    const credential = GithubAuthProvider.credentialFromResult(result);
+
+    if (!credential) {
+      throw Error("No credential");
+    }
+
+    if (this.auth.currentUser?.isAnonymous) {
+      await linkWithCredential(this.auth.currentUser, credential);
+    }
+
+    await signInWithCredential(this.auth, credential);
+
+    return this.auth.currentUser;
+  };
+
   signInWithProvider = (provider: SocialLoginProvider) => {
     switch (provider) {
       case SocialLoginProvider.APPLE:
@@ -156,6 +180,8 @@ class AuthServiceBase {
         return this.signInWithGoogle();
       case SocialLoginProvider.TWITTER:
         return this.signInWithTwitter();
+      case SocialLoginProvider.GITHUB:
+        return this.signInWithGithub();
       default: {
         throw Error("Unknown provider");
       }

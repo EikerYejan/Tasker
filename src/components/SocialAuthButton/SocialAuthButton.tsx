@@ -18,6 +18,7 @@ export const SocialAuthButton = ({
 }: SocialAuthButtonProps) => {
   const iconNames = {
     [SocialLoginProvider.APPLE]: "logo-apple",
+    [SocialLoginProvider.GITHUB]: "logo-github",
     [SocialLoginProvider.GOOGLE]: "logo-google",
     [SocialLoginProvider.TWITTER]: "logo-twitter",
   };

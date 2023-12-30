@@ -47,6 +47,7 @@ export type IStoredUser = Pick<
 
 export enum SocialLoginProvider {
   APPLE = "apple",
+  GITHUB = "github",
   GOOGLE = "google",
   TWITTER = "twitter",
 }
