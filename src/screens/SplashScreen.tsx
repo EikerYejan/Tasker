@@ -3,7 +3,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import {useEffect, useState} from "react";
 import * as RNSplashScreen from "expo-splash-screen";
 
-import {AuthScreen} from "./AuthScreen";
+import {AuthScreen} from "./AuthScreen/AuthScreen";
 import {MainNavigator} from "../MainNavigator";
 
 import {AuthService} from "../utils/auth/auth";

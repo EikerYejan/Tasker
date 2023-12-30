@@ -1,7 +1,6 @@
 import {
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
   Text,
   View,
   type TextInput as RNTextInput,
@@ -11,20 +10,21 @@ import {
 import {useMemo, useRef, useState} from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import {TextInput} from "../components/TextInput/TextInput";
-import {Button} from "../components/Button/Button";
-import {ScreenWrapper} from "../components/ScreenWrapper";
-import {SocialAuthButton} from "../components/SocialAuthButton/SocialAuthButton";
+import {TextInput} from "../../components/TextInput/TextInput";
+import {Button} from "../../components/Button/Button";
+import {ScreenWrapper} from "../../components/ScreenWrapper";
+import {SocialAuthButton} from "../../components/SocialAuthButton/SocialAuthButton";
 
-import {FONTS} from "../constants/fonts";
-import {PRIVACY_POLICIY_URL} from "../constants/urls";
-import {SocialLoginProvider} from "../types";
+import {PRIVACY_POLICIY_URL} from "../../constants/urls";
+import {SocialLoginProvider} from "../../types";
 
-import {useAppearance} from "../hooks/useAppearance";
-import {AuthService} from "../utils/auth/auth";
-import {FirestoreService} from "../utils/firestore/firestore";
-import {Alert} from "../utils/alert/alert";
-import {isEmailValid} from "../utils";
+import {useAppearance} from "../../hooks/useAppearance";
+import {AuthService} from "../../utils/auth/auth";
+import {FirestoreService} from "../../utils/firestore/firestore";
+import {Alert} from "../../utils/alert/alert";
+import {isEmailValid} from "../../utils";
+
+import {authScreenStyles as styles} from "./styles";
 
 import type {NavigationProp} from "@react-navigation/native";
 
@@ -35,10 +35,11 @@ interface Props {
 
 type UserType = "existing" | "new" | "undetermined";
 
-// TODO: error state.
 export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   const [userType, setUserType] = useState<UserType>("undetermined");
   const [loading, setLoading] = useState(false);
+
+  const [error, setError] = useState<string>();
 
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
@@ -48,71 +49,10 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   const emailInputRef = useRef<RNTextInput>(null);
   const passwordInputRef = useRef<RNTextInput>(null);
 
-  const styles = StyleSheet.create({
-    inner: {
-      alignItems: "center",
-      justifyContent: "center",
-      marginLeft: "auto",
-      marginRight: "auto",
-      marginTop: "auto",
-      maxWidth: 450,
-      padding: 20,
-      width: "100%",
-      height: "100%",
-    },
-    heading: {
-      color: colors.text,
-      fontFamily: FONTS.POPPINS_BOLD,
-      fontSize: 36,
-      fontWeight: "700",
-      marginBottom: 30,
-      textAlign: "center",
-    },
-    input: {
-      marginBottom: 15,
-      marginLeft: "auto",
-      marginRight: "auto",
-      width: "80%",
-    },
-    button: {
-      marginLeft: "auto",
-      marginRight: "auto",
-      marginTop: 15,
-    },
-    continueWithoutAccountText: {
-      color: colors.text,
-      fontFamily: FONTS.POPPINS_REGULAR,
-      fontSize: 14,
-      fontWeight: "400",
-      marginBottom: 20,
-      marginTop: 10,
-      textAlign: "center",
-    },
-    termsButton: {
-      fontSize: 12,
-      marginTop: "auto",
-    },
-    termsLink: {
-      color: colors.link,
-      fontFamily: FONTS.POPPINS_BOLD,
-      fontWeight: "bold",
-    },
-    closeButton: {
-      position: "absolute",
-      zIndex: 1,
-      right: 0,
-      top: 0,
-    },
-    socialAuthWrapper: {
-      marginBottom: 15,
-      marginTop: 10,
-      flexDirection: "row",
-      gap: 15,
-    },
-  });
-
   const onBackPress = () => {
     setUserType("undetermined");
+    setPassword(undefined);
+    setError(undefined);
 
     // Need timeout in web for some reason.
     setTimeout(() => {
@@ -151,7 +91,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       return;
     }
 
-    Alert.alert("There's been an error", message);
+    setError(message);
   };
 
   const alertUserForDataReset = (callback?: () => void) => {
@@ -240,6 +180,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
         if (loading) return;
 
         setLoading(true);
+        setError(undefined);
 
         const isLoggedInAsAnonymous = AuthService.getCurrentUser()?.isAnonymous;
 
@@ -276,6 +217,18 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     });
   };
 
+  const onChangeText = (field: "email" | "password") => (text: string) => {
+    if (field === "email") {
+      setEmail(text);
+    } else {
+      setPassword(text);
+    }
+
+    if (error) {
+      setError(undefined);
+    }
+  };
+
   const buttonText = useMemo(() => {
     if (userType !== "undetermined") {
       return userType === "existing" ? "Sign in" : "Sign up";
@@ -310,7 +263,9 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
               <Icon name="close-outline" size={35} color={colors.text} />
             </Pressable>
           ) : null}
-          <Text style={styles.heading}>{pageTitle}</Text>
+          <Text style={[styles.heading, {color: colors.text}]}>
+            {pageTitle}
+          </Text>
           <TextInput
             autoCapitalize="none"
             autoComplete="email"
@@ -320,7 +275,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             placeholder="Your email"
             ref={emailInputRef}
             style={styles.input}
-            onChangeText={setEmail}
+            onChangeText={onChangeText("email")}
             onSubmitEditing={onNextPress}
           />
           <TextInput
@@ -335,9 +290,10 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
               styles.input,
               userType === "undetermined" && {display: "none"},
             ]}
-            onChangeText={setPassword}
+            onChangeText={onChangeText("password")}
             onSubmitEditing={onNextPress}
           />
+          {error && <Text style={styles.error}>{error}</Text>}
           <Button
             loading={loading}
             disabled={submitButtonDisabled}
@@ -377,25 +333,40 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
           </View>
           {userType !== "undetermined" && (
             <Pressable disabled={loading} onPress={onBackPress}>
-              <Text style={styles.continueWithoutAccountText}>Go Back</Text>
+              <Text
+                style={[
+                  styles.continueWithoutAccountText,
+                  {color: colors.text},
+                ]}>
+                Go Back
+              </Text>
             </Pressable>
           )}
           {userType === "undetermined" && enableAnonymousLogin ? (
             <Pressable disabled={loading} onPress={onContinueWithoutAccount}>
-              <Text style={styles.continueWithoutAccountText}>
+              <Text
+                style={[
+                  styles.continueWithoutAccountText,
+                  {color: colors.text},
+                ]}>
                 Continue without an account
               </Text>
             </Pressable>
           ) : null}
           <Pressable disabled={loading} onPress={onForgotPasswordPress}>
-            <Text style={[styles.continueWithoutAccountText, {marginTop: 0}]}>
+            <Text
+              style={[
+                styles.continueWithoutAccountText,
+                {color: colors.text, marginTop: 0},
+              ]}>
               Forgot your password?
             </Text>
           </Pressable>
         </View>
 
         {userType === "new" && (
-          <Text style={styles.continueWithoutAccountText}>
+          <Text
+            style={[styles.continueWithoutAccountText, {color: colors.text}]}>
             By pressing Sign Up you agree to our{" "}
             <Pressable
               onPress={() => {

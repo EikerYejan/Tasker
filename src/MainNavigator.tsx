@@ -3,7 +3,7 @@ import {Suspense, lazy} from "react";
 import {createStackNavigator} from "@react-navigation/stack";
 
 import {HomeScreen} from "./screens/HomeScreen/HomeScreen";
-import {AuthScreen} from "./screens/AuthScreen";
+import {AuthScreen} from "./screens/AuthScreen/AuthScreen";
 import {NavBar} from "./components/NavBar";
 
 const MenuScreen = lazy(() =>
