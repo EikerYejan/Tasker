@@ -20,7 +20,7 @@ export const MainNavigator = () => {
         header: () => <NavBar />,
       }}>
       <Stack.Screen component={HomeScreen} name="Home" />
-      {Platform.OS !== "web" ? (
+      {Platform.OS !== "web" && (
         <Stack.Screen
           name="Menu"
           options={{
@@ -33,7 +33,7 @@ export const MainNavigator = () => {
             </Suspense>
           )}
         </Stack.Screen>
-      ) : null}
+      )}
       <Stack.Screen
         component={AuthScreen}
         name="Login"

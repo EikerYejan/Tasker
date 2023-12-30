@@ -33,6 +33,7 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
       color: colors.error,
       fontFamily: FONTS.POPPINS_BOLD,
       fontWeight: "bold",
+      marginTop: 20,
     },
     option: {
       borderBottomColor: colors.border,
@@ -140,13 +141,6 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
       {user && !user?.isAnonymous ? (
         <View style={styles.option}>
           <Button label="Log Out" onPress={resetState} />
-          {!user?.isAnonymous && (
-            <Text
-              onPress={onDeleteScreen}
-              style={[styles.optionText, styles.deleteAccount]}>
-              Delete Account
-            </Text>
-          )}
         </View>
       ) : (
         <View style={styles.option}>
@@ -166,8 +160,19 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
           ) : null}
         </View>
       )}
+      {!user?.isAnonymous && (
+        <TouchableOpacity onPress={onDeleteScreen} style={styles.deleteAccount}>
+          <Text
+            style={[
+              styles.optionText,
+              {color: "inherit", fontFamily: "inherit"},
+            ]}>
+            Delete Account
+          </Text>
+        </TouchableOpacity>
+      )}
       <TouchableOpacity onPress={onPrivacyPolicyPress}>
-        <Text style={[styles.optionText, {marginTop: 10}]}>Privacy Policy</Text>
+        <Text style={styles.optionText}>Privacy Policy</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={onTermsAndConditionsPress}>
         <Text style={styles.optionText}>Terms & Conditions</Text>
