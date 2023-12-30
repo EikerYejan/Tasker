@@ -13,13 +13,13 @@ class AuthServiceBase {
 
   private hasPlayServices: boolean | null = null;
 
-  private readonly sendEmailVerification = async () => {
+  private sendEmailVerification = async () => {
     await auth()
       .currentUser?.sendEmailVerification()
       .catch(() => null);
   };
 
-  private readonly setupGoogleAuth = async () => {
+  private setupGoogleAuth = async () => {
     GoogleSignin.configure({
       webClientId:
         "1005272971972-3reer316h170v0fvktsok165ri03o4om.apps.googleusercontent.com",
