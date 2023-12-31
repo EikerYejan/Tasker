@@ -39,7 +39,6 @@ export const HomeScreen = () => {
     biometricsSupported,
     locked: tasksLockedByBiometrics,
     onLockPress: onTogleBiometrics,
-    resetSettings,
     sensorType,
   } = useBiometrics();
 
@@ -93,7 +92,6 @@ export const HomeScreen = () => {
 
   return (
     <ScreenWrapper>
-      <Button label="Test Clear Biometrics" onPress={resetSettings} />
       <ScrollView
         indicatorStyle="black"
         keyboardDismissMode="interactive"
