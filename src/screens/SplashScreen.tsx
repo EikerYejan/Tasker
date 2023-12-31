@@ -2,6 +2,7 @@ import {Platform, StyleSheet, View} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 import {useEffect, useState} from "react";
 import * as RNSplashScreen from "expo-splash-screen";
+import {injectSpeedInsights} from "@vercel/speed-insights";
 
 import {AuthScreen} from "./AuthScreen/AuthScreen";
 import {MainNavigator} from "../MainNavigator";
@@ -52,6 +53,10 @@ export const SplasScreen = () => {
         if (snapshot) setUser(snapshot);
       });
     });
+
+    if (Platform.OS === "web") {
+      injectSpeedInsights({});
+    }
 
     return () => {
       AuthService.stopListeningToAuthState();
