@@ -42,8 +42,7 @@ class AuthServiceBase {
 
   init = async () => {
     await this.initializeAppCheck();
-
-    this.setupGoogleAuth();
+    await this.setupGoogleAuth();
 
     return auth().currentUser;
   };
