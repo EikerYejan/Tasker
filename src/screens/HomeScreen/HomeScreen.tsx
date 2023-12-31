@@ -1,6 +1,7 @@
-import {ScrollView, Text, View} from "react-native";
+import {Pressable, ScrollView, Text, View} from "react-native";
 import {useMemo, useState} from "react";
 import {useMediaQuery} from "react-responsive";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {Button} from "../../components/Button/Button";
@@ -8,13 +9,14 @@ import {TextInput} from "../../components/TextInput/TextInput";
 import {Task} from "../../components/Task/Task";
 
 import {useAppState} from "../../store/store";
+import {useAppearance} from "../../hooks/useAppearance";
+import {useBiometrics} from "../../hooks/useBiometrics";
 
 import {generateId} from "../../utils";
+import {Alert} from "../../utils/alert/alert";
+import {getStyles} from "./styles";
 
 import {TABLET_WIDTH} from "../../constants/mediaQueries";
-import {getStyles} from "./styles";
-import {useAppearance} from "../../hooks/useAppearance";
-import {Alert} from "../../utils/alert/alert";
 
 export const HomeScreen = () => {
   const isTablet = useMediaQuery({minWidth: TABLET_WIDTH});
@@ -32,6 +34,14 @@ export const HomeScreen = () => {
 
   const {theme} = useAppearance();
   const styles = useMemo(() => getStyles(theme), [theme]);
+
+  const {
+    biometricsSupported,
+    biometricsEnrolled,
+    locked: tasksLockedByBiometrics,
+    onLockPress: onTogleBiometrics,
+    resetSettings,
+  } = useBiometrics();
 
   const onSave = () => {
     if (!taskTitle || !taskDescription) return;
@@ -62,10 +72,23 @@ export const HomeScreen = () => {
     }
   };
 
+  const biometricsButtonIcon = useMemo(() => {
+    if (!biometricsSupported) return "";
+
+    if (biometricsEnrolled) {
+      return tasksLockedByBiometrics
+        ? "lock-closed-outline"
+        : "lock-open-outline";
+    }
+
+    return "finger-print-outline";
+  }, [biometricsEnrolled, biometricsSupported, tasksLockedByBiometrics]);
+
   const saveDisabled = !taskTitle || !taskDescription;
 
   return (
     <ScreenWrapper>
+      <Button label="Test Clear Biometrics" onPress={resetSettings} />
       <ScrollView
         indicatorStyle="black"
         keyboardDismissMode="interactive"
@@ -107,10 +130,22 @@ export const HomeScreen = () => {
             ]}>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionHeading}>To do:</Text>
+              {biometricsSupported && (
+                <Pressable
+                  style={styles.lockButton}
+                  onPress={onTogleBiometrics}>
+                  <Icon
+                    name={biometricsButtonIcon}
+                    size={25}
+                    color={theme.colors.text}
+                  />
+                </Pressable>
+              )}
               <View style={styles.tasksWrapper}>
                 {todos.map(task => (
                   <Task
                     item={task}
+                    locked={tasksLockedByBiometrics}
                     key={task.id}
                     onComplete={markAsDone}
                     onDelete={onDelete}
@@ -125,6 +160,7 @@ export const HomeScreen = () => {
                   {done.map(task => (
                     <Task
                       item={task}
+                      locked={tasksLockedByBiometrics}
                       key={task.id}
                       onDelete={removeTodo}
                       onRestore={markAsTodo}

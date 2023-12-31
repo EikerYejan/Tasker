@@ -10,7 +10,7 @@ import {toStoredUser} from "../utils";
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
 import type {IAppStore, IStoredUser, ITodoItem} from "../types";
 
-const storage = new MMKV({
+export const storage = new MMKV({
   id: "appStorage",
 });
 

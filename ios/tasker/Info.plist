@@ -58,6 +58,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Enabling Face ID allows you to secure your tasks</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Ionicons.ttf</string>

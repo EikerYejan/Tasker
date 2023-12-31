@@ -10,12 +10,19 @@ import {useAppearance} from "../../hooks/useAppearance";
 
 interface TaskProps {
   item: ITodoItem;
+  locked?: boolean;
   onComplete?: (id: string) => void;
   onDelete?: (id: string, done?: boolean) => void;
   onRestore?: (id: string) => void;
 }
 
-export const Task = ({item, onComplete, onDelete, onRestore}: TaskProps) => {
+export const Task = ({
+  item,
+  locked,
+  onComplete,
+  onDelete,
+  onRestore,
+}: TaskProps) => {
   const {description, done, id, title} = item;
 
   const {colors} = useAppearance();
@@ -57,6 +64,14 @@ export const Task = ({item, onComplete, onDelete, onRestore}: TaskProps) => {
       width: 50,
     },
   });
+
+  if (locked) {
+    return (
+      <View style={[styles.container, done ? styles.containerDone : {}]}>
+        <Text style={styles.description}>THIS IS LOCKED</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, done ? styles.containerDone : {}]}>

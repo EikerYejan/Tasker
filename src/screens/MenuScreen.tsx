@@ -165,7 +165,7 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
           <Text
             style={[
               styles.optionText,
-              {color: "inherit", fontFamily: "inherit"},
+              {color: colors.error, fontFamily: "inherit"},
             ]}>
             Delete Account
           </Text>

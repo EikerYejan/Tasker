@@ -58,6 +58,11 @@ export const getStyles = (theme: Theme) => {
     sectionContainer: {
       marginBottom: 18,
     },
+    lockButton: {
+      position: "absolute",
+      right: 0,
+      top: 8,
+    },
     page: {
       ...(Platform.OS === "web"
         ? {
