@@ -10,8 +10,7 @@
     "lint": "eslint src/**/*.{ts,tsx}",
     "type-check": "tsc",
     "build:web": "expo export --platform web",
-    "pod": "cd ios && pod install && cd ..",
-    "postinstall": "patch-package"
+    "pod": "cd ios && pod install && cd .."
   },
   "dependencies": {
     "@expo/match-media": "0.4.0",
