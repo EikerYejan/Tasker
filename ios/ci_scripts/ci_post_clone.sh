@@ -16,8 +16,6 @@ brew install yarn
 # Install dependencies you manage with CocoaPods.
 yarn
 
-yarn patch-package
-
 cd ./ios
 
 pod install
