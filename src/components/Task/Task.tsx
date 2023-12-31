@@ -39,6 +39,12 @@ export const Task = ({
     containerDone: {
       backgroundColor: colors.notification,
     },
+    containerLocked: {
+      height: 60,
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+    },
     textDone: {
       color: COLORS.WHITE,
     },
@@ -67,8 +73,13 @@ export const Task = ({
 
   if (locked) {
     return (
-      <View style={[styles.container, done ? styles.containerDone : {}]}>
-        <Text style={styles.description}>THIS IS LOCKED</Text>
+      <View
+        style={[
+          styles.container,
+          done ? styles.containerDone : {},
+          locked ? styles.containerLocked : {},
+        ]}>
+        <Text style={styles.title}>This task is locked</Text>
       </View>
     );
   }

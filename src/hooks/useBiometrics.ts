@@ -3,11 +3,14 @@ import {Alert, AppState, type AppStateStatus, Platform} from "react-native";
 
 import {storage} from "../store/store";
 
+import type {BiometryType} from "react-native-biometrics";
+
 const KEY = "biometrics";
 
 interface IBiometricsSettings {
   enrolled: boolean;
   locked: boolean;
+  sensorType?: BiometryType;
   supported: boolean;
   timestamp: number;
 }
@@ -52,6 +55,10 @@ export const useBiometrics = () => {
     savedSettings.enrolled,
   );
 
+  const [sensorType, setSensorType] = useState<BiometryType | undefined>(
+    savedSettings?.sensorType,
+  );
+
   const [locked, setLocked] = useState(savedSettings.locked);
 
   const appState = useRef(AppState.currentState);
@@ -80,6 +87,7 @@ export const useBiometrics = () => {
               saveBiometricsSettings({
                 enrolled: true,
                 locked: false,
+                sensorType,
                 supported: true,
                 timestamp: Date.now(),
               });
@@ -100,6 +108,7 @@ export const useBiometrics = () => {
       saveBiometricsSettings({
         enrolled,
         locked: false,
+        sensorType,
         supported,
         timestamp: Date.now(),
       });
@@ -111,6 +120,7 @@ export const useBiometrics = () => {
     saveBiometricsSettings({
       enrolled,
       locked: !locked,
+      sensorType,
       supported,
       timestamp: Date.now(),
     });
@@ -121,6 +131,7 @@ export const useBiometrics = () => {
     saveBiometricsSettings({
       enrolled: false,
       locked: false,
+      sensorType: undefined,
       supported: false,
       timestamp: Date.now(),
     });
@@ -137,8 +148,6 @@ export const useBiometrics = () => {
 
     // Checks if 5 minutes or more have passed since the app was put in the background
     const isTimestampValid = Date.now() - timestamp < TIMESTAMP_EXPIRATION;
-
-    console.log({isTimestampValid, time: Date.now() - timestamp});
 
     setLocked(!isTimestampValid);
     saveBiometricsSettings({
@@ -170,11 +179,16 @@ export const useBiometrics = () => {
     if (savedSettings.supported) return;
 
     const module = await getBiometricsModule();
-    const available = (await module?.isSensorAvailable())?.available ?? false;
+    const result = await module?.isSensorAvailable();
 
-    if (available) {
+    if (result?.available) {
       setBiometricsSupported(true);
-      saveBiometricsSettings({...savedSettings, supported: true});
+      setSensorType(result.biometryType);
+      saveBiometricsSettings({
+        ...savedSettings,
+        sensorType: result?.biometryType,
+        supported: true,
+      });
     }
   };
 
@@ -191,5 +205,6 @@ export const useBiometrics = () => {
     locked,
     onLockPress,
     resetSettings,
+    sensorType,
   };
 };

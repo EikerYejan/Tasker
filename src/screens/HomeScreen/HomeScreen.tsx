@@ -1,7 +1,6 @@
 import {Pressable, ScrollView, Text, View} from "react-native";
 import {useMemo, useState} from "react";
 import {useMediaQuery} from "react-responsive";
-import Icon from "react-native-vector-icons/Ionicons";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {Button} from "../../components/Button/Button";
@@ -36,11 +35,12 @@ export const HomeScreen = () => {
   const styles = useMemo(() => getStyles(theme), [theme]);
 
   const {
-    biometricsSupported,
     biometricsEnrolled,
+    biometricsSupported,
     locked: tasksLockedByBiometrics,
     onLockPress: onTogleBiometrics,
     resetSettings,
+    sensorType,
   } = useBiometrics();
 
   const onSave = () => {
@@ -72,17 +72,22 @@ export const HomeScreen = () => {
     }
   };
 
-  const biometricsButtonIcon = useMemo(() => {
-    if (!biometricsSupported) return "";
+  const biometricsButtonText = useMemo(() => {
+    if (!biometricsSupported) return null;
 
     if (biometricsEnrolled) {
       return tasksLockedByBiometrics
-        ? "lock-closed-outline"
-        : "lock-open-outline";
+        ? `Unlock with ${sensorType}`
+        : `Lock Tasks`;
     }
 
-    return "finger-print-outline";
-  }, [biometricsEnrolled, biometricsSupported, tasksLockedByBiometrics]);
+    return `Enable ${sensorType} Lock`;
+  }, [
+    biometricsEnrolled,
+    biometricsSupported,
+    sensorType,
+    tasksLockedByBiometrics,
+  ]);
 
   const saveDisabled = !taskTitle || !taskDescription;
 
@@ -134,11 +139,9 @@ export const HomeScreen = () => {
                 <Pressable
                   style={styles.lockButton}
                   onPress={onTogleBiometrics}>
-                  <Icon
-                    name={biometricsButtonIcon}
-                    size={25}
-                    color={theme.colors.text}
-                  />
+                  <Text style={styles.pageDescription}>
+                    {biometricsButtonText}
+                  </Text>
                 </Pressable>
               )}
               <View style={styles.tasksWrapper}>
