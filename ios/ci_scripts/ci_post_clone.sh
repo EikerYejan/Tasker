@@ -2,16 +2,10 @@
 
 export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
 
-echo 'export GEM_HOME=$HOME/gems' >>~/.bash_profile
-echo 'export PATH=$HOME/gems/bin:$PATH' >>~/.bash_profile
-
-export GEM_HOME=$HOME/gems
-export PATH="$GEM_HOME/bin:$PATH"
-
 # Move to the root of the repository
 cd /Volumes/workspace/repository
 
-sudo gem install cocoapods
+brew install cocoapods
 # have to add node yourself
 brew install node@20
 # link it to the path
