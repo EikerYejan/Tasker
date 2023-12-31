@@ -27,6 +27,13 @@ import {
 
 import {type IStoredUser, SocialLoginProvider} from "../../types";
 
+const providersMap = {
+  [SocialLoginProvider.APPLE]: OAuthProvider,
+  [SocialLoginProvider.GOOGLE]: GoogleAuthProvider,
+  [SocialLoginProvider.TWITTER]: TwitterAuthProvider,
+  [SocialLoginProvider.GITHUB]: GithubAuthProvider,
+};
+
 class AuthServiceBase {
   private unsubscribeAuthState: (() => void) | null = null;
 
@@ -35,6 +42,16 @@ class AuthServiceBase {
   private get auth() {
     return getAuth(this.app);
   }
+
+  private getLoginProvider = (provider: SocialLoginProvider) => {
+    const Provider = providersMap[provider];
+
+    if (!Provider) {
+      throw Error("Unknown provider");
+    }
+
+    return Provider;
+  };
 
   get isAppleAuthSupported() {
     return Boolean(WEB_ENABLE_APPLE_AUTH);
@@ -56,8 +73,10 @@ class AuthServiceBase {
     await this.auth.authStateReady();
 
     if (this.auth.currentUser) {
-      return this.auth.currentUser;
+      return this.auth.currentUser as IStoredUser;
     }
+
+    return null;
   };
 
   signInAnonymously = async () => {
@@ -97,105 +116,37 @@ class AuthServiceBase {
     return user;
   };
 
-  signInWithApple = async () => {
-    const provider = new OAuthProvider("apple.com");
+  signInWithProvider = async (providerName: SocialLoginProvider) => {
+    const Provider = this.getLoginProvider(providerName);
+    const providerInstance = new Provider("apple.com");
+    const isAnonymous = this.auth.currentUser?.isAnonymous;
 
-    provider.addScope("email");
+    providerInstance.addScope("email");
 
-    const result = await signInWithPopup(this.auth, provider);
-    const credential = OAuthProvider.credentialFromResult(result);
-
-    if (!credential) {
-      throw Error("No credential");
-    }
-
-    if (this.auth.currentUser?.isAnonymous) {
-      await linkWithCredential(this.auth.currentUser, credential);
-    }
-
-    await signInWithCredential(this.auth, credential);
-
-    return this.auth.currentUser;
-  };
-
-  signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(this.auth, provider);
-    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const result = await signInWithPopup(this.auth, providerInstance);
+    const credential = Provider.credentialFromResult(result);
 
     if (!credential) {
       throw Error("No credential");
     }
 
-    if (this.auth.currentUser?.isAnonymous) {
+    if (isAnonymous) {
       await linkWithCredential(this.auth.currentUser, credential);
+    } else {
+      await signInWithCredential(this.auth, credential);
     }
-
-    await signInWithCredential(this.auth, credential);
 
     return this.auth.currentUser;
-  };
-
-  signInWithTwitter = async () => {
-    const provider = new TwitterAuthProvider();
-    const result = await signInWithPopup(this.auth, provider);
-    const credential = TwitterAuthProvider.credentialFromResult(result);
-
-    if (!credential) {
-      throw Error("No credential");
-    }
-
-    if (this.auth.currentUser?.isAnonymous) {
-      await linkWithCredential(this.auth.currentUser, credential);
-    }
-
-    await signInWithCredential(this.auth, credential);
-
-    return this.auth.currentUser;
-  };
-
-  signInWithGithub = async () => {
-    const provider = new GithubAuthProvider();
-    const result = await signInWithPopup(this.auth, provider);
-    const credential = GithubAuthProvider.credentialFromResult(result);
-
-    if (!credential) {
-      throw Error("No credential");
-    }
-
-    if (this.auth.currentUser?.isAnonymous) {
-      await linkWithCredential(this.auth.currentUser, credential);
-    }
-
-    await signInWithCredential(this.auth, credential);
-
-    return this.auth.currentUser;
-  };
-
-  signInWithProvider = (provider: SocialLoginProvider) => {
-    switch (provider) {
-      case SocialLoginProvider.APPLE:
-        return this.signInWithApple();
-      case SocialLoginProvider.GOOGLE:
-        return this.signInWithGoogle();
-      case SocialLoginProvider.TWITTER:
-        return this.signInWithTwitter();
-      case SocialLoginProvider.GITHUB:
-        return this.signInWithGithub();
-      default: {
-        throw Error("Unknown provider");
-      }
-    }
   };
 
   sendPasswordResetEmail = async (email: string) => {
     await sendPasswordResetEmail(this.auth, email);
   };
 
-  getIsEmailUsed = async (email: string) => {
+  getLoginMethodsForEmail = async (email: string) => {
     const methods = await fetchSignInMethodsForEmail(this.auth, email);
 
-    return methods.length > 0;
+    return methods ?? [];
   };
 
   logOutUser = async () => {

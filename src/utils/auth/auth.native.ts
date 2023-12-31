@@ -145,10 +145,10 @@ class AuthServiceBase {
     await auth().sendPasswordResetEmail(email);
   };
 
-  getIsEmailUsed = async (email: string) => {
+  getLoginMethodsForEmail = async (email: string) => {
     const methods = await auth().fetchSignInMethodsForEmail(email);
 
-    return methods.length > 0;
+    return methods ?? [];
   };
 
   logOutUser = async () => {

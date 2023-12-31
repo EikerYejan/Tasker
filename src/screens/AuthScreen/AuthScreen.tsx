@@ -94,17 +94,26 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     setError(message);
   };
 
-  const alertUserForDataReset = (callback?: () => void) => {
-    Alert.alert("Be careful", "If you sign in, you will lose all your data.", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Sign in",
-        onPress: callback,
-      },
-    ]);
+  const alertUserForDataReset = (
+    callback?: () => void,
+    socialLogin = false,
+  ) => {
+    Alert.alert(
+      "Be careful",
+      `If you ${
+        socialLogin ? "use an existing account" : "sign in"
+      }, you will lose all your data.`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Sign in",
+          onPress: callback,
+        },
+      ],
+    );
   };
 
   const onNextPress = async () => {
@@ -112,9 +121,19 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       setLoading(true);
 
       if (email && !password) {
-        const isEmailUsed = await AuthService.getIsEmailUsed(email);
+        const authMethods = await AuthService.getLoginMethodsForEmail(email);
+        const hasPassword = authMethods?.includes("password");
 
-        setUserType(isEmailUsed ? "existing" : "new");
+        if (!hasPassword && authMethods.length) {
+          Alert.alert(
+            "Account already exists",
+            `Please sign in with ${authMethods.join(", ")} instead.`,
+          );
+
+          return;
+        }
+
+        setUserType(hasPassword ? "existing" : "new");
 
         // Need timeout in web for some reason.
         setTimeout(() => {
@@ -149,6 +168,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
           }
         } else {
           await AuthService.signUpWithEmailAndPassword(email, password);
+          await onCompleteAuth();
         }
       }
     } catch (error) {
@@ -190,7 +210,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
         };
 
         if (isLoggedInAsAnonymous) {
-          alertUserForDataReset(socialSignIn);
+          alertUserForDataReset(socialSignIn, true);
         } else {
           await socialSignIn();
         }
