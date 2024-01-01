@@ -10,7 +10,7 @@ import {toStoredUser} from "../utils";
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
 import type {IAppStore, IStoredUser, ITodoItem} from "../types";
 
-export const storage = new MMKV({
+const storage = new MMKV({
   id: "appStorage",
 });
 
@@ -107,7 +107,7 @@ export const useAppState = () => {
   const setStateFromFirestore = async (user: IAppStore) => {
     const {theme: _, ...rest} = user;
 
-    setState({...rest, theme: state.theme});
+    setState(prevState => ({...prevState, ...rest, theme: state.theme}));
   };
 
   return {

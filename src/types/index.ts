@@ -1,5 +1,6 @@
-import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
+import type {BiometryType} from "react-native-biometrics";
 import type {ColorSchemeName} from "react-native";
+import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
 
 export interface ITodoItem {
   description: string;
@@ -8,7 +9,16 @@ export interface ITodoItem {
   title: string;
 }
 
+export interface IBiometricsSettings {
+  enrolled: boolean;
+  locked: boolean;
+  sensorType?: BiometryType;
+  supported: boolean;
+  timestamp: number;
+}
+
 export interface IAppStore {
+  biometrics?: IBiometricsSettings;
   done: ITodoItem[];
   user?: IStoredUser;
   theme?: {
@@ -16,11 +26,11 @@ export interface IAppStore {
     value: ColorSchemeName;
   } | null;
   todos: ITodoItem[];
+  platforms?: string[];
   /**
    * @deprecated
    */
   platform?: string;
-  platforms?: string[];
 }
 
 export type IStoredUser = Pick<
