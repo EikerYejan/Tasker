@@ -55,6 +55,8 @@ class FirestoreServiceBase {
     return {
       appVersion: version,
       build: DeviceInfo.getBuildNumber() ?? null,
+      deviceId: DeviceInfo.getDeviceId(),
+      firstInstallTime: DeviceInfo.getFirstInstallTime(),
       updatedAt: firestore.FieldValue.serverTimestamp(),
     };
   }
