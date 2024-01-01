@@ -1,3 +1,4 @@
+import {useCallback} from "react";
 import {atom, useRecoilState} from "recoil";
 import {recoilPersist} from "recoil-persist";
 import {MMKV} from "react-native-mmkv";
@@ -87,7 +88,7 @@ export const useAppState = () => {
     await AuthService.logOutUser();
     await FirestoreService.replaceInstance();
 
-    setState(getInitialState());
+    setState({...getInitialState(), theme: state.theme});
   };
 
   const setUser = async (user: FirebaseAuthTypes.User | null) => {
@@ -104,11 +105,14 @@ export const useAppState = () => {
     });
   };
 
-  const setStateFromFirestore = async (user: IAppStore) => {
-    const {theme: _, ...rest} = user;
+  const setStateFromFirestore = useCallback(
+    async (snapshot: IAppStore) => {
+      const {theme: _, ...rest} = snapshot;
 
-    setState(prevState => ({...prevState, ...rest, theme: state.theme}));
-  };
+      setState(prevState => ({...prevState, ...rest, theme: prevState.theme}));
+    },
+    [state],
+  );
 
   return {
     addTodo,

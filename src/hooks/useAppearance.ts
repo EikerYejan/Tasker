@@ -12,13 +12,13 @@ export const useAppearance = () => {
   const appearance = state.theme?.value ?? colorScheme;
   const setByUser = state.theme?.setByUser ?? false;
 
-  const setTheme = (newAppearance: ColorSchemeName, setByUser = false) => {
-    setState(state => ({
-      ...state,
+  const setTheme = (newAppearance: ColorSchemeName, setByUserVal = false) => {
+    setState(prevState => ({
+      ...prevState,
       theme: {
-        ...state.theme,
+        ...prevState.theme,
         value: newAppearance,
-        setByUser,
+        setByUser: setByUserVal,
       },
     }));
   };
