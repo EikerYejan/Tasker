@@ -141,7 +141,9 @@ class AuthServiceBase {
   };
 
   sendPasswordResetEmail = async (email: string) => {
-    await auth().sendPasswordResetEmail(email);
+    await auth()
+      .sendPasswordResetEmail(email)
+      .catch(() => null);
   };
 
   getLoginMethodsForEmail = async (email: string) => {

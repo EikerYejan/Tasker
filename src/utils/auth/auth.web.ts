@@ -140,7 +140,7 @@ class AuthServiceBase {
   };
 
   sendPasswordResetEmail = async (email: string) => {
-    await sendPasswordResetEmail(this.auth, email);
+    await sendPasswordResetEmail(this.auth, email).catch(() => null);
   };
 
   getLoginMethodsForEmail = async (email: string) => {
