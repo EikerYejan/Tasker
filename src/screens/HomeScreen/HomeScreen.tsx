@@ -1,4 +1,4 @@
-import {Pressable, ScrollView, Text, View} from "react-native";
+import {Platform, Pressable, ScrollView, Text, View} from "react-native";
 import {useMemo, useState} from "react";
 import {useMediaQuery} from "react-responsive";
 
@@ -133,7 +133,7 @@ export const HomeScreen = () => {
             ]}>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionHeading}>To do:</Text>
-              {biometricsSupported && (
+              {biometricsSupported && Platform.OS !== "web" && (
                 <Pressable
                   style={styles.lockButton}
                   onPress={onTogleBiometrics}>
