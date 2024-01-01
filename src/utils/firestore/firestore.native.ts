@@ -12,6 +12,7 @@ import {COLLECTION_NAME} from "./constants";
 import {version} from "../../../package.json";
 
 import type {IAppStore} from "../../types";
+import type {FieldValue} from "firebase/firestore";
 
 class FirestoreServiceBase {
   private instance: FirebaseFirestoreTypes.DocumentReference<IAppStore> | null =
@@ -36,7 +37,7 @@ class FirestoreServiceBase {
           this.sanitizeData({
             user: toStoredUser(user),
             ...getInitialState(),
-            ...this.documentMetadata,
+            ...(await this.documentMetadata()),
           }),
         );
       }
@@ -51,12 +52,14 @@ class FirestoreServiceBase {
     return this.instance?.id;
   }
 
-  private get documentMetadata() {
+  private async documentMetadata(): Promise<
+    Record<string, string | number | FieldValue>
+  > {
     return {
       appVersion: version,
       build: DeviceInfo.getBuildNumber() ?? null,
       deviceId: DeviceInfo.getDeviceId(),
-      firstInstallTime: DeviceInfo.getFirstInstallTime(),
+      firstInstallTime: await DeviceInfo.getFirstInstallTime(),
       updatedAt: firestore.FieldValue.serverTimestamp(),
     };
   }
@@ -89,8 +92,7 @@ class FirestoreServiceBase {
     if (this.instance) {
       await this.instance.update({
         ...this.sanitizeData(data),
-        ...this.documentMetadata,
-        ...(data?.theme ? {theme: null} : {}),
+        ...(await this.documentMetadata()),
         platforms: this.getPlatforms(data?.platform ?? data?.platforms),
       });
     }

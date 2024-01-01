@@ -49,7 +49,7 @@ class FirestoreServiceBase {
           this.sanitizeData({
             user: toStoredUser(user),
             ...getInitialState(),
-            ...this.documentMetadata,
+            ...(await this.documentMetadata()),
           }),
         );
       }
@@ -64,12 +64,12 @@ class FirestoreServiceBase {
     return this.instance?.id;
   }
 
-  private get documentMetadata() {
+  private async documentMetadata() {
     return {
       appVersion: version,
-      build: DeviceInfo.getBuildNumber() ?? null,
       platform: Platform.OS,
       updatedAt: serverTimestamp(),
+      userAgen: await DeviceInfo.getUserAgent(),
     };
   }
 
@@ -101,8 +101,7 @@ class FirestoreServiceBase {
     if (this.instance) {
       await updateDoc(this.instance, {
         ...this.sanitizeData(data),
-        ...this.documentMetadata,
-        theme: null,
+        ...(await this.documentMetadata()),
         platforms: this.getPlatforms(data?.platforms ?? data.platform),
       });
     }
