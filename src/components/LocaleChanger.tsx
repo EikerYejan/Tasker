@@ -45,7 +45,7 @@ export const LocaleChanger = () => {
       fontFamily: FONTS.POPPINS_REGULAR,
       fontSize: 14,
       height: 30,
-      minWidth: 120,
+      minWidth: 130,
       paddingLeft: 5,
       ...Platform.select({
         web: {
@@ -62,9 +62,6 @@ export const LocaleChanger = () => {
       backgroundColor: colors.background,
       color: colors.text,
     },
-    leftIcon: {
-      marginRight: 5,
-    },
   });
 
   return (
@@ -75,14 +72,6 @@ export const LocaleChanger = () => {
         itemContainerStyle={styles.pickerItem}
         itemTextStyle={styles.pickerItemText}
         labelField="name"
-        renderLeftIcon={() => (
-          <Icon
-            color={colors.text}
-            name="language-outline"
-            size={20}
-            style={styles.leftIcon}
-          />
-        )}
         renderRightIcon={() => (
           <Icon color={colors.text} name="chevron-down-outline" size={20} />
         )}

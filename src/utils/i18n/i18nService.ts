@@ -24,9 +24,9 @@ class I18nServiceBase {
 
   get supportedLocales(): ILocale[] {
     return [
-      {code: "en", name: "English"},
-      {code: "es", name: "Español"},
-      {code: "de", name: "Deutsch"},
+      {code: "en", name: "🇺🇸 English"},
+      {code: "es", name: "🇪🇸 Español"},
+      {code: "de", name: "🇩🇪 Deutsch"},
     ];
   }
 
