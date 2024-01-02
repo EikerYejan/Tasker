@@ -43,7 +43,7 @@ export const HomeScreen = () => {
     sensorType,
   } = useBiometrics();
 
-  const {t} = useTranslation();
+  const {i18n, t} = useTranslation();
 
   const onSave = () => {
     if (!taskTitle || !taskDescription) return;
@@ -81,22 +81,21 @@ export const HomeScreen = () => {
   const biometricsButtonText = useMemo(() => {
     if (!biometricsSupported) return null;
 
+    let text = "";
+
     if (biometricsEnrolled) {
-      return tasksLockedByBiometrics
-        ? t("biometrics.button.unlock").replace(
-            "{sensorType}",
-            sensorType ?? "",
-          )
+      text = tasksLockedByBiometrics
+        ? t("biometrics.button.unlock")
         : t("biometrics.button.lock");
+    } else {
+      text = t("biometrics.button.enroll");
     }
 
-    return t("biometrics.button.enroll").replace(
-      "{sensorType}",
-      sensorType ?? "",
-    );
+    return text.replace("{sensorType}", sensorType ?? "");
   }, [
     biometricsEnrolled,
     biometricsSupported,
+    i18n.language,
     sensorType,
     tasksLockedByBiometrics,
   ]);

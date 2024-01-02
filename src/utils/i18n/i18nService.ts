@@ -19,7 +19,7 @@ class I18nServiceBase {
   private parseLocale(locale?: string): string {
     if (!locale) return "en";
 
-    return locale?.split("-")?.[0];
+    return locale.replace("_", "-").split("-")?.[0];
   }
 
   get supportedLocales(): ILocale[] {
