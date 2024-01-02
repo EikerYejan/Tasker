@@ -17,16 +17,16 @@ class I18nServiceBase {
   private storageKey = "locale";
 
   private parseLocale(locale?: string): string {
-    if (!locale) return "en-US";
+    if (!locale) return "en";
 
-    return locale.replace("_", "-");
+    return locale?.split("-")?.[0];
   }
 
   get supportedLocales(): ILocale[] {
     return [
-      {code: "en-US", name: "English"},
-      {code: "es-ES", name: "Español"},
-      {code: "de-DE", name: "Deutsch"},
+      {code: "en", name: "English"},
+      {code: "es", name: "Español"},
+      {code: "de", name: "Deutsch"},
     ];
   }
 
@@ -35,13 +35,15 @@ class I18nServiceBase {
 
     if (storedLocale) return storedLocale;
 
-    return Platform.select({
-      web: navigator.language ?? navigator.languages?.[0],
-      ios:
-        SettingsManager?.settings?.AppleLocale ??
-        SettingsManager?.settings?.AppleLanguages?.[0],
-      android: I18nManager?.localeIdentifier,
-    });
+    return this.parseLocale(
+      Platform.select<string>({
+        web: navigator.language ?? navigator.languages?.[0],
+        ios:
+          SettingsManager?.settings?.AppleLocale ??
+          SettingsManager?.settings?.AppleLanguages?.[0],
+        android: I18nManager?.localeIdentifier,
+      }),
+    );
   }
 
   saveLocale(locale: string) {
