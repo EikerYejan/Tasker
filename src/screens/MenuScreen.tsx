@@ -125,7 +125,7 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
   const dev = process.env.NODE_ENV === "development";
 
   return (
-    <ScreenWrapper>
+    <ScreenWrapper disableLocaleChanger>
       <TouchableOpacity style={styles.closeButton} onPress={onCloseButtonPress}>
         <Icon name="close-outline" size={35} color={colors.text} />
       </TouchableOpacity>

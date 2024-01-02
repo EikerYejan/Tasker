@@ -5,12 +5,14 @@ import Animated, {useSharedValue, withSpring} from "react-native-reanimated";
 import {useAppearance} from "../hooks/useAppearance";
 
 import type {ReactNode} from "react";
+import {LocaleChanger} from "./LocaleChanger";
 
 interface Props {
   children: ReactNode;
+  disableLocaleChanger?: boolean;
 }
 
-export const ScreenWrapper = ({children}: Props) => {
+export const ScreenWrapper = ({children, disableLocaleChanger}: Props) => {
   const pageOpacity = useSharedValue(0);
 
   const {colors} = useAppearance();
@@ -46,6 +48,7 @@ export const ScreenWrapper = ({children}: Props) => {
         <Animated.View style={[styles.inner, {opacity: pageOpacity}]}>
           {children}
         </Animated.View>
+        {!disableLocaleChanger && <LocaleChanger />}
       </ScrollView>
     </SafeAreaView>
   );
