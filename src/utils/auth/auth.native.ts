@@ -14,9 +14,11 @@ class AuthServiceBase {
   private hasPlayServices: boolean | null = null;
 
   private sendEmailVerification = async () => {
-    await auth()
-      .currentUser?.sendEmailVerification()
-      .catch(() => null);
+    const {currentUser} = auth();
+
+    if (currentUser && !currentUser?.emailVerified) {
+      await currentUser?.sendEmailVerification().catch(() => null);
+    }
   };
 
   private setupGoogleAuth = async () => {
