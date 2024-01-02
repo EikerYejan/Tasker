@@ -1,5 +1,6 @@
 import {useEffect} from "react";
 import {Alert, Platform} from "react-native";
+import {useTranslation} from "react-i18next";
 
 import {useAppState} from "../store/store";
 
@@ -28,6 +29,8 @@ export const useBiometrics = () => {
     state: {biometrics: savedSettings},
   } = useAppState();
 
+  const {t} = useTranslation();
+
   const saveBiometricsSettings = (settings: Partial<IBiometricsSettings>) => {
     const newSettings = {
       ...(savedSettings ?? {}),
@@ -47,15 +50,15 @@ export const useBiometrics = () => {
 
     if (!enrolled) {
       Alert.alert(
-        "Biometrics not enrolled",
-        "Do you want to lock your tasks with biometrics?",
+        t("biometrics.alert.enroll.title"),
+        t("biometrics.alert.enroll.message"),
         [
           {
-            text: "Cancel",
+            text: t("alert.cancel"),
             style: "cancel",
           },
           {
-            text: "Enroll",
+            text: t("alert.enroll"),
             async onPress() {
               const success = await simplePrompt();
 
@@ -107,7 +110,7 @@ export const useBiometrics = () => {
     if (Platform.OS === "web") return;
 
     const module = await getBiometricsModule();
-    const result = await module?.isSensorAvailable();
+    const result = await module?.isSensorAvailable?.();
 
     saveBiometricsSettings({
       sensorType: result?.biometryType,

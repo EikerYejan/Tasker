@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import {useMemo, useRef, useState} from "react";
 import Icon from "react-native-vector-icons/Ionicons";
+import {useTranslation} from "react-i18next";
 
 import {TextInput} from "../../components/TextInput/TextInput";
 import {Button} from "../../components/Button/Button";
@@ -48,6 +49,8 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
 
   const emailInputRef = useRef<RNTextInput>(null);
   const passwordInputRef = useRef<RNTextInput>(null);
+
+  const {t} = useTranslation();
 
   const onBackPress = () => {
     setUserType("undetermined");
@@ -94,22 +97,17 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     setError(message);
   };
 
-  const alertUserForDataReset = (
-    callback?: () => void,
-    socialLogin = false,
-  ) => {
+  const alertUserForDataReset = (callback?: () => void) => {
     Alert.alert(
-      "Be careful",
-      `If you ${
-        socialLogin ? "use an existing account" : "sign in"
-      }, you will lose all your data.`,
+      t("auth.alert.dataResetTitle"),
+      t("auth.alert.dateResetMessage"),
       [
         {
-          text: "Cancel",
+          text: t("alert.cancel"),
           style: "cancel",
         },
         {
-          text: "Sign in",
+          text: t("auth.button.existingUser"),
           onPress: callback,
         },
       ],
@@ -126,8 +124,11 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
 
         if (!hasPassword && authMethods.length) {
           Alert.alert(
-            "Account already exists",
-            `Please sign in with ${authMethods.join(", ")} instead.`,
+            t("auth.alert.socialAccountExists"),
+            t("auth.alert.socialAccountExistsMessage").replace(
+              "{providers}",
+              authMethods.join(", "),
+            ),
           );
 
           return;
@@ -210,7 +211,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
         };
 
         if (isLoggedInAsAnonymous) {
-          alertUserForDataReset(socialSignIn, true);
+          alertUserForDataReset(socialSignIn);
         } else {
           await socialSignIn();
         }
@@ -223,18 +224,28 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   };
 
   const onForgotPasswordPress = () => {
-    Alert.prompt("Forgot your password?", "Enter your email", async email => {
-      try {
-        await AuthService.sendPasswordResetEmail(email.replace(/\s/g, ""));
+    Alert.prompt(
+      t("auth.alert.forgotPassword"),
+      t("auth.alert.enterEmail"),
+      async email => {
+        try {
+          const parsedEmail = email?.replace(/\s/g, "");
 
-        Alert.alert(
-          "Password reset email sent",
-          "Please check your email for further instructions.",
-        );
-      } catch (error) {
-        alertError({code: error.code, message: error.message});
-      }
-    });
+          if (!parsedEmail) return;
+
+          await AuthService.sendPasswordResetEmail(parsedEmail);
+
+          Alert.alert(
+            t("auth.alert.passwordResetConfirmation"),
+            t("auth.alert.passwordResetConfirmationMessage"),
+          );
+        } catch (error) {
+          alertError({code: error.code, message: error.message});
+        }
+      },
+      undefined,
+      email,
+    );
   };
 
   const onChangeText = (field: "email" | "password") => (text: string) => {
@@ -251,10 +262,12 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
 
   const buttonText = useMemo(() => {
     if (userType !== "undetermined") {
-      return userType === "existing" ? "Sign in" : "Sign up";
+      return userType === "existing"
+        ? t("auth.button.existingUser")
+        : t("auth.button.newUser");
     }
 
-    return "Next";
+    return t("auth.button.default");
   }, [userType]);
 
   const submitButtonDisabled = useMemo(() => {
@@ -266,11 +279,11 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   const pageTitle = useMemo(() => {
     if (userType !== "undetermined") {
       return userType === "existing"
-        ? "Welcome Back!"
-        : "Let's create your account";
+        ? t("auth.title.existingUser")
+        : t("auth.title.newUser");
     }
 
-    return "Let's get started";
+    return t("auth.title.default");
   }, [userType]);
 
   return (
@@ -292,7 +305,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             autoCorrect={false}
             disabled={userType !== "undetermined" || loading}
             inputMode="email"
-            placeholder="Your email"
+            placeholder={t("auth.inputs.email.placeholder")}
             ref={emailInputRef}
             style={styles.input}
             onChangeText={onChangeText("email")}
@@ -303,7 +316,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             autoCorrect={false}
             disabled={loading}
             id="passwordInput"
-            placeholder="Your password"
+            placeholder={t("auth.inputs.password.placeholder")}
             ref={passwordInputRef}
             secureTextEntry
             style={[
@@ -358,7 +371,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
                   styles.continueWithoutAccountText,
                   {color: colors.text},
                 ]}>
-                Go Back
+                {t("auth.goBackButton")}
               </Text>
             </Pressable>
           )}
@@ -369,7 +382,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
                   styles.continueWithoutAccountText,
                   {color: colors.text},
                 ]}>
-                Continue without an account
+                {t("auth.continueWithoutAccount")}
               </Text>
             </Pressable>
           ) : null}
@@ -379,7 +392,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
                 styles.continueWithoutAccountText,
                 {color: colors.text, marginTop: 0},
               ]}>
-              Forgot your password?
+              {t("auth.forgotPassword")}
             </Text>
           </Pressable>
         </View>
@@ -387,14 +400,14 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
         {userType === "new" && (
           <Text
             style={[styles.continueWithoutAccountText, {color: colors.text}]}>
-            By pressing Sign Up you agree to our{" "}
+            {t("auth.privacy.title")}{" "}
             <Pressable
               onPress={() => {
                 Linking.openURL(PRIVACY_POLICIY_URL);
               }}>
               <Text
                 style={[styles.continueWithoutAccountText, styles.termsLink]}>
-                Terms & Conditions
+                {t("auth.privacy.link")}
               </Text>
             </Pressable>
           </Text>

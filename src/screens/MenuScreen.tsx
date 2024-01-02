@@ -1,6 +1,7 @@
 import {useMemo} from "react";
 import {Linking, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import {useTranslation} from "react-i18next";
 
 import {ScreenWrapper} from "../components/ScreenWrapper";
 import {Button} from "../components/Button/Button";
@@ -9,6 +10,7 @@ import {useAppearance} from "../hooks/useAppearance";
 import {useAppState} from "../store/store";
 import {FirestoreService} from "../utils/firestore/firestore";
 import {AuthService} from "../utils/auth/auth";
+import {i18nService} from "../utils/i18n/i18nService";
 import {Alert} from "../utils/alert/alert";
 
 import {FONTS} from "../constants/fonts";
@@ -27,6 +29,8 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
     resetState,
     state: {user},
   } = useAppState();
+
+  const {t} = useTranslation();
 
   const styles = StyleSheet.create({
     deleteAccount: {
@@ -69,9 +73,7 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
 
     if (!dateString) return null;
 
-    return new Date(
-      isNaN(timestamp) ? dateString : timestamp,
-    ).toLocaleDateString("en-US", {
+    return i18nService.parseDate(isNaN(timestamp) ? dateString : timestamp, {
       day: "numeric",
       month: "long",
       year: "numeric",
@@ -89,8 +91,6 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
   };
 
   const onDeleteScreen = () => {
-    const alertTitle = "Are you sure you want to delete your account?";
-
     const deleteAccount = async () => {
       await FirestoreService.deleteDocument();
       await AuthService.deleteUser();
@@ -98,13 +98,13 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
       resetState();
     };
 
-    Alert.alert(alertTitle, "", [
+    Alert.alert(t("menu.alert.deleteAccount"), "", [
       {
-        text: "Cancel",
+        text: t("alert.cancel"),
         style: "cancel",
       },
       {
-        text: "Delete",
+        text: t("alert.delete"),
         onPress: deleteAccount,
         style: "destructive",
       },
@@ -127,25 +127,27 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
         <Icon name="close-outline" size={35} color={colors.text} />
       </TouchableOpacity>
       <View>
-        <Text style={styles.optionTitle}>User Data</Text>
+        <Text style={styles.optionTitle}>{t("menu.title")}</Text>
         <Text style={styles.optionText}>UID: {user?.uid}</Text>
         <Text style={styles.optionText}>
-          Connected To Database: {Boolean(dbInstanceId).toString()}
+          {t("menu.connected")} {Boolean(dbInstanceId).toString()}
         </Text>
         <Text style={styles.optionText}>Email: {user?.email ?? "NULL"}</Text>
         <Text style={styles.optionText}>
-          Anonymous: {String(user?.isAnonymous ?? "false")}
+          {t("menu.anonymous")} {String(user?.isAnonymous ?? "false")}
         </Text>
-        <Text style={styles.optionText}>Created At: {userCreatedAt}</Text>
+        <Text style={styles.optionText}>
+          {t("menu.createdAt")} {userCreatedAt}
+        </Text>
       </View>
       {user && !user?.isAnonymous ? (
         <View style={styles.option}>
-          <Button label="Log Out" onPress={resetState} />
+          <Button label={t("menu.logout")} onPress={resetState} />
         </View>
       ) : (
         <View style={styles.option}>
           <Button
-            label="Log In"
+            label={t("menu.login")}
             onPress={() => {
               onClose?.();
               navigation.navigate("Login");
@@ -167,15 +169,15 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
               styles.optionText,
               {color: colors.error, fontFamily: "inherit"},
             ]}>
-            Delete Account
+            {t("menu.deleteAccount")}
           </Text>
         </TouchableOpacity>
       )}
       <TouchableOpacity onPress={onPrivacyPolicyPress}>
-        <Text style={styles.optionText}>Privacy Policy</Text>
+        <Text style={styles.optionText}>{t("auth.privacy.link")}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={onTermsAndConditionsPress}>
-        <Text style={styles.optionText}>Terms & Conditions</Text>
+        <Text style={styles.optionText}>{t("menu.terms")}</Text>
       </TouchableOpacity>
     </ScreenWrapper>
   );

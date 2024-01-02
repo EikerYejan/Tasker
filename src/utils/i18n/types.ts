@@ -1,0 +1,89 @@
+export interface ITranslation {
+  auth: {
+    title: {
+      default: string;
+      existingUser: string;
+      newUser: string;
+    };
+    button: {
+      default: string;
+      existingUser: string;
+      newUser: string;
+    };
+    inputs: {
+      email: {
+        placeholder: string;
+      };
+      password: {
+        placeholder: string;
+      };
+    };
+    privacy: {
+      title: string;
+      link: string;
+    };
+    alert: {
+      dataResetTitle: string;
+      dateResetMessage: string;
+      enterEmail: string;
+      forgotPassword: string;
+      passwordResetConfirmation: string;
+      passwordResetConfirmationMessage: string;
+      socialAccountExists: string;
+      socialAccountExistsMessage: string;
+    };
+    goBackButton: string;
+    continueWithoutAccount: string;
+    forgotPassword: string;
+  };
+  alert: {
+    cancel: string;
+    delete: string;
+    enroll: string;
+  };
+  home: {
+    alert: {
+      deleteTask: string;
+      deleteTaskConfirmation: string;
+    };
+    title: string;
+    welcome: string;
+    input: {
+      taskTitle: string;
+      taskDescription: string;
+    };
+    newTask: string;
+    button: {
+      saveTask: string;
+    };
+    todoTitle: string;
+    doneTitle: string;
+  };
+  biometrics: {
+    alert: {
+      enroll: {
+        title: string;
+        message: string;
+      };
+    };
+    button: {
+      enroll: string;
+      lock: string;
+      unlock: string;
+    };
+  };
+  menu: {
+    alert: {deleteAccount: string};
+    anonymous: string;
+    connected: string;
+    createdAt: string;
+    deleteAccount: string;
+    login: string;
+    logout: string;
+    terms: string;
+    title: string;
+  };
+  task: {
+    locked: string;
+  };
+}

@@ -63,6 +63,11 @@ export const getStyles = (theme: Theme) => {
       right: 0,
       top: 8,
     },
+    lockButtonText: {
+      color: colors.link,
+      fontFamily: FONTS.POPPINS_MEDIUM,
+      fontSize: 14,
+    },
     page: {
       ...(Platform.OS === "web"
         ? {

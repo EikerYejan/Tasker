@@ -8,6 +8,7 @@ import {AuthScreen} from "./AuthScreen/AuthScreen";
 import {MainNavigator} from "../MainNavigator";
 
 import {AuthService} from "../utils/auth/auth";
+import {i18nService} from "../utils/i18n/i18nService";
 import {useAppState} from "../store/store";
 import {FirestoreService} from "../utils/firestore/firestore";
 import {useAppearance} from "../hooks/useAppearance";
@@ -34,6 +35,8 @@ export const SplasScreen = () => {
   };
 
   useEffect(() => {
+    i18nService.init();
+
     AuthService.init().then(async user => {
       if (user) {
         setUser(user);

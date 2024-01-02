@@ -1,5 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import {useTranslation} from "react-i18next";
 
 import {FONTS} from "../../constants/fonts";
 import {COLORS} from "../../constants/colors";
@@ -27,6 +28,8 @@ export const Task = ({
 
   const {colors} = useAppearance();
   const iconColor = done ? COLORS.WHITE : colors.primaryInverse;
+
+  const {t} = useTranslation();
 
   const styles = StyleSheet.create({
     container: {
@@ -79,7 +82,7 @@ export const Task = ({
           done ? styles.containerDone : {},
           locked ? styles.containerLocked : {},
         ]}>
-        <Text style={styles.title}>This task is locked</Text>
+        <Text style={styles.title}>{t("task.locked")}</Text>
       </View>
     );
   }

@@ -99,7 +99,9 @@ class AuthServiceBase {
     );
 
     if (auth().currentUser?.isAnonymous) {
-      await auth().currentUser?.linkWithCredential(credential);
+      await auth()
+        .currentUser?.linkWithCredential(credential)
+        .catch(() => null);
     }
 
     await auth().signInWithCredential(credential);
@@ -118,7 +120,9 @@ class AuthServiceBase {
     const credential = auth.GoogleAuthProvider.credential(idToken);
 
     if (auth().currentUser?.isAnonymous) {
-      await auth().currentUser?.linkWithCredential(credential);
+      await auth()
+        .currentUser?.linkWithCredential(credential)
+        .catch(() => null);
     }
 
     await auth().signInWithCredential(credential);

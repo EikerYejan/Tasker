@@ -1,6 +1,7 @@
 import {Platform, Pressable, ScrollView, Text, View} from "react-native";
 import {useMemo, useState} from "react";
 import {useMediaQuery} from "react-responsive";
+import {useTranslation} from "react-i18next";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {Button} from "../../components/Button/Button";
@@ -28,7 +29,7 @@ export const HomeScreen = () => {
     markAsDone,
     markAsTodo,
     removeTodo,
-    state: {done, user, todos},
+    state: {done, todos},
   } = useAppState();
 
   const {theme} = useAppearance();
@@ -41,6 +42,8 @@ export const HomeScreen = () => {
     onLockPress: onTogleBiometrics,
     sensorType,
   } = useBiometrics();
+
+  const {t} = useTranslation();
 
   const onSave = () => {
     if (!taskTitle || !taskDescription) return;
@@ -57,17 +60,21 @@ export const HomeScreen = () => {
 
   const onDelete = (id: string, done = false) => {
     if (!done) {
-      Alert.alert("Delete task", "Are you sure you want to delete this task?", [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          onPress: () => removeTodo(id),
-          style: "destructive",
-        },
-      ]);
+      Alert.alert(
+        t("home.alert.deleteTask"),
+        t("home.alert.deleteTaskConfirmation"),
+        [
+          {
+            text: t("alert.cancel"),
+            style: "cancel",
+          },
+          {
+            text: t("alert.delete"),
+            onPress: () => removeTodo(id),
+            style: "destructive",
+          },
+        ],
+      );
     }
   };
 
@@ -76,11 +83,17 @@ export const HomeScreen = () => {
 
     if (biometricsEnrolled) {
       return tasksLockedByBiometrics
-        ? `Unlock with ${sensorType}`
-        : `Lock Tasks`;
+        ? t("biometrics.button.unlock").replace(
+            "{sensorType}",
+            sensorType ?? "",
+          )
+        : t("biometrics.button.lock");
     }
 
-    return `Enable ${sensorType} Lock`;
+    return t("biometrics.button.enroll").replace(
+      "{sensorType}",
+      sensorType ?? "",
+    );
   }, [
     biometricsEnrolled,
     biometricsSupported,
@@ -97,8 +110,8 @@ export const HomeScreen = () => {
         keyboardDismissMode="interactive"
         scrollIndicatorInsets={{right: -3}}
         contentContainerStyle={styles.page}>
-        <Text style={styles.pageTitle}>Ahoy! {user?.displayName}</Text>
-        <Text style={styles.pageDescription}>Welcome to Tasker</Text>
+        <Text style={styles.pageTitle}>{t("home.title")}</Text>
+        <Text style={styles.pageDescription}>{t("home.welcome")}</Text>
         <View
           style={[
             styles.contentGrid,
@@ -109,22 +122,26 @@ export const HomeScreen = () => {
               styles.contentRow,
               isTablet ? styles.contentRowTablet : {},
             ]}>
-            <Text style={styles.sectionHeading}>Add new task</Text>
+            <Text style={styles.sectionHeading}>{t("home.newTask")}</Text>
             <TextInput
-              placeholder="Task Title"
+              placeholder={t("home.input.taskTitle")}
               style={styles.input}
               value={taskTitle}
               onChangeText={setTaskTitle}
             />
             <TextInput
               multiline
-              placeholder="Task Description"
+              placeholder={t("home.input.taskDescription")}
               value={taskDescription}
               style={[styles.input, styles.textArea]}
               onChangeText={setTaskDescription}
               onSubmitEditing={onSave}
             />
-            <Button label="Save" disabled={saveDisabled} onPress={onSave} />
+            <Button
+              label={t("home.button.saveTask")}
+              disabled={saveDisabled}
+              onPress={onSave}
+            />
           </View>
           <View
             style={[
@@ -132,12 +149,12 @@ export const HomeScreen = () => {
               isTablet ? styles.contentRowTablet : {},
             ]}>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionHeading}>To do:</Text>
+              <Text style={styles.sectionHeading}>{t("home.todoTitle")}</Text>
               {biometricsSupported && Platform.OS !== "web" && (
                 <Pressable
                   style={styles.lockButton}
                   onPress={onTogleBiometrics}>
-                  <Text style={styles.pageDescription}>
+                  <Text style={styles.lockButtonText}>
                     {biometricsButtonText}
                   </Text>
                 </Pressable>
@@ -156,7 +173,7 @@ export const HomeScreen = () => {
             </View>
             {done.length ? (
               <View style={styles.sectionContainer}>
-                <Text style={styles.sectionHeading}>Done:</Text>
+                <Text style={styles.sectionHeading}>{t("home.doneTitle")}</Text>
                 <View style={styles.tasksWrapper}>
                   {done.map(task => (
                     <Task
