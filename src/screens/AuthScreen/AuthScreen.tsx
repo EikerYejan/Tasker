@@ -399,9 +399,8 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
         </View>
 
         {userType === "new" && (
-          <Text
-            style={[styles.continueWithoutAccountText, {color: colors.text}]}>
-            {t("auth.privacy.title")}{" "}
+          <View style={[styles.continueWithoutAccountText, styles.termsButton]}>
+            <Text style={{color: colors.text}}>{t("auth.privacy.title")} </Text>
             <Pressable
               onPress={() => {
                 Linking.openURL(PRIVACY_POLICIY_URL);
@@ -411,7 +410,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
                 {t("auth.privacy.link")}
               </Text>
             </Pressable>
-          </Text>
+          </View>
         )}
       </KeyboardAvoidingView>
     </ScreenWrapper>

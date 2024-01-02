@@ -48,13 +48,15 @@ export const authScreenStyles = StyleSheet.create({
     textAlign: "center",
   },
   termsButton: {
-    fontSize: 12,
-    marginTop: "auto",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   termsLink: {
     color: COLORS.LINK,
     fontFamily: FONTS.POPPINS_BOLD,
     fontWeight: "bold",
+    marginTop: 0,
+    marginBottom: 0,
   },
   closeButton: {
     position: "absolute",
