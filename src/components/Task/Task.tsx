@@ -69,8 +69,10 @@ export const Task = ({
     },
     icons: {
       flexDirection: "row",
-      gap: 8,
-      width: 50,
+      flexWrap: "wrap",
+      gap: 3,
+      justifyContent: "flex-end",
+      maxWidth: 45,
     },
   });
 

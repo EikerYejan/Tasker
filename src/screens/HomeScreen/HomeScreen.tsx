@@ -107,7 +107,7 @@ export const HomeScreen = () => {
       <ScrollView
         indicatorStyle="black"
         keyboardDismissMode="interactive"
-        scrollIndicatorInsets={{right: -3}}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.page}>
         <Text style={styles.pageTitle}>{t("home.title")}</Text>
         <Text style={styles.pageDescription}>{t("home.welcome")}</Text>
