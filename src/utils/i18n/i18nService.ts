@@ -5,11 +5,16 @@ import {initReactI18next} from "react-i18next";
 import {englishTranslations} from "./resources/en";
 import {spanishTranslations} from "./resources/es";
 import {germanTranslations} from "./resources/de";
+import {storage} from "../../store/store";
+
+import type {ILocale} from "./types";
 
 const {I18nManager, SettingsManager} = NativeModules;
 
 class I18nServiceBase {
   private isInitialized = false;
+
+  private storageKey = "locale";
 
   private parseLocale(locale?: string): string {
     if (!locale) return "en-US";
@@ -17,14 +22,30 @@ class I18nServiceBase {
     return locale.replace("_", "-");
   }
 
+  get supportedLocales(): ILocale[] {
+    return [
+      {code: "en-US", name: "English"},
+      {code: "es-ES", name: "Español"},
+      {code: "de-DE", name: "Deutsch"},
+    ];
+  }
+
   get locale(): string | undefined {
+    const storedLocale = storage.getString(this.storageKey);
+
+    if (storedLocale) return storedLocale;
+
     return Platform.select({
-      web: navigator.language,
+      web: navigator.language ?? navigator.languages?.[0],
       ios:
         SettingsManager?.settings?.AppleLocale ??
         SettingsManager?.settings?.AppleLanguages?.[0],
       android: I18nManager?.localeIdentifier,
     });
+  }
+
+  saveLocale(locale: string) {
+    storage.set(this.storageKey, this.parseLocale(locale));
   }
 
   parseDate(
@@ -37,35 +58,36 @@ class I18nServiceBase {
     );
   }
 
-  init() {
+  async init() {
     if (this.isInitialized) return;
 
-    return i18n
-      .use(initReactI18next)
-      .init({
-        compatibilityJSON: "v3",
-        debug: true,
-        lng: this.locale,
-        fallbackLng: "en",
-        load: "all",
-        interpolation: {
-          escapeValue: false,
+    await i18n.use(initReactI18next).init({
+      compatibilityJSON: "v3",
+      debug: true,
+      lng: this.locale,
+      fallbackLng: "en",
+      load: "all",
+      interpolation: {
+        escapeValue: false,
+      },
+      resources: {
+        en: {
+          translation: englishTranslations,
         },
-        resources: {
-          en: {
-            translation: englishTranslations,
-          },
-          es: {
-            translation: spanishTranslations,
-          },
-          de: {
-            translation: germanTranslations,
-          },
+        es: {
+          translation: spanishTranslations,
         },
-      })
-      .then(() => {
-        this.isInitialized = true;
-      });
+        de: {
+          translation: germanTranslations,
+        },
+      },
+    });
+
+    this.isInitialized = true;
+
+    i18n.on("languageChanged", lng => {
+      this.saveLocale(lng);
+    });
   }
 }
 

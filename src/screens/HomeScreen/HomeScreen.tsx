@@ -7,6 +7,7 @@ import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {Button} from "../../components/Button/Button";
 import {TextInput} from "../../components/TextInput/TextInput";
 import {Task} from "../../components/Task/Task";
+import {LocaleChanger} from "../../components/LocaleChanger";
 
 import {useAppState} from "../../store/store";
 import {useAppearance} from "../../hooks/useAppearance";
@@ -190,6 +191,7 @@ export const HomeScreen = () => {
           </View>
         </View>
       </ScrollView>
+      <LocaleChanger />
     </ScreenWrapper>
   );
 };
