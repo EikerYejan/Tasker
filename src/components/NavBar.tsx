@@ -89,8 +89,7 @@ export const NavBar = () => {
   };
 
   useEffect(() => {
-    switchOverlayTranslateX.value = withSpring(appearance === "dark" ? 44 : 0, {
-      stiffness: 90,
+    switchOverlayTranslateX.value = withSpring(appearance === "dark" ? 0 : 44, {
       mass: 0.5,
     });
   }, [appearance]);
