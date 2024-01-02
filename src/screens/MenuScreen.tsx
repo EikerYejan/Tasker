@@ -63,6 +63,9 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
       top: 20,
       zIndex: 1,
     },
+    link: {
+      alignSelf: "flex-start",
+    },
   });
 
   const dbInstanceId = FirestoreService.instanceId;
@@ -163,7 +166,9 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
         </View>
       )}
       {!user?.isAnonymous && (
-        <TouchableOpacity onPress={onDeleteScreen} style={styles.deleteAccount}>
+        <TouchableOpacity
+          style={[styles.deleteAccount, styles.link]}
+          onPress={onDeleteScreen}>
           <Text
             style={[
               styles.optionText,
@@ -173,10 +178,10 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
           </Text>
         </TouchableOpacity>
       )}
-      <TouchableOpacity onPress={onPrivacyPolicyPress}>
+      <TouchableOpacity style={styles.link} onPress={onPrivacyPolicyPress}>
         <Text style={styles.optionText}>{t("auth.privacy.link")}</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={onTermsAndConditionsPress}>
+      <TouchableOpacity style={styles.link} onPress={onTermsAndConditionsPress}>
         <Text style={styles.optionText}>{t("menu.terms")}</Text>
       </TouchableOpacity>
     </ScreenWrapper>
