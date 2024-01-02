@@ -12,6 +12,16 @@ export const spanishTranslations: ITranslation = {
       existingUser: "Iniciar sesión",
       newUser: "Registrarse",
     },
+    error: {
+      default: "Algo salió mal, por favor intenta de nuevo",
+      existingCredential:
+        "Ya existe una cuenta con otro proveedor de redes sociales",
+      invalidEmail: "Correo electrónico inválido",
+      networkError: "Error de red, por favor inténtalo de nuevo",
+      tooManyRequests: "Demasiadas solicitudes, por favor inténtalo más tarde",
+      weakPassword: "La contraseña es demasiado débil",
+      wrongPassword: "Verifica tu correo electrónico y contraseña",
+    },
     inputs: {
       email: {
         placeholder: "Tu correo electrónico",

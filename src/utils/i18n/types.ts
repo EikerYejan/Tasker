@@ -10,6 +10,15 @@ export interface ITranslation {
       existingUser: string;
       newUser: string;
     };
+    error: {
+      default: string;
+      existingCredential: string;
+      invalidEmail: string;
+      networkError: string;
+      tooManyRequests: string;
+      weakPassword: string;
+      wrongPassword: string;
+    };
     inputs: {
       email: {
         placeholder: string;

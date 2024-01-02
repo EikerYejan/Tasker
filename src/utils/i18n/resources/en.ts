@@ -25,6 +25,16 @@ export const englishTranslations: ITranslation = {
       newUser: "Sign up",
     },
     continueWithoutAccount: "Continue without an account",
+    error: {
+      default: "Something went wrong, please try again",
+      existingCredential:
+        "Account already exists with a different social provider",
+      invalidEmail: "Invalid email",
+      networkError: "Network request failed",
+      tooManyRequests: "Too many requests, please try again later",
+      weakPassword: "Password is too weak",
+      wrongPassword: "Check your email and password",
+    },
     forgotPassword: "Forgot your password?",
     goBackButton: "Go back",
     inputs: {

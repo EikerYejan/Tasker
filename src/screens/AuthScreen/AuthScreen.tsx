@@ -60,6 +60,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     // Need timeout in web for some reason.
     setTimeout(() => {
       emailInputRef?.current?.focus();
+      passwordInputRef?.current?.clear();
     }, 100);
   };
 
@@ -76,20 +77,20 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
 
     console.log(error.code, error.message);
 
-    let message = "Please try again";
+    let message = t("auth.error.default");
 
     if (error.code === "auth/invalid-email") {
-      message = "Invalid email";
+      message = t("auth.error.invalidEmail");
     } else if (error.code === "auth/weak-password") {
-      message = "Password is too weak";
+      message = t("auth.error.weakPassword");
     } else if (error.code === "auth/wrong-password") {
-      message = "Check your email and password";
+      message = t("auth.error.wrongPassword");
     } else if (error.code === "auth/network-request-failed") {
-      message = "Network request failed";
+      message = t("auth.error.networkError");
     } else if (error.code === "auth/too-many-requests") {
-      message = "Too many requests, please try again later";
+      message = t("auth.error.tooManyRequests");
     } else if (error.code === "auth/account-exists-with-different-credential") {
-      message = "Account already exists with a different social provider";
+      message = t("auth.error.existingCredential");
     } else if (error.code && dismissableErrorCodes.includes(error.code)) {
       return;
     }
@@ -312,13 +313,13 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
             onSubmitEditing={onNextPress}
           />
           <TextInput
+            secureTextEntry
             autoCapitalize="none"
             autoCorrect={false}
             disabled={loading}
             id="passwordInput"
             placeholder={t("auth.inputs.password.placeholder")}
             ref={passwordInputRef}
-            secureTextEntry
             style={[
               styles.input,
               userType === "undetermined" && {display: "none"},
