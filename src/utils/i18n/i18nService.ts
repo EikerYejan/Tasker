@@ -4,6 +4,7 @@ import {initReactI18next} from "react-i18next";
 
 import {englishTranslations} from "./resources/en";
 import {spanishTranslations} from "./resources/es";
+import {germanTranslations} from "./resources/de";
 
 const {I18nManager, SettingsManager} = NativeModules;
 
@@ -56,6 +57,9 @@ class I18nServiceBase {
           },
           es: {
             translation: spanishTranslations,
+          },
+          de: {
+            translation: germanTranslations,
           },
         },
       })
