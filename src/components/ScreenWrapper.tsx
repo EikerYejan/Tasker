@@ -23,6 +23,7 @@ export const ScreenWrapper = ({children}: Props) => {
     inner: {
       flex: 1,
       padding: 20,
+      paddingBottom: 0,
     },
     scrollViewContentContainer: {
       flex: 1,
