@@ -86,6 +86,7 @@ export const englishTranslations: ITranslation = {
     todoTitle: "To Do:",
     welcome: "Welcome to TasksZen",
   },
+  localeChange: "Language",
   menu: {
     alert: {
       deleteAccount: "Are you sure you want to delete your account?",

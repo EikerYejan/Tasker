@@ -50,6 +50,19 @@ export interface ITranslation {
     delete: string;
     enroll: string;
   };
+  biometrics: {
+    alert: {
+      enroll: {
+        title: string;
+        message: string;
+      };
+    };
+    button: {
+      enroll: string;
+      lock: string;
+      unlock: string;
+    };
+  };
   home: {
     alert: {
       deleteTask: string;
@@ -68,19 +81,7 @@ export interface ITranslation {
     todoTitle: string;
     doneTitle: string;
   };
-  biometrics: {
-    alert: {
-      enroll: {
-        title: string;
-        message: string;
-      };
-    };
-    button: {
-      enroll: string;
-      lock: string;
-      unlock: string;
-    };
-  };
+  localeChange: string;
   menu: {
     alert: {deleteAccount: string};
     anonymous: string;
@@ -95,4 +96,9 @@ export interface ITranslation {
   task: {
     locked: string;
   };
+}
+
+export interface ILocale {
+  code: string;
+  name: string;
 }

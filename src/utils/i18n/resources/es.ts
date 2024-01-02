@@ -57,6 +57,7 @@ export const spanishTranslations: ITranslation = {
     delete: "Eliminar",
     enroll: "Activar",
   },
+  localeChange: "Lenguaje",
   home: {
     alert: {
       deleteTask: "¿Eliminar tarea?",

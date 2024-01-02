@@ -69,6 +69,7 @@ export const germanTranslations: ITranslation = {
       unlock: "Aufgaben entsperren",
     },
   },
+  localeChange: "Sprache",
   home: {
     alert: {
       deleteTask: "Aufgabe löschen?",
