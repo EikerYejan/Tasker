@@ -30,17 +30,18 @@ export const NavBar = () => {
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: colors.background,
-      borderBottomColor: colors.border,
-      borderBottomWidth: 1,
       flexDirection: "row",
       justifyContent: "space-between",
       paddingBottom: 15,
       paddingHorizontal: 20,
       ...Platform.select({
         web: {
+          marginLeft: "auto",
+          marginRight: "auto",
+          maxWidth: 1460,
           paddingBottom: 25,
           paddingTop: 25,
+          width: "100%",
         },
         android: {
           paddingTop: 25,
@@ -49,6 +50,8 @@ export const NavBar = () => {
     },
     safeAreaView: {
       backgroundColor: colors.background,
+      borderBottomColor: colors.border,
+      borderBottomWidth: 1,
     },
     themeSwitch: {
       alignItems: "center",
