@@ -50,7 +50,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   const emailInputRef = useRef<RNTextInput>(null);
   const passwordInputRef = useRef<RNTextInput>(null);
 
-  const {t} = useTranslation();
+  const {i18n, t} = useTranslation();
 
   const onBackPress = () => {
     setUserType("undetermined");
@@ -269,7 +269,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     }
 
     return t("auth.button.default");
-  }, [userType]);
+  }, [i18n.language, userType]);
 
   const submitButtonDisabled = useMemo(() => {
     const validEmail = email && isEmailValid(email);
@@ -285,7 +285,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     }
 
     return t("auth.title.default");
-  }, [userType]);
+  }, [i18n.language, userType]);
 
   return (
     <ScreenWrapper>
