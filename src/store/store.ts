@@ -1,19 +1,15 @@
 import {useCallback} from "react";
 import {atom, useRecoilState} from "recoil";
 import {recoilPersist} from "recoil-persist";
-import {MMKV} from "react-native-mmkv";
 
 import {AuthService} from "../utils/auth/auth";
 import {FirestoreService} from "../utils/firestore/firestore";
 import {getInitialState} from "./constants";
 import {toStoredUser} from "../utils";
+import {storage} from "./storage";
 
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
 import type {IAppStore, IStoredUser, ITodoItem} from "../types";
-
-export const storage = new MMKV({
-  id: "appStorage",
-});
 
 const {persistAtom} = recoilPersist({
   storage: {

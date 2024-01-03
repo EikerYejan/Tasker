@@ -2,10 +2,11 @@ import {NativeModules, Platform} from "react-native";
 import i18n from "i18next";
 import {initReactI18next} from "react-i18next";
 
+import {storage} from "../../store/storage";
+
 import {englishTranslations} from "./resources/en";
 import {spanishTranslations} from "./resources/es";
 import {germanTranslations} from "./resources/de";
-import {storage} from "../../store/store";
 
 import type {ILocale} from "./types";
 
@@ -30,7 +31,7 @@ class I18nServiceBase {
     ];
   }
 
-  get locale(): string | undefined {
+  get locale(): string {
     const storedLocale = storage.getString(this.storageKey);
 
     if (storedLocale) return storedLocale;
