@@ -2,6 +2,7 @@ import {useMemo} from "react";
 import {Linking, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
+import {useNavigation} from "@react-navigation/native";
 
 import {ScreenWrapper} from "../components/ScreenWrapper";
 import {Button} from "../components/Button/Button";
@@ -16,14 +17,11 @@ import {Alert} from "../utils/alert/alert";
 import {FONTS} from "../constants/fonts";
 import {PRIVACY_POLICIY_URL, TERMS_OF_SERVICE_URL} from "../constants/urls";
 
-import type {NavigationProp} from "@react-navigation/native";
-
 interface Props {
-  navigation: NavigationProp<any>;
   onClose?: () => void;
 }
 
-export const MenuScreen = ({navigation, onClose}: Props) => {
+export const MenuScreen = ({onClose}: Props) => {
   const {colors} = useAppearance();
   const {
     resetState,
@@ -31,6 +29,7 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
   } = useAppState();
 
   const {t} = useTranslation();
+  const navigation = useNavigation<any>();
 
   const styles = StyleSheet.create({
     deleteAccount: {

@@ -31,6 +31,7 @@ export const MainNavigator = () => {
       initialRouteName={ScreenName.HOME}
       screenOptions={{
         header: () => <NavBar />,
+        animationEnabled: true,
       }}>
       <Stack.Screen component={HomeScreen} name={ScreenName.HOME} />
       {Platform.OS !== "web" && (
@@ -40,9 +41,9 @@ export const MainNavigator = () => {
             headerShown: false,
             presentation: "modal",
           }}>
-          {props => (
+          {() => (
             <Suspense>
-              <MenuScreen {...props} />
+              <MenuScreen />
             </Suspense>
           )}
         </Stack.Screen>
