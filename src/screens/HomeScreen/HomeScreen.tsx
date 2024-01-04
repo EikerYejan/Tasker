@@ -2,6 +2,7 @@ import {Platform, Pressable, ScrollView, Text, View} from "react-native";
 import {useMemo, useState} from "react";
 import {useMediaQuery} from "react-responsive";
 import {useTranslation} from "react-i18next";
+import {useNavigation} from "@react-navigation/native";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {Button} from "../../components/Button/Button";
@@ -17,6 +18,8 @@ import {Alert} from "../../utils/alert/alert";
 import {getStyles} from "./styles";
 
 import {TABLET_WIDTH} from "../../constants/mediaQueries";
+
+import {ScreenName} from "../../types";
 
 export const HomeScreen = () => {
   const isTablet = useMediaQuery({minWidth: TABLET_WIDTH});
@@ -44,6 +47,7 @@ export const HomeScreen = () => {
   } = useBiometrics();
 
   const {i18n, t} = useTranslation();
+  const {navigate} = useNavigation<any>();
 
   const onSave = () => {
     if (!taskTitle || !taskDescription) return;
@@ -76,6 +80,10 @@ export const HomeScreen = () => {
         ],
       );
     }
+  };
+
+  const onEdit = (id: string) => {
+    navigate(ScreenName.EDIT_TASK, {taskId: id});
   };
 
   const biometricsButtonText = useMemo(() => {
@@ -166,6 +174,7 @@ export const HomeScreen = () => {
                     key={task.id}
                     onComplete={markAsDone}
                     onDelete={onDelete}
+                    onEdit={onEdit}
                   />
                 ))}
               </View>

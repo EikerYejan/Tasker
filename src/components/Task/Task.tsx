@@ -18,6 +18,7 @@ interface TaskProps {
   locked?: boolean;
   onComplete?: (id: string) => void;
   onDelete?: (id: string, done?: boolean) => void;
+  onEdit?: (id: string) => void;
   onRestore?: (id: string) => void;
 }
 
@@ -26,6 +27,7 @@ export const Task = ({
   locked,
   onComplete,
   onDelete,
+  onEdit,
   onRestore,
 }: TaskProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -105,8 +107,8 @@ export const Task = ({
   };
 
   const onEditTask = () => {
-    // Coming soon
-    console.log("onEditTask");
+    onEdit?.(id);
+    onCloseTooltip();
   };
 
   if (locked) {

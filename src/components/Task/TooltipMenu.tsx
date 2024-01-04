@@ -49,7 +49,7 @@ export const TooltipMenu = ({
         </TouchableOpacity>
       )}
       {onEdit && (
-        <TouchableOpacity style={styles.option}>
+        <TouchableOpacity style={styles.option} onPress={onEdit}>
           <Icon color={COLORS.WHITE} name="create-outline" size={20} />
           <Text style={styles.optionText}>{t("task.edit")}</Text>
         </TouchableOpacity>

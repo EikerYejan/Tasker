@@ -61,3 +61,10 @@ export enum SocialLoginProvider {
   GOOGLE = "google",
   TWITTER = "twitter",
 }
+
+export enum ScreenName {
+  EDIT_TASK = "EditTask",
+  HOME = "Home",
+  LOGIN = "Login",
+  MENU = "Menu",
+}
