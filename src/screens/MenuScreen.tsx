@@ -156,15 +156,15 @@ export const MenuScreen = ({navigation, onClose}: Props) => {
               navigation.navigate("Login");
             }}
           />
-          {dev ? (
-            <Text
-              onPress={resetState}
-              style={[styles.optionText, {marginBottom: 10}]}>
-              Clear App Data
-            </Text>
-          ) : null}
         </View>
       )}
+      {dev ? (
+        <Text
+          onPress={resetState}
+          style={[styles.optionText, {marginBottom: 10}]}>
+          Clear App Data
+        </Text>
+      ) : null}
       {!user?.isAnonymous && (
         <TouchableOpacity
           style={[styles.deleteAccount, styles.link]}
