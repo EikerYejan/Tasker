@@ -1,6 +1,10 @@
+import {useState} from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
+import {Tooltip} from "@rneui/themed";
+
+import {TooltipMenu} from "./TooltipMenu";
 
 import {FONTS} from "../../constants/fonts";
 import {COLORS} from "../../constants/colors";
@@ -24,6 +28,8 @@ export const Task = ({
   onDelete,
   onRestore,
 }: TaskProps) => {
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
   const {description, done, id, title} = item;
 
   const {colors} = useAppearance();
@@ -74,7 +80,34 @@ export const Task = ({
       justifyContent: "flex-end",
       maxWidth: 45,
     },
+    tooltipContainer: {
+      borderColor: colors.border,
+      borderRadius: 2,
+      borderWidth: 1,
+      padding: 0,
+    },
   });
+
+  const onCloseTooltip = () => {
+    setTooltipOpen(false);
+  };
+
+  const onOpenTooltip = () => {
+    setTooltipOpen(true);
+  };
+
+  const onCompleteTask = () => {
+    onComplete?.(id);
+  };
+
+  const onDeleteTask = () => {
+    onDelete?.(id);
+  };
+
+  const onEditTask = () => {
+    // Coming soon
+    console.log("onEditTask");
+  };
 
   if (locked) {
     return (
@@ -98,24 +131,41 @@ export const Task = ({
         </Text>
       </View>
       <View style={styles.icons}>
-        <TouchableOpacity onPress={() => onDelete?.(id, done)}>
-          <Icon color={iconColor} name="trash-outline" size={20} />
-        </TouchableOpacity>
-        {onComplete ? (
-          <TouchableOpacity
-            onPress={() => {
-              onComplete?.(id);
-            }}>
-            <Icon color={iconColor} name="checkmark-done-outline" size={20} />
-          </TouchableOpacity>
-        ) : null}
+        {!done && (
+          <>
+            <Tooltip
+              backgroundColor={colors.link}
+              containerStyle={styles.tooltipContainer}
+              height={110}
+              overlayColor={colors.overlay}
+              popover={
+                <TooltipMenu
+                  onComplete={onCompleteTask}
+                  onDelete={onDeleteTask}
+                  onEdit={onEditTask}
+                />
+              }
+              visible={tooltipOpen}
+              withPointer={false}
+              onClose={onCloseTooltip}
+            />
+            <TouchableOpacity onPress={onOpenTooltip}>
+              <Icon color={iconColor} name="ellipsis-vertical" size={20} />
+            </TouchableOpacity>
+          </>
+        )}
         {done ? (
-          <TouchableOpacity
-            onPress={() => {
-              onRestore?.(id);
-            }}>
-            <Icon color={iconColor} name="arrow-undo-outline" size={20} />
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity onPress={() => onDelete?.(id, done)}>
+              <Icon color={iconColor} name="trash-outline" size={20} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                onRestore?.(id);
+              }}>
+              <Icon color={iconColor} name="arrow-undo-outline" size={20} />
+            </TouchableOpacity>
+          </>
         ) : null}
       </View>
     </View>

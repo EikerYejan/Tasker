@@ -102,6 +102,9 @@ export const spanishTranslations: ITranslation = {
     title: "Menú",
   },
   task: {
+    complete: "Completar",
+    delete: "Eliminar",
+    edit: "Editar",
     locked: "Esta tarea está bloqueada",
   },
 };

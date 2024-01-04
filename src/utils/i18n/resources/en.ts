@@ -101,6 +101,9 @@ export const englishTranslations: ITranslation = {
     title: "Menu",
   },
   task: {
+    complete: "Complete Task",
+    delete: "Delete Task",
+    edit: "Edit Task",
     locked: "This task is locked",
   },
 };

@@ -94,6 +94,9 @@ export interface ITranslation {
     title: string;
   };
   task: {
+    complete: string;
+    delete: string;
+    edit: string;
     locked: string;
   };
 }

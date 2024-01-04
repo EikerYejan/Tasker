@@ -10,6 +10,7 @@ declare module "@react-navigation/native" {
       error: string;
       link: string;
       notification: string;
+      overlay: string;
       primary: string;
       primaryInverse: string;
       text: string;
