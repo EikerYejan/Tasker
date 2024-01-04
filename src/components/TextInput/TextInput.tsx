@@ -74,7 +74,7 @@ export const TextInput = forwardRef<RNTextInput, Props>(
             style={styles.passwordIcon}
             onPress={onPasswordIconPress}>
             <Icon
-              name={!passwordVisible ? "eye-outline" : "eye-off-outline"}
+              name={passwordVisible ? "eye-off-outline" : "eye-outline"}
               size={25}
               color={colors.text}
             />
