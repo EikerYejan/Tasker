@@ -110,12 +110,27 @@ export const useAppState = () => {
     [state],
   );
 
+  const getItem = (id: string) => {
+    return state.todos.find(todo => todo.id === id);
+  };
+
+  const saveItem = async (item: ITodoItem) => {
+    const newState: IAppStore = {
+      ...state,
+      todos: state.todos.map(todo => (todo.id === item.id ? item : todo)),
+    };
+
+    await FirestoreService.setDocumentData(newState);
+  };
+
   return {
     addTodo,
+    getItem,
     markAsDone,
     markAsTodo,
     removeTodo,
     resetState,
+    saveItem,
     setState,
     setStateFromFirestore,
     setUser,
