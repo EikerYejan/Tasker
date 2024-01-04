@@ -39,5 +39,6 @@ module.exports = {
     "no-implicit-coercion": "off",
     camelcase: "off",
     "@typescript-eslint/prefer-readonly": "off",
+    "func-names": "off",
   },
 };
