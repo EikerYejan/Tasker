@@ -175,6 +175,7 @@ export const HomeScreen = () => {
                     onComplete={markAsDone}
                     onDelete={onDelete}
                     onEdit={onEdit}
+                    onPress={onEdit}
                   />
                 ))}
               </View>

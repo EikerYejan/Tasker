@@ -19,6 +19,7 @@ interface TaskProps {
   onComplete?: (id: string) => void;
   onDelete?: (id: string, done?: boolean) => void;
   onEdit?: (id: string) => void;
+  onPress?: (id: string) => void;
   onRestore?: (id: string) => void;
 }
 
@@ -28,6 +29,7 @@ export const Task = ({
   onComplete,
   onDelete,
   onEdit,
+  onPress,
   onRestore,
 }: TaskProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -125,7 +127,11 @@ export const Task = ({
   }
 
   return (
-    <View style={[styles.container, done ? styles.containerDone : {}]}>
+    <TouchableOpacity
+      style={[styles.container, done ? styles.containerDone : {}]}
+      onPress={() => {
+        onPress?.(id);
+      }}>
       <View style={styles.textWrapper}>
         <Text style={[styles.title, done ? styles.textDone : {}]}>{title}</Text>
         <Text style={[styles.description, done ? styles.textDone : {}]}>
@@ -170,6 +176,6 @@ export const Task = ({
           </>
         ) : null}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
