@@ -645,7 +645,7 @@ PODS:
     - BoringSSL-GRPC/Interface (= 0.0.24)
   - BoringSSL-GRPC/Interface (0.0.24)
   - DoubleConversion (1.1.6)
-  - EXApplication (5.3.1):
+  - EXApplication (5.3.0):
     - ExpoModulesCore
   - EXConstants (14.4.2):
     - ExpoModulesCore
@@ -659,6 +659,8 @@ PODS:
     - ExpoModulesCore
     - GoogleSignIn (~> 7.0)
     - React-Core
+  - ExpoDevice (5.4.0):
+    - ExpoModulesCore
   - ExpoKeepAwake (12.3.0):
     - ExpoModulesCore
   - ExpoModulesCore (1.5.11):
@@ -1315,6 +1317,12 @@ PODS:
   - RNScreens (3.22.0):
     - React-Core
     - React-RCTImage
+  - RNSentry (5.10.0):
+    - React-Core
+    - Sentry/HybridSDK (= 8.11.0)
+  - Sentry/HybridSDK (8.11.0):
+    - SentryPrivate (= 8.11.0)
+  - SentryPrivate (8.11.0)
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
 
@@ -1327,6 +1335,7 @@ DEPENDENCIES:
   - EXFont (from `../node_modules/expo-font/ios`)
   - Expo (from `../node_modules/expo`)
   - "ExpoAdapterGoogleSignIn (from `../node_modules/@react-native-google-signin/google-signin/expo/ios`)"
+  - ExpoDevice (from `../node_modules/expo-device/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoScreenOrientation (from `../node_modules/expo-screen-orientation/ios`)
@@ -1382,6 +1391,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1414,6 +1424,8 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - RecaptchaInterop
+    - Sentry
+    - SentryPrivate
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1433,6 +1445,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo"
   ExpoAdapterGoogleSignIn:
     :path: "../node_modules/@react-native-google-signin/google-signin/expo/ios"
+  ExpoDevice:
+    :path: "../node_modules/expo-device/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoModulesCore:
@@ -1540,6 +1554,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1550,12 +1566,13 @@ SPEC CHECKSUMS:
   boost: 81a766c6a855dc10cb2e0e0017263bfd48cbaf1f
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
-  EXApplication: 042aa2e3f05258a16962ea1a9914bf288db9c9a1
+  EXApplication: 02655a251434d564bb0e73291f5a490c74b5b76f
   EXConstants: ce5bbea779da8031ac818c36bea41b10e14d04e1
   EXFileSystem: f8b838a880254de42a5a7da20ed5ce12e2697c1b
   EXFont: 738c44c390953ebcbab075a4848bfbef025fd9ee
   Expo: 4ddd44075a2e7c7c63a0f5b1e05223be74d48bc6
   ExpoAdapterGoogleSignIn: ee39be2723cc5a39b3c01cb56d779831c975e17f
+  ExpoDevice: 1c1b0c9cad96c292c1de73948649cfd654b2b3c0
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
   ExpoModulesCore: 81037d28453615c4206a6a2ca7556a0f364a0a0a
   ExpoScreenOrientation: 3e3b9a3a8ec8498d51992a0a819deda9d82cbaac
@@ -1633,6 +1650,9 @@ SPEC CHECKSUMS:
   RNGoogleSignin: fc408799f1990a12497a32f64280c0fe353ffcc1
   RNReanimated: 9f7068e43b9358a46a688d94a5a3adb258139457
   RNScreens: 68fd1060f57dd1023880bf4c05d74784b5392789
+  RNSentry: 11917f7bf3e28806aca4c2791c6ba7522d8f09fe
+  Sentry: 39d57e691e311bdb73bc1ab5bbebbd6bc890050d
+  SentryPrivate: 48712023cdfd523735c2edb6b06bedf26c4730a3
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: b76f1acfda8212aa16b7e26bcce3983230c82603
 

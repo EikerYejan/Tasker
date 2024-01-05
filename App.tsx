@@ -2,14 +2,32 @@ import "react-native-gesture-handler";
 import "@expo/match-media";
 import "@expo/metro-runtime";
 
-import {StyleSheet, View} from "react-native";
+import {Platform, StyleSheet, View} from "react-native";
 import {useFonts} from "expo-font";
 import {RecoilRoot} from "recoil";
 import * as RNSplashScreen from "expo-splash-screen";
+import * as Sentry from "sentry-expo";
+
+import {version} from "./package.json";
+import {SENTRY_DSN} from "@env";
 
 import {SplasScreen} from "./src/screens/SplashScreen";
 
 RNSplashScreen.preventAutoHideAsync();
+
+Sentry.init({
+  debug: true,
+  dsn: SENTRY_DSN,
+  enableInExpoDevelopment: false,
+  initialScope: {
+    extra: {
+      version,
+      platform: Platform.OS,
+    },
+  },
+  normalizeDepth: 0,
+  release: version,
+});
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({

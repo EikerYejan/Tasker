@@ -1,6 +1,7 @@
 declare module "@env" {
   export const ANDROID_APP_CHECK_DEBUG_TOKEN: string;
   export const IOS_APP_CHECK_DEBUG_TOKEN: string;
+  export const SENTRY_DSN: string;
   export const TWITTER_CONSUMER_KEY: string;
   export const TWITTER_CONSUMER_SECRET: string;
   export const WEB_ENABLE_APPLE_AUTH: string;

@@ -6,18 +6,25 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "plugins": ["@react-native-google-signin/google-signin"],
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      "sentry-expo"
+    ],
     "splash": {
       "image": "./assets/tasker_splash_light.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.eikeryejan.taskzen",
       "userInterfaceStyle": "automatic",
-      "config": {"usesNonExemptEncryption": false},
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "splash": {
         "image": "./assets/tasker_splash_light.png",
         "resizeMode": "cover",
