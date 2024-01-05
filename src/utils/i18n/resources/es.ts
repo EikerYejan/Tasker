@@ -71,9 +71,6 @@ export const spanishTranslations: ITranslation = {
       taskDescription: "Descripción de la tarea",
     },
     newTask: "Crea una nueva tarea",
-    button: {
-      saveTask: "Guardar",
-    },
     todoTitle: "Por hacer:",
     doneTitle: "Hecho:",
   },
@@ -106,5 +103,6 @@ export const spanishTranslations: ITranslation = {
     delete: "Eliminar",
     edit: "Editar",
     locked: "Esta tarea está bloqueada",
+    save: "Guardar",
   },
 };

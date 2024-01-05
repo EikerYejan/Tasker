@@ -75,9 +75,6 @@ export interface ITranslation {
       taskDescription: string;
     };
     newTask: string;
-    button: {
-      saveTask: string;
-    };
     todoTitle: string;
     doneTitle: string;
   };
@@ -98,6 +95,7 @@ export interface ITranslation {
     delete: string;
     edit: string;
     locked: string;
+    save: string;
   };
 }
 

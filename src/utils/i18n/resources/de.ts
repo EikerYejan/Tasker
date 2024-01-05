@@ -76,9 +76,6 @@ export const germanTranslations: ITranslation = {
       deleteTaskConfirmation:
         "Bist du sicher, dass du diese Aufgabe löschen möchtest?",
     },
-    button: {
-      saveTask: "Speichern",
-    },
     doneTitle: "Erledigt:",
     input: {
       taskDescription: "Aufgabenbeschreibung",
@@ -107,5 +104,6 @@ export const germanTranslations: ITranslation = {
     delete: "Beseitigen",
     edit: "Bearbeiten",
     locked: "Diese Aufgabe ist gesperrt",
+    save: "Speichern",
   },
 };

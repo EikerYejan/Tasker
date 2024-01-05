@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View} from "react-native";
 import {useMemo, useRef} from "react";
 import {useNavigation} from "@react-navigation/native";
+import {useTranslation} from "react-i18next";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {TextInput} from "../../components/TextInput/TextInput";
@@ -21,6 +22,8 @@ export const EditTaskScreen = ({taskId}: Props) => {
   const navigation = useNavigation();
   const {colors} = useAppearance();
   const {getItem, saveItem} = useAppState();
+
+  const {t} = useTranslation();
 
   const item = useMemo(() => getItem(taskId), [taskId]);
 
@@ -74,7 +77,7 @@ export const EditTaskScreen = ({taskId}: Props) => {
   return (
     <ScreenWrapper disableLocaleChanger>
       <View>
-        <Text style={styles.title}>Edit Task</Text>
+        <Text style={styles.title}>{t("task.edit")}</Text>
         <TextInput
           editable
           defaultValue={item.title}
@@ -91,7 +94,11 @@ export const EditTaskScreen = ({taskId}: Props) => {
           style={[styles.descriptiom, styles.textArea]}
           onChangeText={onDescriptionChange}
         />
-        <Button label="Save" style={styles.saveButton} onPress={onSavePress} />
+        <Button
+          label={t("task.save")}
+          style={styles.saveButton}
+          onPress={onSavePress}
+        />
       </View>
     </ScreenWrapper>
   );

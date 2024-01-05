@@ -145,7 +145,7 @@ export const HomeScreen = () => {
               onSubmitEditing={onSave}
             />
             <Button
-              label={t("home.button.saveTask")}
+              label={t("task.save")}
               disabled={saveDisabled}
               onPress={onSave}
             />

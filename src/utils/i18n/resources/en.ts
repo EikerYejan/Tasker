@@ -73,9 +73,6 @@ export const englishTranslations: ITranslation = {
       deleteTask: "Delete task?",
       deleteTaskConfirmation: "Are you sure you want to delete this task?",
     },
-    button: {
-      saveTask: "Save",
-    },
     doneTitle: "Done:",
     input: {
       taskDescription: "Task description",
@@ -105,5 +102,6 @@ export const englishTranslations: ITranslation = {
     delete: "Delete Task",
     edit: "Edit Task",
     locked: "This task is locked",
+    save: "Save Task",
   },
 };
