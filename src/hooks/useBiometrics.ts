@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useCallback, useEffect} from "react";
 import {Alert, Platform} from "react-native";
 import {useTranslation} from "react-i18next";
 
@@ -31,17 +31,20 @@ export const useBiometrics = () => {
 
   const {t} = useTranslation();
 
-  const saveBiometricsSettings = (settings: Partial<IBiometricsSettings>) => {
-    const newSettings = {
-      ...(savedSettings ?? {}),
-      ...settings,
-    };
+  const saveBiometricsSettings = useCallback(
+    (settings: Partial<IBiometricsSettings>) => {
+      const newSettings = {
+        ...(savedSettings ?? {}),
+        ...settings,
+      };
 
-    setState(prevState => ({
-      ...prevState,
-      biometrics: newSettings as IBiometricsSettings,
-    }));
-  };
+      setState(prevState => ({
+        ...prevState,
+        biometrics: newSettings as IBiometricsSettings,
+      }));
+    },
+    [savedSettings, setState],
+  );
 
   const onLockPress = async () => {
     const {enrolled, locked, supported} = savedSettings ?? {};
@@ -106,7 +109,7 @@ export const useBiometrics = () => {
     });
   };
 
-  const checkBiometrics = async () => {
+  const checkBiometrics = useCallback(async () => {
     if (Platform.OS === "web") return;
 
     const module = await getBiometricsModule();
@@ -116,11 +119,11 @@ export const useBiometrics = () => {
       sensorType: result?.biometryType,
       supported: result?.available ?? false,
     });
-  };
+  }, [saveBiometricsSettings]);
 
   useEffect(() => {
     checkBiometrics();
-  }, []);
+  }, [checkBiometrics]);
 
   return {
     biometricsEnrolled: savedSettings?.enrolled ?? false,

@@ -10,6 +10,7 @@ module.exports = {
     "plugin:import/typescript",
     "xo",
     "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended",
   ],
   overrides: [
     {

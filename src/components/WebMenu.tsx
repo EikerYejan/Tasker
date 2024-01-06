@@ -1,8 +1,7 @@
+import {useEffect} from "react";
 import {Modal, Platform, StyleSheet, View} from "react-native";
 import {useAppearance} from "../hooks/useAppearance";
 import {MenuScreen} from "../screens/MenuScreen";
-import {useNavigation} from "@react-navigation/native";
-import {useEffect} from "react";
 
 interface Props {
   isOpen: boolean;
@@ -10,8 +9,6 @@ interface Props {
 }
 
 export const WebMenu = ({isOpen, onClose}: Props) => {
-  const navigation = useNavigation<any>();
-
   const {colors} = useAppearance();
 
   const styles = StyleSheet.create({
@@ -58,13 +55,13 @@ export const WebMenu = ({isOpen, onClose}: Props) => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [onClose]);
 
   return (
     <Modal transparent animationType="fade" visible={isOpen}>
       <View style={styles.backdrop}>
         <View style={styles.inner}>
-          <MenuScreen navigation={navigation} onClose={onClose} />
+          <MenuScreen onClose={onClose} />
         </View>
       </View>
     </Modal>

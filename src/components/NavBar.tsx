@@ -92,7 +92,7 @@ export const NavBar = () => {
     switchOverlayTranslateX.value = withSpring(appearance === "dark" ? 0 : 44, {
       mass: 0.5,
     });
-  }, [appearance]);
+  }, [appearance, switchOverlayTranslateX]);
 
   const barStyle = useMemo(() => {
     return appearance === "dark" ? "light-content" : "dark-content";

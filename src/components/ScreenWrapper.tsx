@@ -37,7 +37,7 @@ export const ScreenWrapper = ({children, disableLocaleChanger}: Props) => {
       stiffness: 90,
       mass: 0.5,
     });
-  }, []);
+  }, [pageOpacity]);
 
   return (
     <SafeAreaView style={styles.container}>
