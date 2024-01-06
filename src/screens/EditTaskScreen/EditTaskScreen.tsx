@@ -1,13 +1,15 @@
-import {StyleSheet, Text, View} from "react-native";
+import {ScrollView, StyleSheet, Text, View} from "react-native";
 import {useMemo, useRef} from "react";
 import {useNavigation} from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
+import {RichEditor, RichToolbar} from "react-native-pell-rich-editor";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {TextInput} from "../../components/TextInput/TextInput";
 import {Button} from "../../components/Button/Button";
 
 import {FONTS} from "../../constants/fonts";
+import {actionsIcons, supportedEditorActions} from "./constants";
 
 import {useAppearance} from "../../hooks/useAppearance";
 import {useAppState} from "../../store/store";
@@ -32,21 +34,23 @@ export const EditTaskScreen = ({taskId}: Props) => {
 
   const descriptionInput = useRef<RNTextInput>(null);
 
+  const textEditor = useRef<RichEditor>(null);
+
   const styles = StyleSheet.create({
-    descriptiom: {
-      marginTop: 15,
-    },
     saveButton: {
-      marginTop: 40,
-    },
-    textArea: {
-      height: 200,
+      marginTop: 30,
     },
     title: {
       color: colors.text,
       fontFamily: FONTS.POPPINS_BOLD,
       fontSize: 24,
       marginBottom: 15,
+    },
+    editorWrapper: {
+      maxHeight: 400,
+      marginTop: 30,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
   });
 
@@ -86,14 +90,22 @@ export const EditTaskScreen = ({taskId}: Props) => {
             descriptionInput.current?.focus();
           }}
         />
-        <TextInput
-          editable
-          multiline
-          defaultValue={item.description}
-          ref={descriptionInput}
-          style={[styles.descriptiom, styles.textArea]}
-          onChangeText={onDescriptionChange}
-        />
+        <View style={styles.editorWrapper}>
+          <RichToolbar
+            actions={supportedEditorActions}
+            editor={textEditor}
+            iconMap={actionsIcons}
+            flatContainerStyle={{width: "100%"}}
+          />
+          <ScrollView>
+            <RichEditor
+              initialHeight={400}
+              initialContentHTML={item.description}
+              ref={textEditor}
+              onChange={onDescriptionChange}
+            />
+          </ScrollView>
+        </View>
         <Button
           label={t("task.save")}
           style={styles.saveButton}

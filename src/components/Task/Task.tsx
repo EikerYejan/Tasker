@@ -1,8 +1,16 @@
 import {useState} from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
 import {Tooltip} from "@rneui/themed";
+import {RichEditor} from "react-native-pell-rich-editor";
 
 import {TooltipMenu} from "./TooltipMenu";
 
@@ -47,16 +55,17 @@ export const Task = ({
       borderBottomWidth: 1,
       flexDirection: "row",
       justifyContent: "space-between",
+      maxHeight: 200,
       padding: 10,
     },
     containerDone: {
       backgroundColor: colors.notification,
     },
     containerLocked: {
-      height: 60,
-      flexDirection: "row",
-      justifyContent: "center",
       alignItems: "center",
+      flexDirection: "row",
+      height: 60,
+      justifyContent: "center",
     },
     textDone: {
       color: COLORS.WHITE,
@@ -75,7 +84,9 @@ export const Task = ({
       fontWeight: "400",
     },
     textWrapper: {
-      maxWidth: "85%",
+      height: "100%",
+      maxWidth: "90%",
+      width: "100%",
     },
     icons: {
       flexDirection: "row",
@@ -126,17 +137,29 @@ export const Task = ({
     );
   }
 
+  const EditorWrapper = Platform.OS === "web" ? View : ScrollView;
+
   return (
     <TouchableOpacity
+      disabled={locked ?? done}
       style={[styles.container, done ? styles.containerDone : {}]}
       onPress={() => {
         onPress?.(id);
       }}>
       <View style={styles.textWrapper}>
         <Text style={[styles.title, done ? styles.textDone : {}]}>{title}</Text>
-        <Text style={[styles.description, done ? styles.textDone : {}]}>
-          {description}
-        </Text>
+        <EditorWrapper showsVerticalScrollIndicator={true}>
+          <RichEditor
+            key={description}
+            disabled
+            useContainer={Platform.OS !== "web"}
+            editorStyle={{
+              backgroundColor: "transparent",
+              color: done ? COLORS.WHITE : colors.text,
+            }}
+            initialContentHTML={description}
+          />
+        </EditorWrapper>
       </View>
       <View style={styles.icons}>
         {!done && (
