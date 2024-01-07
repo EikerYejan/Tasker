@@ -55,8 +55,13 @@ export const Task = ({
       borderBottomWidth: 1,
       flexDirection: "row",
       justifyContent: "space-between",
-      maxHeight: 200,
+      maxHeight: Platform.select({
+        web: 100,
+        native: 250,
+      }),
       padding: 10,
+      width: "100%",
+      overflow: "hidden",
     },
     containerDone: {
       backgroundColor: colors.notification,
@@ -100,6 +105,11 @@ export const Task = ({
       borderRadius: 2,
       borderWidth: 1,
       padding: 0,
+    },
+    webEditorMask: {
+      height: "100%",
+      position: "absolute",
+      width: "100%",
     },
   });
 
@@ -149,6 +159,15 @@ export const Task = ({
       <View style={styles.textWrapper}>
         <Text style={[styles.title, done ? styles.textDone : {}]}>{title}</Text>
         <EditorWrapper showsVerticalScrollIndicator={true}>
+          {Platform.OS === "web" && (
+            <TouchableOpacity
+              id="webEditorMask"
+              style={styles.webEditorMask}
+              onPress={() => {
+                onPress?.(id);
+              }}
+            />
+          )}
           <RichEditor
             key={description}
             disabled
@@ -156,6 +175,7 @@ export const Task = ({
             editorStyle={{
               backgroundColor: "transparent",
               color: done ? COLORS.WHITE : colors.text,
+              initialCSSText: `#content { overflow: hidden; }`,
             }}
             initialContentHTML={description}
           />
