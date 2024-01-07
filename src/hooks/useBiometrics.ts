@@ -112,10 +112,12 @@ export const useBiometrics = () => {
     const module = await getBiometricsModule();
     const result = await module?.isSensorAvailable?.();
 
-    saveBiometricsSettings({
-      sensorType: result?.biometryType,
-      supported: result?.available ?? false,
-    });
+    if (result?.available !== savedSettings?.supported) {
+      saveBiometricsSettings({
+        sensorType: result?.biometryType,
+        supported: result?.available ?? false,
+      });
+    }
   };
 
   useEffect(() => {
