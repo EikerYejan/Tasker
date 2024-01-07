@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from "react-native";
+import {Platform, ScrollView, StyleSheet, Text, View} from "react-native";
 import {useMemo, useRef} from "react";
 import {useNavigation} from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
@@ -95,7 +95,11 @@ export const EditTaskScreen = ({taskId}: Props) => {
             actions={supportedEditorActions}
             editor={textEditor}
             iconMap={actionsIcons}
-            flatContainerStyle={{width: "100%"}}
+            flatContainerStyle={
+              Platform.OS === "web" && {
+                width: "100%",
+              }
+            }
           />
           <ScrollView>
             <RichEditor

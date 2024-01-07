@@ -31,7 +31,6 @@ export const MainNavigator = () => {
       initialRouteName={ScreenName.HOME}
       screenOptions={{
         header: () => <NavBar />,
-        animationEnabled: true,
       }}>
       <Stack.Screen component={HomeScreen} name={ScreenName.HOME} />
       {Platform.OS !== "web" && (
