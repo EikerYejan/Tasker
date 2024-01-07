@@ -103,9 +103,14 @@ export const useAppState = () => {
 
   const setStateFromFirestore = useCallback(
     async (snapshot: IAppStore) => {
-      const {theme: _, ...rest} = snapshot;
+      const {biometrics: __, theme: _, ...rest} = snapshot;
 
-      setState(prevState => ({...prevState, ...rest, theme: prevState.theme}));
+      setState(prevState => ({
+        ...prevState,
+        ...rest,
+        biometrics: prevState.biometrics,
+        theme: prevState.theme,
+      }));
     },
     [state],
   );
