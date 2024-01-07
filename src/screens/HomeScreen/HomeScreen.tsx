@@ -1,34 +1,28 @@
 import {Platform, Pressable, ScrollView, Text, View} from "react-native";
-import {useMemo, useState} from "react";
+import {useMemo} from "react";
 import {useMediaQuery} from "react-responsive";
 import {useTranslation} from "react-i18next";
 import {useNavigation} from "@react-navigation/native";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
-import {Button} from "../../components/Button/Button";
-import {TextInput} from "../../components/TextInput/TextInput";
 import {Task} from "../../components/Task/Task";
 
 import {useAppState} from "../../store/store";
 import {useAppearance} from "../../hooks/useAppearance";
 import {useBiometrics} from "../../hooks/useBiometrics";
 
-import {generateId} from "../../utils";
 import {Alert} from "../../utils/alert/alert";
 import {getStyles} from "./styles";
 
 import {TABLET_WIDTH} from "../../constants/mediaQueries";
 
 import {ScreenName} from "../../types";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export const HomeScreen = () => {
   const isTablet = useMediaQuery({minWidth: TABLET_WIDTH});
 
-  const [taskTitle, setTaskTitle] = useState<string>("");
-  const [taskDescription, setTaskDescription] = useState<string>("");
-
   const {
-    addTodo,
     markAsDone,
     markAsTodo,
     removeTodo,
@@ -43,24 +37,10 @@ export const HomeScreen = () => {
     biometricsSupported,
     locked: tasksLockedByBiometrics,
     onLockPress: onTogleBiometrics,
-    sensorType,
   } = useBiometrics();
 
-  const {i18n, t} = useTranslation();
+  const {t} = useTranslation();
   const {navigate} = useNavigation<any>();
-
-  const onSave = () => {
-    if (!taskTitle || !taskDescription) return;
-
-    addTodo({
-      description: taskDescription,
-      id: generateId().toString(),
-      title: taskTitle,
-    });
-
-    setTaskTitle("");
-    setTaskDescription("");
-  };
 
   const onDelete = (id: string, done = false) => {
     if (!done) {
@@ -86,29 +66,21 @@ export const HomeScreen = () => {
     navigate(ScreenName.EDIT_TASK, {taskId: id});
   };
 
-  const biometricsButtonText = useMemo(() => {
-    if (!biometricsSupported) return null;
+  const onCreatePress = () => {
+    navigate(ScreenName.EDIT_TASK);
+  };
 
-    let text = "";
+  const biometricsIconName = useMemo(() => {
+    if (!biometricsSupported || Platform.OS === "web") return "";
 
     if (biometricsEnrolled) {
-      text = tasksLockedByBiometrics
-        ? t("biometrics.button.unlock")
-        : t("biometrics.button.lock");
-    } else {
-      text = t("biometrics.button.enroll");
+      return tasksLockedByBiometrics
+        ? "lock-closed-outline"
+        : "lock-open-outline";
     }
 
-    return text.replace("{sensorType}", sensorType ?? "");
-  }, [
-    biometricsEnrolled,
-    biometricsSupported,
-    i18n.language,
-    sensorType,
-    tasksLockedByBiometrics,
-  ]);
-
-  const saveDisabled = !taskTitle || !taskDescription;
+    return "finger-print-outline";
+  }, [biometricsEnrolled, biometricsSupported, tasksLockedByBiometrics]);
 
   return (
     <ScreenWrapper>
@@ -129,43 +101,28 @@ export const HomeScreen = () => {
               styles.contentRow,
               isTablet ? styles.contentRowTablet : {},
             ]}>
-            <Text style={styles.sectionHeading}>{t("home.newTask")}</Text>
-            <TextInput
-              placeholder={t("home.input.taskTitle")}
-              style={styles.input}
-              value={taskTitle}
-              onChangeText={setTaskTitle}
-            />
-            <TextInput
-              multiline
-              placeholder={t("home.input.taskDescription")}
-              value={taskDescription}
-              style={[styles.input, styles.textArea]}
-              onChangeText={setTaskDescription}
-              onSubmitEditing={onSave}
-            />
-            <Button
-              label={t("task.save")}
-              disabled={saveDisabled}
-              onPress={onSave}
-            />
-          </View>
-          <View
-            style={[
-              styles.contentRow,
-              isTablet ? styles.contentRowTablet : {},
-            ]}>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionHeading}>{t("home.todoTitle")}</Text>
-              {biometricsSupported && Platform.OS !== "web" && (
-                <Pressable
-                  style={styles.lockButton}
-                  onPress={onTogleBiometrics}>
-                  <Text style={styles.lockButtonText}>
-                    {biometricsButtonText}
-                  </Text>
-                </Pressable>
-              )}
+              <View style={styles.todoSectionHeader}>
+                <Text style={styles.sectionHeading}>{t("home.todoTitle")}</Text>
+                <View style={styles.todoSectionActions}>
+                  {biometricsSupported && biometricsIconName && (
+                    <Pressable onPress={onTogleBiometrics}>
+                      <Icon
+                        color={theme.colors.text}
+                        name={biometricsIconName}
+                        size={25}
+                      />
+                    </Pressable>
+                  )}
+                  <Pressable onPress={onCreatePress}>
+                    <Icon
+                      color={theme.colors.text}
+                      name="add-outline"
+                      size={27}
+                    />
+                  </Pressable>
+                </View>
+              </View>
               <View style={styles.tasksWrapper}>
                 {todos.map(task => (
                   <Task

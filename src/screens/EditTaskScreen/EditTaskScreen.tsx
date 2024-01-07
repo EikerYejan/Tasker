@@ -20,21 +20,23 @@ import {actionsIcons, supportedEditorActions} from "./constants";
 
 import {useAppearance} from "../../hooks/useAppearance";
 import {useAppState} from "../../store/store";
+import {generateId} from "../../utils";
 
 import type {TextInput as RNTextInput} from "react-native";
 
 interface Props {
-  taskId: string;
+  taskId?: string;
 }
 
+// TODO: rename to TaskScreen
 export const EditTaskScreen = ({taskId}: Props) => {
   const navigation = useNavigation();
   const {colors} = useAppearance();
-  const {getItem, saveItem} = useAppState();
+  const {addTodo, getItem, saveItem} = useAppState();
 
   const {t} = useTranslation();
 
-  const item = useMemo(() => getItem(taskId), [taskId]);
+  const item = useMemo(() => (taskId ? getItem(taskId) : null), [taskId]);
 
   const itemTitle = useRef(item?.title);
   const itemDescription = useRef(item?.description);
@@ -73,15 +75,22 @@ export const EditTaskScreen = ({taskId}: Props) => {
   };
 
   const onSavePress = async () => {
-    if (!item) return;
+    if (item) {
+      const newItem = {
+        ...item,
+        description: itemDescription.current ?? item?.description,
+        title: itemTitle.current ?? item.title,
+      };
 
-    const newItem = {
-      ...item,
-      description: itemDescription.current ?? item?.description,
-      title: itemTitle.current ?? item.title,
-    };
-
-    await saveItem(newItem);
+      await saveItem(newItem);
+    } else {
+      // TODO: add validation
+      addTodo({
+        description: itemDescription.current ?? "",
+        id: generateId().toString(),
+        title: itemTitle.current ?? "",
+      });
+    }
 
     if (navigation.canGoBack()) navigation.goBack();
   };
@@ -102,17 +111,18 @@ export const EditTaskScreen = ({taskId}: Props) => {
     }
   }, []);
 
-  if (!item) return null;
+  const title = taskId ? t("task.edit") : t("task.create");
 
   return (
     <ScreenWrapper disableLocaleChanger>
       <KeyboardAvoidingView behavior="position">
         <View style={styles.fullHeight}>
-          <Text style={styles.title}>{t("task.edit")}</Text>
+          <Text style={styles.title}>{title}</Text>
           <TextInput
             editable
-            defaultValue={item.title}
+            defaultValue={item?.title ?? ""}
             onChangeText={onTitleChange}
+            placeholder={t("home.input.taskTitle")}
             onSubmitEditing={() => {
               descriptionInput.current?.focus();
             }}
@@ -131,8 +141,9 @@ export const EditTaskScreen = ({taskId}: Props) => {
             />
             <ScrollView style={styles.fullHeight}>
               <RichEditor
-                initialContentHTML={item.description}
+                initialContentHTML={item?.description ?? ""}
                 initialHeight={400}
+                placeholder={t("home.input.taskDescription")}
                 ref={textEditor}
                 onChange={onDescriptionChange}
               />

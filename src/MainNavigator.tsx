@@ -17,7 +17,7 @@ const MenuScreen = lazy(() =>
 
 // eslint-disable-next-line
 type ParamsList = {
-  [ScreenName.EDIT_TASK]: {taskId: string};
+  [ScreenName.EDIT_TASK]: {taskId?: string};
   [ScreenName.HOME]: undefined;
   [ScreenName.LOGIN]: undefined;
   [ScreenName.MENU]: undefined;
@@ -61,7 +61,7 @@ export const MainNavigator = () => {
           header: () => <HeaderBackButton />,
           presentation: "modal",
         }}>
-        {({route}) => <EditTaskScreen taskId={route.params.taskId} />}
+        {({route}) => <EditTaskScreen taskId={route.params?.taskId} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

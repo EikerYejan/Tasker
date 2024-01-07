@@ -58,11 +58,6 @@ export const getStyles = (theme: Theme) => {
     sectionContainer: {
       marginBottom: 18,
     },
-    lockButton: {
-      position: "absolute",
-      right: 0,
-      top: 8,
-    },
     lockButtonText: {
       color: colors.link,
       fontFamily: FONTS.POPPINS_MEDIUM,
@@ -77,6 +72,18 @@ export const getStyles = (theme: Theme) => {
             width: "100%",
           }
         : {}),
+    },
+    todoSectionHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      flexWrap: "nowrap",
+    },
+    todoSectionActions: {
+      alignItems: "center",
+      flexDirection: "row",
+      flexWrap: "nowrap",
+      justifyContent: "space-between",
+      width: 70,
     },
   });
 };
