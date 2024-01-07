@@ -1,6 +1,7 @@
 import {Platform, StyleSheet} from "react-native";
 
 import {FONTS} from "../../constants/fonts";
+import {COLORS} from "../../constants/colors";
 
 import type {Theme} from "@react-navigation/native";
 
@@ -82,8 +83,23 @@ export const getStyles = (theme: Theme) => {
       alignItems: "center",
       flexDirection: "row",
       flexWrap: "nowrap",
-      justifyContent: "space-between",
-      width: 70,
+    },
+    createTaskButton: {
+      alignItems: "center",
+      backgroundColor: COLORS.GREY,
+      borderRadius: 8,
+      bottom: 10,
+      elevation: 14,
+      flexDirection: "row",
+      height: 50,
+      justifyContent: "center",
+      position: "absolute",
+      right: 20,
+      shadowColor: COLORS.BLACK,
+      shadowOffset: {width: 0, height: 7},
+      shadowOpacity: 0.41,
+      shadowRadius: 9.11,
+      width: 50,
     },
   });
 };
