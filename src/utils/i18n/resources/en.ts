@@ -99,6 +99,7 @@ export const englishTranslations: ITranslation = {
   },
   task: {
     complete: "Complete Task",
+    create: "Add a new task",
     delete: "Delete Task",
     edit: "Edit Task",
     locked: "This task is locked",

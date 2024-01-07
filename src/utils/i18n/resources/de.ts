@@ -101,6 +101,7 @@ export const germanTranslations: ITranslation = {
   },
   task: {
     complete: "Fertigstellen",
+    create: "Neue Aufgabe hinzufügen",
     delete: "Beseitigen",
     edit: "Bearbeiten",
     locked: "Diese Aufgabe ist gesperrt",

@@ -100,6 +100,7 @@ export const spanishTranslations: ITranslation = {
   },
   task: {
     complete: "Completar",
+    create: "Crea una nueva tarea",
     delete: "Eliminar",
     edit: "Editar",
     locked: "Esta tarea está bloqueada",
