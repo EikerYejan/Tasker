@@ -1,5 +1,5 @@
 import {type ColorSchemeName, useColorScheme} from "react-native";
-import {useCallback, useEffect, useMemo} from "react";
+import {useEffect, useMemo} from "react";
 
 import {useAppState} from "../store/store";
 
@@ -12,19 +12,17 @@ export const useAppearance = () => {
   const appearance = state.theme?.value ?? colorScheme;
   const setByUser = state.theme?.setByUser ?? false;
 
-  const setTheme = useCallback(
-    (newAppearance: ColorSchemeName, setByUserVal = false) => {
-      setState(prevState => ({
-        ...prevState,
-        theme: {
-          ...prevState.theme,
-          value: newAppearance,
-          setByUser: setByUserVal,
-        },
-      }));
-    },
-    [setState],
-  );
+  const setTheme = (newAppearance: ColorSchemeName, setByUserVal = false) => {
+    setState(prevState => ({
+      ...prevState,
+      theme: {
+        ...prevState.theme,
+        value: newAppearance,
+        setByUser: setByUserVal,
+      },
+    }));
+  };
+
   const toggleAppearance = () => {
     const newAppearance = appearance === "light" ? "dark" : "light";
 
@@ -40,7 +38,7 @@ export const useAppearance = () => {
     if (colorScheme !== appearance && !setByUser) {
       setTheme(colorScheme);
     }
-  }, [appearance, colorScheme, setByUser, setTheme]);
+  }, [colorScheme]);
 
   return {
     appearance,

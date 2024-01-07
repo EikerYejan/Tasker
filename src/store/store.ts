@@ -107,7 +107,7 @@ export const useAppState = () => {
 
       setState(prevState => ({...prevState, ...rest, theme: prevState.theme}));
     },
-    [setState],
+    [state],
   );
 
   const getItem = (id: string) => {
