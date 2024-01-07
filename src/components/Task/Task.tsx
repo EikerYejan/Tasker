@@ -1,12 +1,5 @@
 import {useState} from "react";
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
 import {Tooltip} from "@rneui/themed";
@@ -147,8 +140,6 @@ export const Task = ({
     );
   }
 
-  const EditorWrapper = Platform.OS === "web" ? View : ScrollView;
-
   return (
     <TouchableOpacity
       disabled={locked ?? done}
@@ -158,7 +149,7 @@ export const Task = ({
       }}>
       <View style={styles.textWrapper}>
         <Text style={[styles.title, done ? styles.textDone : {}]}>{title}</Text>
-        <EditorWrapper showsVerticalScrollIndicator={true}>
+        <View>
           {Platform.OS === "web" && (
             <TouchableOpacity
               id="webEditorMask"
@@ -179,7 +170,7 @@ export const Task = ({
             }}
             initialContentHTML={description}
           />
-        </EditorWrapper>
+        </View>
       </View>
       <View style={styles.icons}>
         {!done && (
