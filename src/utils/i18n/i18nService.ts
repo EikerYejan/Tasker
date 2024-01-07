@@ -34,7 +34,7 @@ class I18nServiceBase {
   get locale(): string {
     const storedLocale = storage.getString(this.storageKey);
 
-    if (storedLocale) return storedLocale;
+    if (storedLocale) return this.parseLocale(storedLocale);
 
     return this.parseLocale(
       Platform.select<string>({
