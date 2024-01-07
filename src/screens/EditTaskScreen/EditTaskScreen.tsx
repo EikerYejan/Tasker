@@ -1,5 +1,12 @@
-import {Platform, ScrollView, StyleSheet, Text, View} from "react-native";
-import {useMemo, useRef} from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import {useEffect, useMemo, useRef} from "react";
 import {useNavigation} from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
 import {RichEditor, RichToolbar} from "react-native-pell-rich-editor";
@@ -47,10 +54,13 @@ export const EditTaskScreen = ({taskId}: Props) => {
       marginBottom: 15,
     },
     editorWrapper: {
-      maxHeight: 400,
-      marginTop: 30,
-      borderWidth: 1,
       borderColor: colors.border,
+      borderWidth: 1,
+      height: 400,
+      marginTop: 30,
+    },
+    fullHeight: {
+      height: "100%",
     },
   });
 
@@ -76,46 +86,65 @@ export const EditTaskScreen = ({taskId}: Props) => {
     if (navigation.canGoBack()) navigation.goBack();
   };
 
+  useEffect(() => {
+    if (Platform.OS === "web") {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          navigation.goBack();
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  }, []);
+
   if (!item) return null;
 
   return (
     <ScreenWrapper disableLocaleChanger>
-      <View>
-        <Text style={styles.title}>{t("task.edit")}</Text>
-        <TextInput
-          editable
-          defaultValue={item.title}
-          onChangeText={onTitleChange}
-          onSubmitEditing={() => {
-            descriptionInput.current?.focus();
-          }}
-        />
-        <View style={styles.editorWrapper}>
-          <RichToolbar
-            actions={supportedEditorActions}
-            editor={textEditor}
-            iconMap={actionsIcons}
-            flatContainerStyle={
-              Platform.OS === "web" && {
-                width: "100%",
-              }
-            }
+      <KeyboardAvoidingView behavior="position">
+        <View style={styles.fullHeight}>
+          <Text style={styles.title}>{t("task.edit")}</Text>
+          <TextInput
+            editable
+            defaultValue={item.title}
+            onChangeText={onTitleChange}
+            onSubmitEditing={() => {
+              descriptionInput.current?.focus();
+            }}
           />
-          <ScrollView>
-            <RichEditor
-              initialHeight={400}
-              initialContentHTML={item.description}
-              ref={textEditor}
-              onChange={onDescriptionChange}
+
+          <View style={styles.editorWrapper}>
+            <RichToolbar
+              actions={supportedEditorActions}
+              editor={textEditor}
+              iconMap={actionsIcons}
+              flatContainerStyle={
+                Platform.OS === "web" && {
+                  width: "100%",
+                }
+              }
             />
-          </ScrollView>
+            <ScrollView style={styles.fullHeight}>
+              <RichEditor
+                initialContentHTML={item.description}
+                initialHeight={400}
+                ref={textEditor}
+                onChange={onDescriptionChange}
+              />
+            </ScrollView>
+          </View>
+          <Button
+            label={t("task.save")}
+            style={styles.saveButton}
+            onPress={onSavePress}
+          />
         </View>
-        <Button
-          label={t("task.save")}
-          style={styles.saveButton}
-          onPress={onSavePress}
-        />
-      </View>
+      </KeyboardAvoidingView>
     </ScreenWrapper>
   );
 };
