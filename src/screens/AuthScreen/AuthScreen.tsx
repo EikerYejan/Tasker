@@ -10,7 +10,7 @@ import {
 import {useMemo, useRef, useState} from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
-import Sentry from "sentry-expo";
+import * as Sentry from "sentry-expo";
 
 import {TextInput} from "../../components/TextInput/TextInput";
 import {Button} from "../../components/Button/Button";
@@ -132,6 +132,8 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       ],
     );
   };
+
+  console.log(Sentry.Native);
 
   const onNextPress = async () => {
     try {
