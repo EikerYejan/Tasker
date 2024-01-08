@@ -10,6 +10,7 @@ import {
 import {useMemo, useRef, useState} from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
+import Sentry from "sentry-expo";
 
 import {TextInput} from "../../components/TextInput/TextInput";
 import {Button} from "../../components/Button/Button";
@@ -93,6 +94,23 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       message = t("auth.error.existingCredential");
     } else if (error.code && dismissableErrorCodes.includes(error.code)) {
       return;
+    }
+
+    const sentryPayload = {
+      extra: {
+        code: error.code,
+        message: error.message,
+      },
+      level: "error",
+      tags: {
+        user: AuthService.getCurrentUser()?.uid,
+      },
+    } as const;
+
+    if (Platform.OS === "web") {
+      Sentry.Browser.captureMessage(message, sentryPayload);
+    } else {
+      Sentry.Native.captureMessage(message, sentryPayload);
     }
 
     setError(message);
