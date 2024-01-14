@@ -29,7 +29,8 @@ export const getStyles = (theme: Theme) => {
       width: "100%",
     },
     contentRowTablet: {
-      flex: 1,
+      flexDirection: "row",
+      gap: 50,
     },
     pageDescription: {
       color: colors.text,
@@ -58,6 +59,7 @@ export const getStyles = (theme: Theme) => {
     },
     sectionContainer: {
       marginBottom: 18,
+      flex: 1,
     },
     lockButtonText: {
       color: colors.link,

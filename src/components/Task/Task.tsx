@@ -88,12 +88,11 @@ export const Task = ({
       width: "100%",
     },
     icons: {
-      end: Platform.select({
-        web: 0,
-        native: -15,
-      }),
       flexDirection: "row",
       height: 25,
+      justifyContent: "space-between",
+      maxWidth: 50,
+      width: "10%",
     },
     tooltipContainer: {
       borderColor: colors.border,
