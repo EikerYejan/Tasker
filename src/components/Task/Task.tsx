@@ -84,6 +84,7 @@ export const Task = ({
     textWrapper: {
       height: "100%",
       maxWidth: "90%",
+      overflow: "hidden",
       width: "100%",
     },
     icons: {
@@ -190,6 +191,7 @@ export const Task = ({
               }
               visible={tooltipOpen}
               withPointer={false}
+              width={130}
               onClose={onCloseTooltip}
             />
             <TouchableOpacity onPress={onOpenTooltip}>
