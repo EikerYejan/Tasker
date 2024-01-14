@@ -3,6 +3,9 @@ import Icon from "react-native-vector-icons/Ionicons";
 import {FONTS} from "../../constants/fonts";
 
 export const supportedEditorActions = [
+  "undo",
+  "redo",
+  "keyboard",
   "bold",
   "italic",
   "underline",
@@ -23,7 +26,6 @@ export const supportedEditorActions = [
   "outdent",
   "code",
   "quote",
-  "keyboard",
 ] as const;
 
 const headingStyles = {fontFamily: FONTS.POPPINS_REGULAR, fontSize: 18};

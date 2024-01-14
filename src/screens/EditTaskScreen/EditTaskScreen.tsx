@@ -1,11 +1,4 @@
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import {Platform, ScrollView, StyleSheet, Text, View} from "react-native";
 import {useEffect, useMemo, useRef} from "react";
 import {useNavigation} from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
@@ -115,47 +108,42 @@ export const EditTaskScreen = ({taskId}: Props) => {
 
   return (
     <ScreenWrapper disableLocaleChanger>
-      <KeyboardAvoidingView behavior="position">
-        <View style={styles.fullHeight}>
-          <Text style={styles.title}>{title}</Text>
-          <TextInput
-            editable
-            defaultValue={item?.title ?? ""}
-            onChangeText={onTitleChange}
-            placeholder={t("home.input.taskTitle")}
-            onSubmitEditing={() => {
-              descriptionInput.current?.focus();
-            }}
+      <Text style={styles.title}>{title}</Text>
+      <TextInput
+        editable
+        defaultValue={item?.title ?? ""}
+        onChangeText={onTitleChange}
+        placeholder={t("home.input.taskTitle")}
+        onSubmitEditing={() => {
+          descriptionInput.current?.focus();
+        }}
+      />
+      <View style={styles.editorWrapper}>
+        <RichToolbar
+          actions={supportedEditorActions}
+          editor={textEditor}
+          iconMap={actionsIcons}
+          flatContainerStyle={
+            Platform.OS === "web" && {
+              width: "100%",
+            }
+          }
+        />
+        <ScrollView style={styles.fullHeight}>
+          <RichEditor
+            initialContentHTML={item?.description ?? ""}
+            initialHeight={400}
+            placeholder={t("home.input.taskDescription")}
+            ref={textEditor}
+            onChange={onDescriptionChange}
           />
-
-          <View style={styles.editorWrapper}>
-            <RichToolbar
-              actions={supportedEditorActions}
-              editor={textEditor}
-              iconMap={actionsIcons}
-              flatContainerStyle={
-                Platform.OS === "web" && {
-                  width: "100%",
-                }
-              }
-            />
-            <ScrollView style={styles.fullHeight}>
-              <RichEditor
-                initialContentHTML={item?.description ?? ""}
-                initialHeight={400}
-                placeholder={t("home.input.taskDescription")}
-                ref={textEditor}
-                onChange={onDescriptionChange}
-              />
-            </ScrollView>
-          </View>
-          <Button
-            label={t("task.save")}
-            style={styles.saveButton}
-            onPress={onSavePress}
-          />
-        </View>
-      </KeyboardAvoidingView>
+        </ScrollView>
+      </View>
+      <Button
+        label={t("task.save")}
+        style={styles.saveButton}
+        onPress={onSavePress}
+      />
     </ScreenWrapper>
   );
 };
