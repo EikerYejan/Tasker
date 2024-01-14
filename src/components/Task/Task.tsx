@@ -87,11 +87,12 @@ export const Task = ({
       width: "100%",
     },
     icons: {
+      end: Platform.select({
+        web: 0,
+        native: -15,
+      }),
       flexDirection: "row",
-      flexWrap: "wrap",
-      gap: 3,
-      justifyContent: "flex-end",
-      maxWidth: 45,
+      height: 25,
     },
     tooltipContainer: {
       borderColor: colors.border,
