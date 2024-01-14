@@ -98,11 +98,11 @@ export const englishTranslations: ITranslation = {
     title: "Menu",
   },
   task: {
-    complete: "Complete Task",
+    complete: "Complete",
     create: "Add a new task",
-    delete: "Delete Task",
-    edit: "Edit Task",
+    delete: "Delete",
+    edit: "Edit",
     locked: "This task is locked",
-    save: "Save Task",
+    save: "Save",
   },
 };
