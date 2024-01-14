@@ -1,4 +1,11 @@
-import {Platform, ScrollView, StyleSheet, Text, View} from "react-native";
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import {useEffect, useMemo, useRef} from "react";
 import {useNavigation} from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
@@ -39,6 +46,17 @@ export const TaskScreen = ({taskId}: Props) => {
   const textEditor = useRef<RichEditor>(null);
 
   const styles = StyleSheet.create({
+    actions: {
+      alignItems: "center",
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    saveText: {
+      color: colors.link,
+      fontFamily: FONTS.POPPINS_BOLD,
+      fontSize: 14,
+      fontWeight: "bold",
+    },
     saveButton: {
       marginTop: 30,
     },
@@ -108,7 +126,12 @@ export const TaskScreen = ({taskId}: Props) => {
 
   return (
     <ScreenWrapper disableLocaleChanger>
-      <Text style={styles.title}>{title}</Text>
+      <View style={styles.actions}>
+        <Text style={styles.title}>{title}</Text>
+        <TouchableOpacity onPress={onSavePress}>
+          <Text style={styles.saveText}>{t("task.save")}</Text>
+        </TouchableOpacity>
+      </View>
       <TextInput
         editable
         defaultValue={item?.title ?? ""}
