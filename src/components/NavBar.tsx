@@ -13,6 +13,8 @@ import {useNavigation} from "@react-navigation/native";
 
 import {useAppearance} from "../hooks/useAppearance";
 
+import {ScreenName, type UseNavigation} from "../types";
+
 const WebMenu = lazy(() =>
   import("./WebMenu").then(mod => ({default: mod.WebMenu})),
 );
@@ -26,7 +28,7 @@ export const NavBar = () => {
 
   const {appearance, colors, toggleAppearance} = useAppearance();
 
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<UseNavigation>();
 
   const styles = StyleSheet.create({
     container: {
@@ -80,7 +82,7 @@ export const NavBar = () => {
     if (isWeb) {
       setIsMenuOpen(true);
     } else {
-      navigation.navigate("Menu");
+      navigation.navigate(ScreenName.MENU);
     }
   };
 

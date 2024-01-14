@@ -4,26 +4,18 @@ import {createStackNavigator} from "@react-navigation/stack";
 
 import {HomeScreen} from "./screens/HomeScreen/HomeScreen";
 import {AuthScreen} from "./screens/AuthScreen/AuthScreen";
-import {EditTaskScreen} from "./screens/EditTaskScreen/EditTaskScreen";
+import {TaskScreen} from "./screens/TaskScreen/TaskScreen";
 
 import {NavBar} from "./components/NavBar";
 import {HeaderBackButton} from "./components/HeaderBackButton";
 
-import {ScreenName} from "./types";
+import {ScreenName, type Screens} from "./types";
 
 const MenuScreen = lazy(() =>
   import("./screens/MenuScreen").then(mod => ({default: mod.MenuScreen})),
 );
 
-// eslint-disable-next-line
-type ParamsList = {
-  [ScreenName.EDIT_TASK]: {taskId?: string};
-  [ScreenName.HOME]: undefined;
-  [ScreenName.LOGIN]: undefined;
-  [ScreenName.MENU]: undefined;
-};
-
-const Stack = createStackNavigator<ParamsList>();
+const Stack = createStackNavigator<Screens>();
 
 export const MainNavigator = () => {
   return (
@@ -56,12 +48,12 @@ export const MainNavigator = () => {
         }}
       />
       <Stack.Screen
-        name={ScreenName.EDIT_TASK}
+        name={ScreenName.TASK}
         options={{
           header: () => <HeaderBackButton />,
           presentation: "modal",
         }}>
-        {({route}) => <EditTaskScreen taskId={route.params?.taskId} />}
+        {({route}) => <TaskScreen taskId={route.params?.taskId} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

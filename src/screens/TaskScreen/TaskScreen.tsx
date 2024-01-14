@@ -16,14 +16,14 @@ import {useAppState} from "../../store/store";
 import {generateId} from "../../utils";
 
 import type {TextInput as RNTextInput} from "react-native";
+import type {UseNavigation} from "../../types";
 
 interface Props {
   taskId?: string;
 }
 
-// TODO: rename to TaskScreen
-export const EditTaskScreen = ({taskId}: Props) => {
-  const navigation = useNavigation();
+export const TaskScreen = ({taskId}: Props) => {
+  const navigation = useNavigation<UseNavigation>();
   const {colors} = useAppearance();
   const {addTodo, getItem, saveItem} = useAppState();
 

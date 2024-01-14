@@ -17,6 +17,8 @@ import {Alert} from "../utils/alert/alert";
 import {FONTS} from "../constants/fonts";
 import {PRIVACY_POLICIY_URL, TERMS_OF_SERVICE_URL} from "../constants/urls";
 
+import {ScreenName, type UseNavigation} from "../types";
+
 interface Props {
   onClose?: () => void;
 }
@@ -29,7 +31,7 @@ export const MenuScreen = ({onClose}: Props) => {
   } = useAppState();
 
   const {t} = useTranslation();
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<UseNavigation>();
 
   const styles = StyleSheet.create({
     deleteAccount: {
@@ -152,7 +154,7 @@ export const MenuScreen = ({onClose}: Props) => {
             label={t("menu.login")}
             onPress={() => {
               onClose?.();
-              navigation.navigate("Login");
+              navigation.navigate(ScreenName.LOGIN);
             }}
           />
         </View>

@@ -18,7 +18,7 @@ import {getStyles} from "./styles";
 import {TABLET_WIDTH} from "../../constants/mediaQueries";
 import {COLORS} from "../../constants/colors";
 
-import {ScreenName} from "../../types";
+import {ScreenName, type UseNavigation} from "../../types";
 
 export const HomeScreen = () => {
   const isTablet = useMediaQuery({minWidth: TABLET_WIDTH});
@@ -41,7 +41,7 @@ export const HomeScreen = () => {
   } = useBiometrics();
 
   const {t} = useTranslation();
-  const {navigate} = useNavigation<any>();
+  const {navigate} = useNavigation<UseNavigation>();
 
   const onDelete = (id: string, done = false) => {
     if (!done) {
@@ -64,11 +64,11 @@ export const HomeScreen = () => {
   };
 
   const onEdit = (id: string) => {
-    navigate(ScreenName.EDIT_TASK, {taskId: id});
+    navigate(ScreenName.TASK, {taskId: id});
   };
 
   const onCreatePress = () => {
-    navigate(ScreenName.EDIT_TASK);
+    navigate(ScreenName.TASK, {});
   };
 
   const biometricsIconName = useMemo(() => {

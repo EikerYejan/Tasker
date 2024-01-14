@@ -1,6 +1,7 @@
 import type {BiometryType} from "react-native-biometrics";
 import type {ColorSchemeName} from "react-native";
 import type {FirebaseAuthTypes} from "@react-native-firebase/auth";
+import type {NavigationProp} from "@react-navigation/native";
 
 export interface ITodoItem {
   description: string;
@@ -63,8 +64,18 @@ export enum SocialLoginProvider {
 }
 
 export enum ScreenName {
-  EDIT_TASK = "EditTask",
   HOME = "Home",
   LOGIN = "Login",
   MENU = "Menu",
+  TASK = "Task",
 }
+
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+export type Screens = {
+  [ScreenName.TASK]: {taskId?: string};
+  [ScreenName.HOME]: undefined;
+  [ScreenName.LOGIN]: undefined;
+  [ScreenName.MENU]: undefined;
+};
+
+export type UseNavigation = NavigationProp<Screens>;

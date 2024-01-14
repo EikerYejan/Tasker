@@ -4,8 +4,10 @@ import {useNavigation} from "@react-navigation/native";
 
 import {useAppearance} from "../hooks/useAppearance";
 
+import type {UseNavigation} from "../types";
+
 export const HeaderBackButton = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<UseNavigation>();
   const {colors} = useAppearance();
 
   const styles = StyleSheet.create({
