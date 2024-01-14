@@ -40,7 +40,7 @@ export const NavBar = () => {
         web: {
           marginLeft: "auto",
           marginRight: "auto",
-          maxWidth: 1460,
+          maxWidth: 1420,
           paddingBottom: 25,
           paddingTop: 25,
           width: "100%",

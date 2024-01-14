@@ -64,16 +64,6 @@ export const getStyles = (theme: Theme) => {
       fontFamily: FONTS.POPPINS_MEDIUM,
       fontSize: 14,
     },
-    page: {
-      ...(Platform.OS === "web"
-        ? {
-            marginLeft: "auto",
-            marginRight: "auto",
-            maxWidth: 1420,
-            width: "100%",
-          }
-        : {}),
-    },
     todoSectionHeader: {
       flexDirection: "row",
       justifyContent: "space-between",
@@ -94,7 +84,10 @@ export const getStyles = (theme: Theme) => {
       height: 50,
       justifyContent: "center",
       position: "absolute",
-      right: 20,
+      right: Platform.select({
+        web: 20,
+        native: 20,
+      }),
       shadowColor: COLORS.BLACK,
       shadowOffset: {width: 0, height: 7},
       shadowOpacity: 0.41,

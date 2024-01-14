@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {SafeAreaView, ScrollView, StyleSheet} from "react-native";
+import {Platform, SafeAreaView, ScrollView, StyleSheet} from "react-native";
 import Animated, {useSharedValue, withSpring} from "react-native-reanimated";
 
 import {useAppearance} from "../hooks/useAppearance";
@@ -26,6 +26,14 @@ export const ScreenWrapper = ({children, disableLocaleChanger}: Props) => {
       flex: 1,
       padding: 20,
       paddingBottom: 0,
+      ...(Platform.OS === "web"
+        ? {
+            marginLeft: "auto",
+            marginRight: "auto",
+            maxWidth: 1420,
+            width: "100%",
+          }
+        : {}),
     },
     scrollViewContentContainer: {
       flex: 1,
