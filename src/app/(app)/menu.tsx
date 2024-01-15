@@ -86,7 +86,7 @@ export default function MenuScreen() {
             boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
             marginBottom: "auto",
             marginTop: "auto",
-            maxHeight: 600,
+            maxHeight: 500,
             maxWidth: 500,
           }
         : {}),
