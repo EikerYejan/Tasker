@@ -10,12 +10,15 @@ import {useEffect, useMemo, useRef} from "react";
 import {RichEditor, RichToolbar} from "react-native-pell-rich-editor";
 import {router, useLocalSearchParams} from "expo-router";
 import {useTranslation} from "react-i18next";
+import {useMediaQuery} from "react-responsive";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {TextInput} from "../../components/TextInput/TextInput";
 import {Button} from "../../components/Button/Button";
 
 import {FONTS} from "../../constants/fonts";
+import {TABLET_WIDTH} from "../../constants/mediaQueries";
 import {actionsIcons, supportedEditorActions} from "../../constants/editor";
 
 import {useAppearance} from "../../hooks/useAppearance";
@@ -42,6 +45,8 @@ export default function TaskScreen() {
   const descriptionInput = useRef<RNTextInput>(null);
 
   const textEditor = useRef<RichEditor>(null);
+
+  const isTablet = useMediaQuery({minWidth: TABLET_WIDTH});
 
   const styles = StyleSheet.create({
     actions: {
@@ -73,6 +78,29 @@ export default function TaskScreen() {
     fullHeight: {
       height: "100%",
     },
+    screenWrapper: {
+      ...(Platform.OS === "web"
+        ? {
+            backdropFilter: "blur(5px)",
+            backgroundColor: "rgba(255, 255, 255, 0.2)",
+          }
+        : {}),
+    },
+    contentContainer: {
+      ...(Platform.OS === "web"
+        ? {
+            backgroundColor: colors.background,
+            borderRadius: 10,
+            boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+            height: "100%",
+            marginBottom: "auto",
+            marginTop: "auto",
+            maxHeight: isTablet ? "80%" : "100%",
+            maxWidth: 960,
+            width: "100%",
+          }
+        : {}),
+    },
   });
 
   const onTitleChange = (text: string) => {
@@ -81,6 +109,11 @@ export default function TaskScreen() {
 
   const onDescriptionChange = (text: string) => {
     itemDescription.current = text;
+  };
+
+  const onClose = () => {
+    if (router.canGoBack()) router.back();
+    else router.push("/");
   };
 
   const onSavePress = async () => {
@@ -101,14 +134,14 @@ export default function TaskScreen() {
       });
     }
 
-    if (router.canGoBack()) router.back();
+    onClose();
   };
 
   useEffect(() => {
     if (Platform.OS === "web") {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
-          router.back();
+          onClose();
         }
       };
 
@@ -121,14 +154,24 @@ export default function TaskScreen() {
   }, []);
 
   const title = taskId ? t("task.edit") : t("task.create");
+  const isWeb = Platform.OS === "web";
 
   return (
-    <ScreenWrapper disableLocaleChanger>
+    <ScreenWrapper
+      disableLocaleChanger
+      contentContainerStyle={styles.contentContainer}
+      style={styles.screenWrapper}>
       <View style={styles.actions}>
         <Text style={styles.title}>{title}</Text>
-        <TouchableOpacity onPress={onSavePress}>
-          <Text style={styles.saveText}>{t("task.save")}</Text>
-        </TouchableOpacity>
+        {isWeb ? (
+          <TouchableOpacity onPress={onClose}>
+            <Icon name="close-outline" size={35} color={colors.text} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={onSavePress}>
+            <Text style={styles.saveText}>{t("task.save")}</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <TextInput
         editable
