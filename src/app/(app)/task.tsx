@@ -90,7 +90,6 @@ export default function TaskScreen() {
       ...(Platform.OS === "web"
         ? {
             backgroundColor: colors.background,
-            borderRadius: 10,
             boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
             height: "100%",
             marginBottom: "auto",

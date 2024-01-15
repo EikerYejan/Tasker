@@ -82,7 +82,6 @@ export default function MenuScreen() {
       ...(Platform.OS === "web"
         ? {
             backgroundColor: colors.background,
-            borderRadius: 10,
             boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
             marginBottom: "auto",
             marginTop: "auto",
