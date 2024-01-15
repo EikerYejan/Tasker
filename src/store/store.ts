@@ -84,7 +84,11 @@ export const useAppState = () => {
     await AuthService.logOutUser();
     await FirestoreService.replaceInstance();
 
-    setState({...getInitialState(), theme: state.theme});
+    setState({
+      ...getInitialState(),
+      theme: state.theme,
+      biometrics: state.biometrics,
+    });
   };
 
   const setUser = async (user: FirebaseAuthTypes.User | null) => {
