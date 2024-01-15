@@ -1,8 +1,15 @@
-import {useMemo} from "react";
-import {Linking, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import {useEffect, useMemo} from "react";
+import {
+  Linking,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import {useTranslation} from "react-i18next";
 import {router} from "expo-router";
+import Icon from "react-native-vector-icons/Ionicons";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {Button} from "../../components/Button/Button";
@@ -53,14 +60,42 @@ export default function MenuScreen() {
       fontSize: 16,
       marginBottom: 8,
     },
-    closeButton: {
-      position: "absolute",
-      right: 20,
-      top: 20,
-      zIndex: 1,
+    title: {
+      color: colors.text,
+      fontFamily: FONTS.POPPINS_BOLD,
+      fontSize: 24,
+      fontWeight: "bold",
+      marginBottom: 20,
     },
     link: {
       alignSelf: "flex-start",
+    },
+    screenWrapper: {
+      ...(Platform.OS === "web"
+        ? {
+            backdropFilter: "blur(5px)",
+            backgroundColor: "rgba(255, 255, 255, 0.2)",
+          }
+        : {}),
+    },
+    contentContainer: {
+      ...(Platform.OS === "web"
+        ? {
+            backgroundColor: colors.background,
+            borderRadius: 10,
+            boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+            marginBottom: "auto",
+            marginTop: "auto",
+            maxHeight: 600,
+            maxWidth: 500,
+          }
+        : {}),
+    },
+    closeButton: {
+      position: "absolute",
+      right: 0,
+      top: 0,
+      zIndex: 1,
     },
   });
 
@@ -80,10 +115,6 @@ export default function MenuScreen() {
       minute: "numeric",
     });
   }, [user?.metadata]);
-
-  const onCloseButtonPress = () => {
-    router.push(ScreenName.HOME);
-  };
 
   const onLogout = async () => {
     await resetState();
@@ -120,6 +151,10 @@ export default function MenuScreen() {
     ]);
   };
 
+  const onClose = () => {
+    router.push(ScreenName.HOME);
+  };
+
   const onPrivacyPolicyPress = () => {
     Linking.openURL(PRIVACY_POLICIY_URL);
   };
@@ -128,15 +163,35 @@ export default function MenuScreen() {
     Linking.openURL(TERMS_OF_SERVICE_URL);
   };
 
+  useEffect(() => {
+    if (Platform.OS === "web") {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          onClose();
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  }, []);
   const dev = process.env.NODE_ENV === "development";
 
   return (
-    <ScreenWrapper disableLocaleChanger>
-      <TouchableOpacity style={styles.closeButton} onPress={onCloseButtonPress}>
-        <Icon name="close-outline" size={35} color={colors.text} />
-      </TouchableOpacity>
+    <ScreenWrapper
+      disableLocaleChanger
+      contentContainerStyle={styles.contentContainer}
+      style={styles.screenWrapper}>
       <View>
-        <Text style={styles.optionTitle}>{t("menu.title")}</Text>
+        {Platform.OS === "web" && (
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <Icon name="close-outline" size={35} color={colors.text} />
+          </TouchableOpacity>
+        )}
+        <Text style={styles.title}>{t("menu.title")}</Text>
         <Text style={styles.optionText}>UID: {user?.uid}</Text>
         <Text style={styles.optionText}>
           {t("menu.connected")} {Boolean(dbInstanceId).toString()}

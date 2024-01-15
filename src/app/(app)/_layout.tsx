@@ -65,11 +65,11 @@ export default function AuthLayout() {
 
   if (!authInitialized) return null;
 
+  const isWeb = Platform.OS === "web";
+
   return (
     <>
-      {Platform.OS === "web" && (
-        <View id="dialog-root" style={webDialogRootStyles.root} />
-      )}
+      {isWeb && <View id="dialog-root" style={webDialogRootStyles.root} />}
       {authInitialized && user?.uid ? (
         <Stack
           screenOptions={{
@@ -78,15 +78,15 @@ export default function AuthLayout() {
           <Stack.Screen
             name={ScreenName.MENU}
             options={{
-              headerShown: false,
-              presentation: "modal",
+              header: isWeb ? () => null : HeaderBackButton,
+              presentation: isWeb ? "transparentModal" : "modal",
             }}
           />
           <Stack.Screen
             name={ScreenName.TASK}
             options={{
-              header: HeaderBackButton,
-              presentation: "modal",
+              header: isWeb ? () => null : HeaderBackButton,
+              presentation: isWeb ? "transparentModal" : "modal",
             }}
           />
         </Stack>

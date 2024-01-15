@@ -1,4 +1,4 @@
-import {Suspense, lazy, useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo} from "react";
 import {
   Platform,
   SafeAreaView,
@@ -13,15 +13,7 @@ import {router} from "expo-router";
 
 import {useAppearance} from "../hooks/useAppearance";
 
-const WebMenu = lazy(() =>
-  import("./WebMenu").then(mod => ({default: mod.WebMenu})),
-);
-
 export const NavBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const isWeb = Platform.OS === "web";
-
   const switchOverlayTranslateX = useSharedValue(0);
 
   const {appearance, colors, toggleAppearance} = useAppearance();
@@ -75,15 +67,7 @@ export const NavBar = () => {
   });
 
   const navigateToMenu = () => {
-    if (isWeb) {
-      setIsMenuOpen(true);
-    } else {
-      router.push("menu");
-    }
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
+    router.push("menu");
   };
 
   useEffect(() => {
@@ -98,11 +82,6 @@ export const NavBar = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      {isWeb ? (
-        <Suspense fallback={null}>
-          <WebMenu isOpen={isMenuOpen} onClose={closeMenu} />
-        </Suspense>
-      ) : null}
       <StatusBar
         animated
         backgroundColor={colors.background}

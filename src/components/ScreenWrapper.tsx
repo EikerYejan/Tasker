@@ -1,5 +1,11 @@
 import {useEffect} from "react";
-import {Platform, SafeAreaView, ScrollView, StyleSheet} from "react-native";
+import {
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  type ViewStyle,
+} from "react-native";
 import Animated, {useSharedValue, withSpring} from "react-native-reanimated";
 
 import {useAppearance} from "../hooks/useAppearance";
@@ -9,10 +15,17 @@ import {LocaleChanger} from "./LocaleChanger";
 
 interface Props {
   children: ReactNode;
+  contentContainerStyle?: ViewStyle;
   disableLocaleChanger?: boolean;
+  style?: ViewStyle;
 }
 
-export const ScreenWrapper = ({children, disableLocaleChanger}: Props) => {
+export const ScreenWrapper = ({
+  children,
+  contentContainerStyle,
+  disableLocaleChanger,
+  style,
+}: Props) => {
   const pageOpacity = useSharedValue(0);
 
   const {colors} = useAppearance();
@@ -48,12 +61,13 @@ export const ScreenWrapper = ({children, disableLocaleChanger}: Props) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, style]}>
       <ScrollView
         contentContainerStyle={styles.scrollViewContentContainer}
         keyboardShouldPersistTaps="handled"
         scrollEnabled={false}>
-        <Animated.View style={[styles.inner, {opacity: pageOpacity}]}>
+        <Animated.View
+          style={[styles.inner, {opacity: pageOpacity}, contentContainerStyle]}>
           {children}
         </Animated.View>
         {!disableLocaleChanger && <LocaleChanger />}
