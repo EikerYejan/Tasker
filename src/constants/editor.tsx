@@ -1,6 +1,6 @@
 import {Text} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import {FONTS} from "../../constants/fonts";
+import {FONTS} from "./fonts";
 
 export const supportedEditorActions = [
   "undo",

@@ -7,30 +7,28 @@ import {
   View,
 } from "react-native";
 import {useEffect, useMemo, useRef} from "react";
-import {useNavigation} from "@react-navigation/native";
-import {useTranslation} from "react-i18next";
 import {RichEditor, RichToolbar} from "react-native-pell-rich-editor";
+import {router, useLocalSearchParams} from "expo-router";
+import {useTranslation} from "react-i18next";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {TextInput} from "../../components/TextInput/TextInput";
 import {Button} from "../../components/Button/Button";
 
 import {FONTS} from "../../constants/fonts";
-import {actionsIcons, supportedEditorActions} from "./constants";
+import {actionsIcons, supportedEditorActions} from "../../constants/editor";
 
 import {useAppearance} from "../../hooks/useAppearance";
 import {useAppState} from "../../store/store";
 import {generateId} from "../../utils";
 
 import type {TextInput as RNTextInput} from "react-native";
-import type {UseNavigation} from "../../types";
 
-interface Props {
-  taskId?: string;
-}
+export default function TaskScreen() {
+  const {taskId} = useLocalSearchParams<{
+    taskId?: string;
+  }>();
 
-export const TaskScreen = ({taskId}: Props) => {
-  const navigation = useNavigation<UseNavigation>();
   const {colors} = useAppearance();
   const {addTodo, getItem, saveItem} = useAppState();
 
@@ -103,14 +101,14 @@ export const TaskScreen = ({taskId}: Props) => {
       });
     }
 
-    if (navigation.canGoBack()) navigation.goBack();
+    if (router.canGoBack()) router.back();
   };
 
   useEffect(() => {
     if (Platform.OS === "web") {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
-          navigation.goBack();
+          router.back();
         }
       };
 
@@ -169,4 +167,4 @@ export const TaskScreen = ({taskId}: Props) => {
       />
     </ScreenWrapper>
   );
-};
+}

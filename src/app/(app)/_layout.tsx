@@ -1,19 +1,22 @@
+import {useState, useEffect} from "react";
 import {Platform, StyleSheet, View} from "react-native";
-import {NavigationContainer} from "@react-navigation/native";
-import {useEffect, useState} from "react";
-import * as RNSplashScreen from "expo-splash-screen";
 import {injectSpeedInsights} from "@vercel/speed-insights";
+import {Redirect, SplashScreen, Stack} from "expo-router";
 
-import {AuthScreen} from "./AuthScreen/AuthScreen";
-import {MainNavigator} from "../MainNavigator";
+import {FirestoreService} from "../../utils/firestore/firestore";
+import {AuthService} from "../../utils/auth/auth";
 
-import {AuthService} from "../utils/auth/auth";
-import {i18nService} from "../utils/i18n/i18nService";
-import {useAppState} from "../store/store";
-import {FirestoreService} from "../utils/firestore/firestore";
-import {useAppearance} from "../hooks/useAppearance";
+import {useAppState} from "../../store/store";
+import {useAppearance} from "../../hooks/useAppearance";
 
-export const SplasScreen = () => {
+import {NavBar} from "../../components/NavBar";
+import {HeaderBackButton} from "../../components/HeaderBackButton";
+
+import {ScreenName} from "../../types";
+
+SplashScreen.preventAutoHideAsync();
+
+export default function AuthLayout() {
   const [authInitialized, setAuthInitialized] = useState(false);
 
   const {
@@ -35,8 +38,6 @@ export const SplasScreen = () => {
   };
 
   useEffect(() => {
-    i18nService.init();
-
     AuthService.init().then(async user => {
       if (user) {
         setUser(user);
@@ -46,7 +47,7 @@ export const SplasScreen = () => {
 
       setAuthInitialized(true);
 
-      await RNSplashScreen.hideAsync();
+      SplashScreen.hideAsync();
 
       FirestoreService.listenForChanges(snapshot => {
         if (snapshot) setStateFromFirestore(snapshot);
@@ -60,33 +61,38 @@ export const SplasScreen = () => {
     if (Platform.OS === "web") {
       injectSpeedInsights({});
     }
-
-    return () => {
-      AuthService.stopListeningToAuthState();
-      FirestoreService.stopListeningForChanges();
-    };
   }, []);
 
-  if (!authInitialized) {
-    return null;
-  }
+  if (!authInitialized) return null;
 
   return (
     <>
       {Platform.OS === "web" && (
         <View id="dialog-root" style={webDialogRootStyles.root} />
       )}
-      {user?.uid ? (
-        <NavigationContainer
-          documentTitle={{
-            enabled: true,
-            formatter: (_, route) => `TasksZen | ${route?.name}`,
+      {authInitialized && user?.uid ? (
+        <Stack
+          screenOptions={{
+            header: NavBar,
           }}>
-          <MainNavigator />
-        </NavigationContainer>
+          <Stack.Screen
+            name={ScreenName.MENU}
+            options={{
+              headerShown: false,
+              presentation: "modal",
+            }}
+          />
+          <Stack.Screen
+            name={ScreenName.TASK}
+            options={{
+              header: HeaderBackButton,
+              presentation: "modal",
+            }}
+          />
+        </Stack>
       ) : (
-        <AuthScreen enableAnonymousLogin />
+        <Redirect href="auth" />
       )}
     </>
   );
-};
+}

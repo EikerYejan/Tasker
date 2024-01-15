@@ -1,18 +1,15 @@
 import {Platform, StyleSheet, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import {useNavigation} from "@react-navigation/native";
+import {router} from "expo-router";
 
 import {useAppearance} from "../hooks/useAppearance";
 
-import type {UseNavigation} from "../types";
-
 export const HeaderBackButton = () => {
-  const navigation = useNavigation<UseNavigation>();
   const {colors} = useAppearance();
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: colors.overlay,
+      backgroundColor: colors.background,
       borderBottomWidth: 1,
       borderColor: colors.border,
     },
@@ -35,7 +32,7 @@ export const HeaderBackButton = () => {
   });
 
   const onBackPress = () => {
-    if (navigation.canGoBack()) navigation.goBack();
+    if (router.canGoBack()) router.back();
   };
 
   return (

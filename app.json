@@ -6,18 +6,18 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+    "scheme": "taskszen",
     "plugins": [
       "@react-native-google-signin/google-signin",
-      "sentry-expo"
+      "sentry-expo",
+      "expo-router"
     ],
     "splash": {
       "image": "./assets/tasker_splash_light.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.eikeryejan.taskzen",

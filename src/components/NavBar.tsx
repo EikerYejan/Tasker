@@ -9,11 +9,9 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Animated, {useSharedValue, withSpring} from "react-native-reanimated";
-import {useNavigation} from "@react-navigation/native";
+import {router} from "expo-router";
 
 import {useAppearance} from "../hooks/useAppearance";
-
-import {ScreenName, type UseNavigation} from "../types";
 
 const WebMenu = lazy(() =>
   import("./WebMenu").then(mod => ({default: mod.WebMenu})),
@@ -27,8 +25,6 @@ export const NavBar = () => {
   const switchOverlayTranslateX = useSharedValue(0);
 
   const {appearance, colors, toggleAppearance} = useAppearance();
-
-  const navigation = useNavigation<UseNavigation>();
 
   const styles = StyleSheet.create({
     container: {
@@ -82,7 +78,7 @@ export const NavBar = () => {
     if (isWeb) {
       setIsMenuOpen(true);
     } else {
-      navigation.navigate(ScreenName.MENU);
+      router.push("menu");
     }
   };
 

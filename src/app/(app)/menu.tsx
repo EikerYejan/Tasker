@@ -2,28 +2,24 @@ import {useMemo} from "react";
 import {Linking, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
-import {useNavigation} from "@react-navigation/native";
+import {router} from "expo-router";
 
-import {ScreenWrapper} from "../components/ScreenWrapper";
-import {Button} from "../components/Button/Button";
+import {ScreenWrapper} from "../../components/ScreenWrapper";
+import {Button} from "../../components/Button/Button";
 
-import {useAppearance} from "../hooks/useAppearance";
-import {useAppState} from "../store/store";
-import {FirestoreService} from "../utils/firestore/firestore";
-import {AuthService} from "../utils/auth/auth";
-import {i18nService} from "../utils/i18n/i18nService";
-import {Alert} from "../utils/alert/alert";
+import {useAppearance} from "../../hooks/useAppearance";
+import {useAppState} from "../../store/store";
+import {FirestoreService} from "../../utils/firestore/firestore";
+import {AuthService} from "../../utils/auth/auth";
+import {i18nService} from "../../utils/i18n/i18nService";
+import {Alert} from "../../utils/alert/alert";
 
-import {FONTS} from "../constants/fonts";
-import {PRIVACY_POLICIY_URL, TERMS_OF_SERVICE_URL} from "../constants/urls";
+import {FONTS} from "../../constants/fonts";
+import {PRIVACY_POLICIY_URL, TERMS_OF_SERVICE_URL} from "../../constants/urls";
 
-import {ScreenName, type UseNavigation} from "../types";
+import {ScreenName} from "../../types";
 
-interface Props {
-  onClose?: () => void;
-}
-
-export const MenuScreen = ({onClose}: Props) => {
+export default function MenuScreen() {
   const {colors} = useAppearance();
   const {
     resetState,
@@ -31,7 +27,6 @@ export const MenuScreen = ({onClose}: Props) => {
   } = useAppState();
 
   const {t} = useTranslation();
-  const navigation = useNavigation<UseNavigation>();
 
   const styles = StyleSheet.create({
     deleteAccount: {
@@ -87,11 +82,21 @@ export const MenuScreen = ({onClose}: Props) => {
   }, [user?.metadata]);
 
   const onCloseButtonPress = () => {
-    if (onClose) {
-      onClose();
-    } else {
-      navigation.goBack();
-    }
+    router.push(ScreenName.HOME);
+  };
+
+  const onLogout = async () => {
+    await resetState();
+    router.replace(ScreenName.AUTH);
+  };
+
+  const onLogin = async () => {
+    router.push({
+      pathname: ScreenName.AUTH,
+      params: {
+        referer: ScreenName.MENU,
+      },
+    });
   };
 
   const onDeleteScreen = () => {
@@ -99,7 +104,7 @@ export const MenuScreen = ({onClose}: Props) => {
       await FirestoreService.deleteDocument();
       await AuthService.deleteUser();
 
-      resetState();
+      await onLogout();
     };
 
     Alert.alert(t("menu.alert.deleteAccount"), "", [
@@ -146,17 +151,11 @@ export const MenuScreen = ({onClose}: Props) => {
       </View>
       {user && !user?.isAnonymous ? (
         <View style={styles.option}>
-          <Button label={t("menu.logout")} onPress={resetState} />
+          <Button label={t("menu.logout")} onPress={onLogout} />
         </View>
       ) : (
         <View style={styles.option}>
-          <Button
-            label={t("menu.login")}
-            onPress={() => {
-              onClose?.();
-              navigation.navigate(ScreenName.LOGIN);
-            }}
-          />
+          <Button label={t("menu.login")} onPress={onLogin} />
         </View>
       )}
       {dev ? (
@@ -187,4 +186,4 @@ export const MenuScreen = ({onClose}: Props) => {
       </TouchableOpacity>
     </ScreenWrapper>
   );
-};
+}

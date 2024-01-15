@@ -1,9 +1,16 @@
-import {Platform, Pressable, ScrollView, Text, View} from "react-native";
+import {
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import {useMemo} from "react";
 import {useMediaQuery} from "react-responsive";
 import {useTranslation} from "react-i18next";
-import {useNavigation} from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
+import {router} from "expo-router";
 
 import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {Task} from "../../components/Task/Task";
@@ -13,14 +20,15 @@ import {useAppearance} from "../../hooks/useAppearance";
 import {useBiometrics} from "../../hooks/useBiometrics";
 
 import {Alert} from "../../utils/alert/alert";
-import {getStyles} from "./styles";
 
 import {TABLET_WIDTH} from "../../constants/mediaQueries";
 import {COLORS} from "../../constants/colors";
+import {FONTS} from "../../constants/fonts";
+import {ScreenName} from "../../types";
 
-import {ScreenName, type UseNavigation} from "../../types";
+import type {Theme} from "@react-navigation/native";
 
-export const HomeScreen = () => {
+export default function HomeScreen() {
   const isTablet = useMediaQuery({minWidth: TABLET_WIDTH});
 
   const {
@@ -41,7 +49,6 @@ export const HomeScreen = () => {
   } = useBiometrics();
 
   const {t} = useTranslation();
-  const {navigate} = useNavigation<UseNavigation>();
 
   const onDelete = (id: string, done = false) => {
     if (!done) {
@@ -64,11 +71,14 @@ export const HomeScreen = () => {
   };
 
   const onEdit = (id: string) => {
-    navigate(ScreenName.TASK, {taskId: id});
+    router.push({
+      pathname: ScreenName.TASK,
+      params: {taskId: id},
+    });
   };
 
   const onCreatePress = () => {
-    navigate(ScreenName.TASK, {});
+    router.push(ScreenName.TASK);
   };
 
   const biometricsIconName = useMemo(() => {
@@ -154,4 +164,98 @@ export const HomeScreen = () => {
       </Pressable>
     </ScreenWrapper>
   );
+}
+
+const getStyles = (theme: Theme) => {
+  const {colors} = theme;
+
+  return StyleSheet.create({
+    pageTitle: {
+      color: colors.text,
+      fontFamily: FONTS.POPPINS_BOLD,
+      fontSize: 45,
+      fontWeight: "700",
+      lineHeight: 50,
+    },
+    contentGrid: {
+      gap: 20,
+    },
+    contentGridTablet: {
+      flexDirection: "row",
+      flexWrap: "nowrap",
+      gap: 60,
+      justifyContent: "space-between",
+    },
+    contentRow: {
+      width: "100%",
+    },
+    contentRowTablet: {
+      flexDirection: "row",
+      gap: 50,
+    },
+    pageDescription: {
+      color: colors.text,
+      fontFamily: FONTS.POPPINS_REGULAR,
+      fontSize: 16,
+      fontWeight: "400",
+      marginBottom: 30,
+    },
+    sectionHeading: {
+      color: colors.text,
+      fontFamily: FONTS.POPPINS_BOLD,
+      fontSize: 24,
+      fontWeight: "700",
+      marginBottom: 12,
+    },
+    input: {
+      marginBottom: 16,
+    },
+    textArea: {
+      height: 100,
+    },
+    tasksWrapper: {
+      borderBottomWidth: 0,
+      borderColor: colors.border,
+      borderWidth: 1,
+    },
+    sectionContainer: {
+      marginBottom: 18,
+      flex: 1,
+    },
+    lockButtonText: {
+      color: colors.link,
+      fontFamily: FONTS.POPPINS_MEDIUM,
+      fontSize: 14,
+    },
+    todoSectionHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      flexWrap: "nowrap",
+    },
+    todoSectionActions: {
+      alignItems: "center",
+      flexDirection: "row",
+      flexWrap: "nowrap",
+    },
+    createTaskButton: {
+      alignItems: "center",
+      backgroundColor: COLORS.GREY,
+      borderRadius: 8,
+      bottom: 10,
+      elevation: 14,
+      flexDirection: "row",
+      height: 50,
+      justifyContent: "center",
+      position: "absolute",
+      right: Platform.select({
+        web: 20,
+        native: 20,
+      }),
+      shadowColor: COLORS.BLACK,
+      shadowOffset: {width: 0, height: 7},
+      shadowOpacity: 0.41,
+      shadowRadius: 9.11,
+      width: 50,
+    },
+  });
 };

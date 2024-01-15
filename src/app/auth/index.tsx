@@ -6,11 +6,13 @@ import {
   type TextInput as RNTextInput,
   Pressable,
   Linking,
+  StyleSheet,
 } from "react-native";
-import {useMemo, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
 import * as Sentry from "sentry-expo";
+import {Stack, router, useLocalSearchParams} from "expo-router";
 
 import {TextInput} from "../../components/TextInput/TextInput";
 import {Button} from "../../components/Button/Button";
@@ -18,26 +20,21 @@ import {ScreenWrapper} from "../../components/ScreenWrapper";
 import {SocialAuthButton} from "../../components/SocialAuthButton/SocialAuthButton";
 
 import {PRIVACY_POLICIY_URL} from "../../constants/urls";
-import {SocialLoginProvider} from "../../types";
+import {type ScreenName, SocialLoginProvider} from "../../types";
 
 import {useAppearance} from "../../hooks/useAppearance";
 import {AuthService} from "../../utils/auth/auth";
 import {FirestoreService} from "../../utils/firestore/firestore";
 import {Alert} from "../../utils/alert/alert";
 import {isEmailValid} from "../../utils";
-
-import {authScreenStyles as styles} from "./styles";
-
-import type {NavigationProp} from "@react-navigation/native";
-
-interface Props {
-  enableAnonymousLogin?: boolean;
-  navigation?: NavigationProp<any, any>;
-}
+import {FONTS} from "../../constants/fonts";
+import {COLORS} from "../../constants/colors";
 
 type UserType = "existing" | "new" | "undetermined";
 
-export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
+export default function AuthScreen() {
+  const {referer} = useLocalSearchParams<{referer?: ScreenName}>();
+
   const [userType, setUserType] = useState<UserType>("undetermined");
   const [loading, setLoading] = useState(false);
 
@@ -68,9 +65,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
   const onCompleteAuth = async () => {
     await FirestoreService.replaceInstance();
 
-    if (navigation?.navigate) {
-      navigation.navigate("Home");
-    }
+    router.push("/");
   };
 
   const alertError = (error: {code?: string; message: string}) => {
@@ -132,8 +127,6 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       ],
     );
   };
-
-  console.log(Sentry.Native);
 
   const onNextPress = async () => {
     try {
@@ -307,13 +300,28 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
     return t("auth.title.default");
   }, [i18n.language, userType]);
 
+  useEffect(() => {
+    if (referer) {
+      console.log(referer);
+    }
+  }, [referer]);
+
   return (
     <ScreenWrapper>
+      <Stack.Screen
+        options={{
+          presentation: "modal",
+        }}
+      />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}>
         <View style={styles.inner}>
-          {navigation && navigation?.goBack ? (
-            <Pressable style={styles.closeButton} onPress={navigation.goBack}>
+          {referer ? (
+            <Pressable
+              style={styles.closeButton}
+              onPress={() => {
+                router.push(referer);
+              }}>
               <Icon name="close-outline" size={35} color={colors.text} />
             </Pressable>
           ) : null}
@@ -396,7 +404,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
               </Text>
             </Pressable>
           )}
-          {userType === "undetermined" && enableAnonymousLogin ? (
+          {!referer && (
             <Pressable disabled={loading} onPress={onContinueWithoutAccount}>
               <Text
                 style={[
@@ -406,7 +414,7 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
                 {t("auth.continueWithoutAccount")}
               </Text>
             </Pressable>
-          ) : null}
+          )}
           <Pressable disabled={loading} onPress={onForgotPasswordPress}>
             <Text
               style={[
@@ -435,4 +443,74 @@ export const AuthScreen = ({enableAnonymousLogin, navigation}: Props) => {
       </KeyboardAvoidingView>
     </ScreenWrapper>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  inner: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "auto",
+    maxWidth: 450,
+    padding: 20,
+    width: "100%",
+    height: "100%",
+  },
+  error: {
+    color: COLORS.RED,
+    fontFamily: FONTS.POPPINS_BOLD,
+    fontSize: 16,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  heading: {
+    fontFamily: FONTS.POPPINS_BOLD,
+    fontSize: 36,
+    fontWeight: "700",
+    marginBottom: 30,
+    textAlign: "center",
+  },
+  input: {
+    marginBottom: 15,
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "80%",
+  },
+  button: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: 15,
+  },
+  continueWithoutAccountText: {
+    fontFamily: FONTS.POPPINS_REGULAR,
+    fontSize: 14,
+    fontWeight: "400",
+    marginBottom: 20,
+    marginTop: 10,
+    textAlign: "center",
+  },
+  termsButton: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  termsLink: {
+    color: COLORS.LINK,
+    fontFamily: FONTS.POPPINS_BOLD,
+    fontWeight: "bold",
+    marginTop: 0,
+    marginBottom: 0,
+  },
+  closeButton: {
+    position: "absolute",
+    zIndex: 1,
+    right: 0,
+    top: 0,
+  },
+  socialAuthWrapper: {
+    marginBottom: 15,
+    marginTop: 10,
+    flexDirection: "row",
+    gap: 15,
+  },
+});
