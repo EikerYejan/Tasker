@@ -70,7 +70,7 @@ export default function AuthLayout() {
   return (
     <>
       {isWeb && <View id="dialog-root" style={webDialogRootStyles.root} />}
-      {authInitialized && user?.uid ? (
+      {user?.uid ? (
         <Stack
           screenOptions={{
             header: NavBar,
