@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Platform, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Platform, Pressable, StyleSheet, Text, View} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
 import {Tooltip} from "@rneui/themed";
@@ -142,7 +142,7 @@ export const Task = ({
   }
 
   return (
-    <TouchableOpacity
+    <Pressable
       disabled={locked ?? done}
       style={[styles.container, done ? styles.containerDone : {}]}
       onPress={() => {
@@ -150,9 +150,10 @@ export const Task = ({
       }}>
       <View style={styles.textWrapper}>
         <Text style={[styles.title, done ? styles.textDone : {}]}>{title}</Text>
-        <View>
+        <View focusable={false}>
           {Platform.OS === "web" && (
-            <TouchableOpacity
+            <Pressable
+              accessible={false}
               id="webEditorMask"
               style={styles.webEditorMask}
               onPress={() => {
@@ -193,25 +194,25 @@ export const Task = ({
               width={130}
               onClose={onCloseTooltip}
             />
-            <TouchableOpacity onPress={onOpenTooltip}>
+            <Pressable onPress={onOpenTooltip}>
               <Icon color={iconColor} name="ellipsis-vertical" size={20} />
-            </TouchableOpacity>
+            </Pressable>
           </>
         )}
         {done ? (
           <>
-            <TouchableOpacity onPress={() => onDelete?.(id, done)}>
+            <Pressable onPress={() => onDelete?.(id, done)}>
               <Icon color={iconColor} name="trash-outline" size={20} />
-            </TouchableOpacity>
-            <TouchableOpacity
+            </Pressable>
+            <Pressable
               onPress={() => {
                 onRestore?.(id);
               }}>
               <Icon color={iconColor} name="arrow-undo-outline" size={20} />
-            </TouchableOpacity>
+            </Pressable>
           </>
         ) : null}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
