@@ -10,6 +10,8 @@ import {version} from "../../package.json";
 
 import {i18nService} from "../utils/i18n/i18nService";
 
+import {StatusBar} from "../components/StatusBar";
+
 Sentry.init({
   debug: true,
   dsn: SENTRY_DSN,
@@ -39,6 +41,7 @@ export default function MainLayout() {
 
   return (
     <RecoilRoot>
+      <StatusBar />
       <Slot />
     </RecoilRoot>
   );

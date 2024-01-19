@@ -1,8 +1,7 @@
-import {useEffect, useMemo} from "react";
+import {useEffect} from "react";
 import {
   Platform,
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -76,17 +75,8 @@ export const NavBar = () => {
     });
   }, [appearance]);
 
-  const barStyle = useMemo(() => {
-    return appearance === "dark" ? "light-content" : "dark-content";
-  }, [appearance]);
-
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <StatusBar
-        animated
-        backgroundColor={colors.background}
-        barStyle={barStyle}
-      />
       <View style={styles.container}>
         <TouchableOpacity onPress={navigateToMenu}>
           <Icon color={colors.text} name="menu-outline" size={30} />
