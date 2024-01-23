@@ -8,7 +8,7 @@ import {
   Linking,
   StyleSheet,
 } from "react-native";
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
 import * as Sentry from "sentry-expo";
@@ -33,6 +33,9 @@ import {COLORS} from "../../constants/colors";
 type UserType = "existing" | "new" | "undetermined";
 
 export default function AuthScreen() {
+  const {i18n, t} = useTranslation();
+  const {language} = i18n;
+
   const {referer} = useLocalSearchParams<{referer?: ScreenName}>();
 
   const [userType, setUserType] = useState<UserType>("undetermined");
@@ -47,8 +50,6 @@ export default function AuthScreen() {
 
   const emailInputRef = useRef<RNTextInput>(null);
   const passwordInputRef = useRef<RNTextInput>(null);
-
-  const {i18n, t} = useTranslation();
 
   const onBackPress = () => {
     setUserType("undetermined");
@@ -282,7 +283,7 @@ export default function AuthScreen() {
     }
 
     return t("auth.button.default");
-  }, [i18n.language, userType]);
+  }, [language, userType]);
 
   const submitButtonDisabled = useMemo(() => {
     const validEmail = email && isEmailValid(email);
@@ -298,13 +299,7 @@ export default function AuthScreen() {
     }
 
     return t("auth.title.default");
-  }, [i18n.language, userType]);
-
-  useEffect(() => {
-    if (referer) {
-      console.log(referer);
-    }
-  }, [referer]);
+  }, [language, userType]);
 
   return (
     <ScreenWrapper>
@@ -333,6 +328,7 @@ export default function AuthScreen() {
             autoComplete="email"
             autoCorrect={false}
             disabled={userType !== "undetermined" || loading}
+            id="authEmailInput"
             inputMode="email"
             placeholder={t("auth.inputs.email.placeholder")}
             ref={emailInputRef}
@@ -345,7 +341,7 @@ export default function AuthScreen() {
             autoCapitalize="none"
             autoCorrect={false}
             disabled={loading}
-            id="passwordInput"
+            id="authPasswordInput"
             placeholder={t("auth.inputs.password.placeholder")}
             ref={passwordInputRef}
             style={[
@@ -359,6 +355,7 @@ export default function AuthScreen() {
           <Button
             loading={loading}
             disabled={submitButtonDisabled}
+            id="authContinueButton"
             label={buttonText}
             style={styles.button}
             onPress={onNextPress}
@@ -405,7 +402,10 @@ export default function AuthScreen() {
             </Pressable>
           )}
           {!referer && (
-            <Pressable disabled={loading} onPress={onContinueWithoutAccount}>
+            <Pressable
+              disabled={loading}
+              id="authContinueAsGuestButton"
+              onPress={onContinueWithoutAccount}>
               <Text
                 style={[
                   styles.continueWithoutAccountText,
@@ -415,7 +415,10 @@ export default function AuthScreen() {
               </Text>
             </Pressable>
           )}
-          <Pressable disabled={loading} onPress={onForgotPasswordPress}>
+          <Pressable
+            disabled={loading}
+            id="authForgotPasswordButton"
+            onPress={onForgotPasswordPress}>
             <Text
               style={[
                 styles.continueWithoutAccountText,

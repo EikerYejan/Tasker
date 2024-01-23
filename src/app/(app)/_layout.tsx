@@ -37,26 +37,30 @@ export default function AuthLayout() {
     await FirestoreService.init();
   };
 
-  useEffect(() => {
-    AuthService.init().then(async user => {
-      if (user) {
-        setUser(user);
+  const initializeAuth = async () => {
+    const user = AuthService.getCurrentUser();
 
-        await initializeDatabase();
-      }
+    if (user) {
+      setUser(user);
 
-      setAuthInitialized(true);
+      await initializeDatabase();
+    }
 
-      SplashScreen.hideAsync();
+    setAuthInitialized(true);
 
-      FirestoreService.listenForChanges(snapshot => {
-        if (snapshot) setStateFromFirestore(snapshot);
-      });
+    SplashScreen.hideAsync();
 
-      AuthService.listenToAuthState(snapshot => {
-        if (snapshot) setUser(snapshot);
-      });
+    FirestoreService.listenForChanges(snapshot => {
+      if (snapshot) setStateFromFirestore(snapshot);
     });
+
+    AuthService.listenToAuthState(snapshot => {
+      if (snapshot) setUser(snapshot);
+    });
+  };
+
+  useEffect(() => {
+    initializeAuth();
 
     if (Platform.OS === "web") {
       injectSpeedInsights({});

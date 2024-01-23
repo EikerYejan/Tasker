@@ -44,6 +44,7 @@ export const SocialAuthButton = ({
   return (
     <Pressable
       disabled={disabled}
+      id={`socia-auth-${provider}-button`}
       style={[styles.container, disabled && styles.disabled]}
       accessibilityLabel={`Sign in with ${provider}`}
       onPress={onPress}>

@@ -1,14 +1,15 @@
+import {useEffect, useState} from "react";
 import {Slot} from "expo-router";
 import {useFonts} from "expo-font";
 import {RecoilRoot} from "recoil";
 import * as Sentry from "sentry-expo";
 import {Platform} from "react-native";
-import {useEffect} from "react";
 
 import {SENTRY_DSN} from "@env";
 import {version} from "../../package.json";
 
 import {i18nService} from "../utils/i18n/i18nService";
+import {AuthService} from "../utils/auth/auth";
 
 import {StatusBar} from "../components/StatusBar";
 
@@ -27,6 +28,8 @@ Sentry.init({
 });
 
 export default function MainLayout() {
+  const [canRender, setCanRender] = useState(false);
+
   useFonts({
     PoppinsBold: require("../../assets/fonts/Poppins-Bold.ttf"),
     PoppingsLight: require("../../assets/fonts/Poppins-Light.ttf"),
@@ -35,9 +38,23 @@ export default function MainLayout() {
     PoppinsThin: require("../../assets/fonts/Poppins-Thin.ttf"),
   });
 
+  const initialize = async () => {
+    try {
+      await AuthService.init();
+      await i18nService.init();
+
+      setCanRender(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    i18nService.init();
+    initialize();
   }, []);
+
+  // TODO: add loader screen for web
+  if (!canRender) return null;
 
   return (
     <RecoilRoot>

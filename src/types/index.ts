@@ -55,6 +55,13 @@ export type IStoredUser = Pick<
   onBoardingComplete?: boolean;
 };
 
+export enum ProviderID {
+  APPLE = "apple.com",
+  GITHUB = "github.com",
+  GOOGLE = "google.com",
+  TWITTER = "twitter.com",
+}
+
 export enum SocialLoginProvider {
   APPLE = "apple",
   GITHUB = "github",

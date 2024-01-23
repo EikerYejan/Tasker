@@ -13,8 +13,6 @@ import type {ILocale} from "./types";
 const {I18nManager, SettingsManager} = NativeModules;
 
 class I18nServiceBase {
-  private isInitialized = false;
-
   private storageKey = "locale";
 
   private parseLocale(locale?: string): string {
@@ -62,14 +60,11 @@ class I18nServiceBase {
   }
 
   async init() {
-    if (this.isInitialized) return;
-
     await i18n.use(initReactI18next).init({
       compatibilityJSON: "v3",
       debug: true,
       lng: this.locale,
       fallbackLng: "en",
-      load: "all",
       interpolation: {
         escapeValue: false,
       },
@@ -85,8 +80,6 @@ class I18nServiceBase {
         },
       },
     });
-
-    this.isInitialized = true;
 
     i18n.on("languageChanged", lng => {
       this.saveLocale(lng);

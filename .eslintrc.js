@@ -40,5 +40,6 @@ module.exports = {
     camelcase: "off",
     "@typescript-eslint/prefer-readonly": "off",
     "func-names": "off",
+    "@typescript-eslint/unbound-method": "off",
   },
 };

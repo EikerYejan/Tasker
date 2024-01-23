@@ -10,8 +10,6 @@ export const StatusBar = () => {
     return appearance === "dark" ? "light-content" : "dark-content";
   }, [appearance]);
 
-  console.log({barStyle});
-
   return (
     <RNStatusBar
       animated
