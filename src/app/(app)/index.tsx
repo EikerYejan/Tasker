@@ -159,7 +159,10 @@ export default function HomeScreen() {
           </View>
         </View>
       </ScrollView>
-      <Pressable style={styles.createTaskButton} onPress={onCreatePress}>
+      <Pressable
+        id="newTaskButton"
+        style={styles.createTaskButton}
+        onPress={onCreatePress}>
         <Icon color={COLORS.WHITE} name="add-outline" size={40} />
       </Pressable>
     </ScreenWrapper>

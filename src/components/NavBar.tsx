@@ -78,10 +78,13 @@ export const NavBar = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.container}>
-        <TouchableOpacity onPress={navigateToMenu}>
+        <TouchableOpacity id="menuButton" onPress={navigateToMenu}>
           <Icon color={colors.text} name="menu-outline" size={30} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.themeSwitch} onPress={toggleAppearance}>
+        <TouchableOpacity
+          id="themeSwitcher"
+          style={styles.themeSwitch}
+          onPress={toggleAppearance}>
           <Animated.View
             style={[styles.themeSwitchHandle, {left: switchOverlayTranslateX}]}
           />

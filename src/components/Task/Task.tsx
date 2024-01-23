@@ -144,6 +144,7 @@ export const Task = ({
   return (
     <Pressable
       disabled={locked ?? done}
+      id="task"
       style={[styles.container, done ? styles.containerDone : {}]}
       onPress={() => {
         onPress?.(id);
@@ -194,17 +195,18 @@ export const Task = ({
               width={130}
               onClose={onCloseTooltip}
             />
-            <Pressable onPress={onOpenTooltip}>
+            <Pressable id="taskMenu" onPress={onOpenTooltip}>
               <Icon color={iconColor} name="ellipsis-vertical" size={20} />
             </Pressable>
           </>
         )}
         {done ? (
           <>
-            <Pressable onPress={() => onDelete?.(id, done)}>
+            <Pressable id="deleteTask" onPress={() => onDelete?.(id, done)}>
               <Icon color={iconColor} name="trash-outline" size={20} />
             </Pressable>
             <Pressable
+              id="restoreTask"
               onPress={() => {
                 onRestore?.(id);
               }}>

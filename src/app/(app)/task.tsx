@@ -203,6 +203,7 @@ export default function TaskScreen() {
         </ScrollView>
       </View>
       <Button
+        id="taskSaveButton"
         label={t("task.save")}
         style={styles.saveButton}
         onPress={onSavePress}

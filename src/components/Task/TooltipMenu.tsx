@@ -43,19 +43,28 @@ export const TooltipMenu = ({
   return (
     <View style={styles.container}>
       {onComplete && (
-        <TouchableOpacity style={styles.option} onPress={onComplete}>
+        <TouchableOpacity
+          id="menuCompleteTask"
+          style={styles.option}
+          onPress={onComplete}>
           <Icon color={COLORS.WHITE} name="checkbox-outline" size={20} />
           <Text style={styles.optionText}>{t("task.complete")}</Text>
         </TouchableOpacity>
       )}
       {onEdit && (
-        <TouchableOpacity style={styles.option} onPress={onEdit}>
+        <TouchableOpacity
+          id="menuEditTask"
+          style={styles.option}
+          onPress={onEdit}>
           <Icon color={COLORS.WHITE} name="create-outline" size={20} />
           <Text style={styles.optionText}>{t("task.edit")}</Text>
         </TouchableOpacity>
       )}
       {onDelete && (
-        <TouchableOpacity style={styles.option} onPress={onDelete}>
+        <TouchableOpacity
+          id="menuDeleteTask"
+          style={styles.option}
+          onPress={onDelete}>
           <Icon color={COLORS.WHITE} name="trash-outline" size={20} />
           <Text style={styles.optionText}>{t("task.delete")}</Text>
         </TouchableOpacity>
