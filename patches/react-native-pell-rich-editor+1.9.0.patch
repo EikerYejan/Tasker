@@ -37,7 +37,7 @@ index d2d4ac1..1d9b720 100755
          {children}
        </View>
 diff --git a/node_modules/react-native-pell-rich-editor/src/editor.js b/node_modules/react-native-pell-rich-editor/src/editor.js
-index 92079ad..7cce8a0 100644
+index 92079ad..ac02629 100644
 --- a/node_modules/react-native-pell-rich-editor/src/editor.js
 +++ b/node_modules/react-native-pell-rich-editor/src/editor.js
 @@ -41,6 +41,7 @@ function createHTML(options = {}) {
@@ -61,7 +61,7 @@ index 92079ad..7cce8a0 100644
      </style>
 +    <style>
 +        ol, ul {
-+            padding-left: 25px;
++            padding-left: ${disabled ? "25px" : "5px"};
 +        }
 +    </style>
      ${getContentCSS()}
