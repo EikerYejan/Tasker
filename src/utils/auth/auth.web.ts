@@ -65,6 +65,8 @@ class AuthServiceBase {
     const email = String(Cypress.env("TEST_USER_EMAIL"));
     const password = String(Cypress.env("TEST_USER_PASSWORD"));
 
+    console.log("Logging in with end-to-end testing user", email, password);
+
     return this.signInWithEmailAndPassword(email, password);
   };
 
