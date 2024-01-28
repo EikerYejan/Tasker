@@ -205,11 +205,19 @@ export default function MenuScreen() {
       </View>
       {user && !user?.isAnonymous ? (
         <View style={styles.option}>
-          <Button label={t("menu.logout")} onPress={onLogout} />
+          <Button
+            id="menuLogoutButton"
+            label={t("menu.logout")}
+            onPress={onLogout}
+          />
         </View>
       ) : (
         <View style={styles.option}>
-          <Button label={t("menu.login")} onPress={onLogin} />
+          <Button
+            id="menuLoginButton"
+            label={t("menu.login")}
+            onPress={onLogin}
+          />
         </View>
       )}
       {dev ? (
