@@ -41,5 +41,6 @@ module.exports = {
     "@typescript-eslint/prefer-readonly": "off",
     "func-names": "off",
     "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/return-await": "off",
   },
 };

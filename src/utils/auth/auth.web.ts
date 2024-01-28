@@ -90,7 +90,7 @@ class AuthServiceBase {
     await this.auth.authStateReady();
 
     if (this.isEndToEndTesting) {
-      await this.logEndToEndTestingUser();
+      return this.logEndToEndTestingUser();
     }
 
     if (this.auth.currentUser) {

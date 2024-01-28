@@ -92,6 +92,11 @@ export const useAppState = () => {
   };
 
   const setUser = async (user: FirebaseAuthTypes.User | null) => {
+    setState(prevState => ({
+      ...prevState,
+      user: user ? toStoredUser(user) : undefined,
+    }));
+
     await FirestoreService.setDocumentData({
       user: user ? toStoredUser(user) : undefined,
     });

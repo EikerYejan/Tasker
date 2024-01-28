@@ -41,9 +41,8 @@ export default function AuthLayout() {
     const user = AuthService.getCurrentUser();
 
     if (user) {
-      setUser(user);
-
       await initializeDatabase();
+      await setUser(user);
     }
 
     setAuthInitialized(true);
