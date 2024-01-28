@@ -53,6 +53,21 @@ class AuthServiceBase {
     return Provider;
   };
 
+  private get isEndToEndTesting() {
+    return typeof window !== "undefined" && (window as any).Cypress;
+  }
+
+  private logEndToEndTestingUser = () => {
+    const {Cypress} = window as any;
+
+    if (!Cypress) return;
+
+    const email = String(Cypress.env("TEST_USER_EMAIL"));
+    const password = String(Cypress.env("TEST_USER_PASSWORD"));
+
+    return this.signInWithEmailAndPassword(email, password);
+  };
+
   get isAppleAuthSupported() {
     return Boolean(WEB_ENABLE_APPLE_AUTH);
   }
@@ -71,6 +86,10 @@ class AuthServiceBase {
 
   init = async () => {
     await this.auth.authStateReady();
+
+    if (this.isEndToEndTesting) {
+      await this.logEndToEndTestingUser();
+    }
 
     if (this.auth.currentUser) {
       return this.auth.currentUser as IStoredUser;
